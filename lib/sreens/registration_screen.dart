@@ -1,13 +1,25 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pace_app/components/rounded_button.dart';
+import 'package:pace_app/sreens/main_screen.dart';
 import '../constants.dart';
 
-class RegistrationScreen extends StatelessWidget {
+// TODO use Provider to authenticate user and switch to stateless widget
+class RegistrationScreen extends StatefulWidget {
   static const String id = 'registration_screen';
 
   @override
+  _RegistrationScreenState createState() => _RegistrationScreenState();
+}
+
+class _RegistrationScreenState extends State<RegistrationScreen> {
+  @override
   Widget build(BuildContext context) {
+    final _auth = FirebaseAuth.instance;
+    String email;
+    String password;
+
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
@@ -31,7 +43,7 @@ class RegistrationScreen extends StatelessWidget {
               keyboardType: TextInputType.emailAddress,
               textAlign: TextAlign.center,
               onChanged: (value) {
-                //email = value;
+                email = value;
               },
               decoration: kTextFieldDecoration,
             ),
@@ -42,7 +54,7 @@ class RegistrationScreen extends StatelessWidget {
               obscureText: true,
               textAlign: TextAlign.center,
               onChanged: (value) {
-                //password = value;
+                password = value;
               },
               decoration: kTextFieldDecoration.copyWith(
                 hintText: 'Enter your password',
@@ -54,7 +66,18 @@ class RegistrationScreen extends StatelessWidget {
             RoundedButton(
               color: Colors.blueAccent,
               text: 'Register',
-              onPressed: () {},
+              onPressed: () async {
+                try {
+                  final newUser = await _auth.createUserWithEmailAndPassword(
+                      email: email, password: password);
+                  if (newUser != null) {
+                    print('registration completed');
+                    Navigator.pushNamed(context, MainScreen.id);
+                  }
+                } catch (e) {
+                  print(e);
+                }
+              },
             ),
           ],
         ),
