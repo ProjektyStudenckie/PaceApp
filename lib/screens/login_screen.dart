@@ -2,18 +2,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pace_app/components/rounded_button.dart';
-import 'package:pace_app/sreens/main_screen.dart';
+import 'package:pace_app/utils/login_validation_utils.dart';
+import 'package:pace_app/utils/toast_utils.dart';
 import '../constants.dart';
+import 'main_screen.dart';
 
 // TODO use Provider to authenticate user and switch to stateless widget
-class RegistrationScreen extends StatefulWidget {
-  static const String id = 'registration_screen';
-
+class LoginScreen extends StatefulWidget {
+  static const String id = 'login_screen';
   @override
-  _RegistrationScreenState createState() => _RegistrationScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final _auth = FirebaseAuth.instance;
@@ -57,21 +58,31 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 password = value;
               },
               decoration: kTextFieldDecoration.copyWith(
-                hintText: 'Enter your password',
-              ),
+                  hintText: 'Enter your password'),
             ),
             SizedBox(
               height: 24.0,
             ),
             RoundedButton(
-              color: Colors.blueAccent,
-              text: 'Register',
+              color: Colors.lightBlueAccent,
+              text: 'Log in',
               onPressed: () async {
+                if (email == null || password == null) {
+                  ToastUtils.showCustomToast(context, "Fill all the fields!");
+                  return;
+                }
+
+                if (!isEmailValid(email)) {
+                  ToastUtils.showCustomToast(context, "Email is invalid!");
+                  return;
+                }
+
                 try {
-                  final newUser = await _auth.createUserWithEmailAndPassword(
+                  final user = await _auth.signInWithEmailAndPassword(
                       email: email, password: password);
-                  if (newUser != null) {
-                    print('registration completed');
+
+                  print(user);
+                  if (user != null) {
                     Navigator.pushNamed(context, MainScreen.id);
                   }
                 } catch (e) {

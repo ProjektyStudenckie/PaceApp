@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pace_app/components/rounded_button.dart';
 import 'package:pace_app/constants.dart';
-import 'package:pace_app/sreens/login_screen.dart';
-import 'package:pace_app/sreens/registration_screen.dart';
+
+import 'login_screen.dart';
+import 'registration_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   static const String id = 'welcome_screen'; // using it to make nav easier
