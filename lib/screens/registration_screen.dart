@@ -79,6 +79,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   return;
                 }
 
+                if (!isPasswordValid(password)) {
+                  ToastUtils.showCustomToast(context, "Password is invalid!");
+                  return;
+                }
+
                 try {
                   final newUser = await _auth.createUserWithEmailAndPassword(
                       email: email, password: password);
