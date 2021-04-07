@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pace_app/components/rounded_button.dart';
+import 'package:pace_app/utils/firebase_exceptions_utils.dart';
 import 'package:pace_app/utils/login_validation_utils.dart';
 import 'package:pace_app/utils/toast_utils.dart';
 import '../constants.dart';
@@ -100,8 +101,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         if (user != null) {
                           Navigator.pushNamed(context, MainScreen.id);
                         }
-                      } catch (e) {
-                        print(e);
+                      } on FirebaseAuthException catch (e) {
+                        ToastUtils.showCustomToast(
+                            context, getMessageWithExceptionCode(e.code));
                       }
                     },
                   ),
