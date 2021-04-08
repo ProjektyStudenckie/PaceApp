@@ -22,7 +22,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     final _auth = FirebaseAuth.instance;
     String email;
     String password;
-    String password_confirm;
+    String passwordConfirm;
 
     return Scaffold(
       body: SafeArea(
@@ -32,7 +32,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               padding:
                   const EdgeInsets.symmetric(vertical: 0.0, horizontal: 15.0),
               child: IconButton(
-                icon: Icon(Icons.arrow_back),
+                icon: Icon(Icons.arrow_back_ios_new),
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -84,7 +84,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     obscureText: true,
                     textAlign: TextAlign.center,
                     onChanged: (value) {
-                      password_confirm = value;
+                      passwordConfirm = value;
                     },
                     decoration: kTextFieldDecoration.copyWith(
                       hintText: 'Re-Enter your password',
@@ -109,7 +109,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         return;
                       }
 
-                      if (password_confirm != password) {
+                      if (passwordConfirm != password) {
                         ToastUtils.showCustomToast(
                             context, "Passwords are not equal!");
                         return;

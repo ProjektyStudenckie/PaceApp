@@ -30,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
               padding:
                   const EdgeInsets.symmetric(vertical: 0.0, horizontal: 15.0),
               child: IconButton(
-                icon: Icon(Icons.arrow_back),
+                icon: Icon(Icons.arrow_back_ios_new),
                 onPressed: () {
                   Navigator.pop(context);
                 },
