@@ -97,6 +97,7 @@ class LoginScreen extends StatelessWidget {
                             }
 
                             try {
+                              // start loading animation
                               BlocProvider.of<CurrentUserCubit>(context)
                                   .enableLoading();
 
@@ -105,6 +106,7 @@ class LoginScreen extends StatelessWidget {
                                       email: email, password: password);
 
                               if (user != null) {
+                                // stop loading animation and go to main screen
                                 BlocProvider.of<CurrentUserCubit>(context)
                                     .setCurrentUser(user.user.email);
                                 Navigator.pushNamed(context, MainScreen.id);
@@ -124,12 +126,6 @@ class LoginScreen extends StatelessWidget {
           );
         },
       ),
-    );
-  }
-
-  Widget buildLoading() {
-    return Center(
-      child: CircularProgressIndicator(),
     );
   }
 }

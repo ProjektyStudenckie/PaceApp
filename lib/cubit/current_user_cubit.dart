@@ -14,7 +14,7 @@ class CurrentUserCubit extends Cubit<CurrentUserState> {
     }
   }
 
-  Future<void> enableLoading() async {
+  void enableLoading() {
     try {
       emit(CurrentUserLoading());
     } catch (e) {
