@@ -8,6 +8,8 @@ String getMessageWithExceptionCode(String code) {
       return "Email already in use!";
     case "user-disabled":
       return "Account Disabled!";
+    case "invalid-email":
+      return "Email is invalid!";
 
     default:
       return code;

@@ -16,13 +16,20 @@ class RegistrationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _auth = FirebaseAuth.instance;
     String email;
     String password;
     String passwordConfirm;
 
     return Scaffold(
-      body: BlocBuilder<CurrentUserCubit, CurrentUserState>(
+      body: BlocConsumer<CurrentUserCubit, CurrentUserState>(
+        listener: (context, state) {
+          if (state is CurrentUserError) {
+            ToastUtils.showCustomToast(
+                context, getMessageWithExceptionCode(state.message));
+          } else if (state is CurrentUserLoggedIn) {
+            Navigator.pushNamed(context, MainScreen.id);
+          }
+        },
         builder: (context, state) {
           return ModalProgressHUD(
             inAsyncCall: state is CurrentUserLoading ? true : false,
@@ -98,47 +105,7 @@ class RegistrationScreen extends StatelessWidget {
                           color: Colors.blueAccent,
                           text: 'Register',
                           onPressed: () async {
-                            if (email == null || password == null) {
-                              ToastUtils.showCustomToast(
-                                  context, "Fill all the fields!");
-                              return;
-                            }
-
-                            if (!isEmailValid(email)) {
-                              ToastUtils.showCustomToast(
-                                  context, "Email is invalid!");
-                              return;
-                            }
-
-                            if (passwordConfirm != password) {
-                              ToastUtils.showCustomToast(
-                                  context, "Passwords are not equal!");
-                              return;
-                            }
-
-                            if (!isPasswordValid(password)) {
-                              ToastUtils.showCustomToast(
-                                  context, "Password is invalid!");
-                              return;
-                            }
-
-                            try {
-                              BlocProvider.of<CurrentUserCubit>(context)
-                                  .enableLoading();
-
-                              final newUser =
-                                  await _auth.createUserWithEmailAndPassword(
-                                      email: email, password: password);
-
-                              if (newUser != null) {
-                                BlocProvider.of<CurrentUserCubit>(context)
-                                    .setCurrentUser(newUser.user.email);
-                                Navigator.pushNamed(context, MainScreen.id);
-                              }
-                            } on FirebaseAuthException catch (e) {
-                              ToastUtils.showCustomToast(
-                                  context, getMessageWithExceptionCode(e.code));
-                            }
+                            BlocProvider.of<CurrentUserCubit>(context).registerUser(email, password, passwordConfirm);
                           },
                         ),
                       ],
