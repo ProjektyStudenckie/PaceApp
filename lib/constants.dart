@@ -5,6 +5,11 @@ const kTitleTextStyle = TextStyle(
   fontWeight: FontWeight.w900,
 );
 
+const kSubTitleTextStyle = TextStyle(
+  fontSize: 38.0,
+  fontWeight: FontWeight.w900,
+);
+
 const kTextFieldDecoration = InputDecoration(
   hintText: 'Enter your email',
   contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),

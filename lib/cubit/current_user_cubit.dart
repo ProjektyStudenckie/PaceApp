@@ -9,24 +9,7 @@ part 'current_user_state.dart';
 class CurrentUserCubit extends Cubit<CurrentUserState> {
   CurrentUserCubit() : super(CurrentUserInitial());
 
-  void setCurrentUser(String userUID) {
-    try {
-      emit(CurrentUserLoggedIn(userUID: userUID));
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  void enableLoading() {
-    try {
-      emit(CurrentUserLoading());
-    } catch (e) {
-      print(e);
-    }
-  }
-
   Future<void> loginUser(String email, String password) async {
-
     if (email == null || password == null) {
       emit(CurrentUserError(message: "Fill all the fields!"));
       return;
@@ -40,15 +23,16 @@ class CurrentUserCubit extends Cubit<CurrentUserState> {
     try {
       emit(CurrentUserLoading());
       final _auth = FirebaseAuth.instance;
-      final userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      final userCredential = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
       emit(CurrentUserLoggedIn(userUID: userCredential.user.uid));
     } on FirebaseAuthException catch (e) {
       emit(CurrentUserError(message: getMessageWithExceptionCode(e.code)));
     }
   }
 
-  Future<void> registerUser(String email, String password, String passwordConfirm) async {
-
+  Future<void> registerUser(
+      String email, String password, String passwordConfirm) async {
     if (email == null || password == null) {
       emit(CurrentUserError(message: "Fill all the fields!"));
       return;
@@ -73,7 +57,7 @@ class CurrentUserCubit extends Cubit<CurrentUserState> {
       emit(CurrentUserLoading());
       final _auth = FirebaseAuth.instance;
       final userCredential = await _auth.createUserWithEmailAndPassword(
-                                      email: email, password: password);
+          email: email, password: password);
       emit(CurrentUserLoggedIn(userUID: userCredential.user.uid));
     } on FirebaseAuthException catch (e) {
       emit(CurrentUserError(message: getMessageWithExceptionCode(e.code)));

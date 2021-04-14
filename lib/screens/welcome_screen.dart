@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pace_app/components/rounded_button.dart';
@@ -30,17 +31,20 @@ class WelcomeScreen extends StatelessWidget {
                     height: 60.0,
                   ),
                 ),
-                // TypewriterAnimatedTextKit(
-                //   text: ['Flash Chat'],
-                //   textStyle: TextStyle(
-                //     fontSize: 45.0,
-                //     fontWeight: FontWeight.w900,
-                //   ),
-                // ),
-                Text(
-                  'PaceApp',
-                  style: kTitleTextStyle,
-                )
+                AnimatedTextKit(
+                  repeatForever: true,
+                  animatedTexts: [
+                    TypewriterAnimatedText(
+                      'PaceApp',
+                      textStyle: kTitleTextStyle,
+                    ),
+                    // przykladowy subtitle - mozna z tym pokombinowac
+                    FlickerAnimatedText(
+                      'write fast',
+                      textStyle: kSubTitleTextStyle,
+                    ),
+                  ],
+                ),
               ],
             ),
             SizedBox(
