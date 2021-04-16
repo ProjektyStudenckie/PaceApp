@@ -1,36 +1,40 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:pace_app/components/rounded_button.dart';
-import 'package:pace_app/cubit/current_user_cubit.dart';
-import 'package:pace_app/utils/firebase_exceptions_utils.dart';
 import 'package:pace_app/utils/toast_utils.dart';
-import '../constants.dart';
-import 'main_screen.dart';
 
-class LoginScreen extends StatelessWidget {
-  static const String id = 'login_screen';
+import '../../constants.dart';
+import '../login.dart';
 
+class LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    String email;
-    String password;
-
     return Scaffold(
-      body: BlocConsumer<CurrentUserCubit, CurrentUserState>(
+      body: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
-          if (state is CurrentUserError) {
-            ToastUtils.showCustomToast(
-                context, getMessageWithExceptionCode(state.message));
-          } else if (state is CurrentUserLoggedIn) {
-            Navigator.pushNamed(context, MainScreen.id);
+          // if (state is CurrentUserError) {
+          //   ToastUtils.showCustomToast(
+          //       context, getMessageWithExceptionCode(state.message));
+          // } else if (state is CurrentUserLoggedIn) {
+          //   Navigator.pushNamed(context, MainScreen.id);
+          // }
+
+          if (state.status == FormzStatus.submissionFailure) {
+            ToastUtils.showCustomToast(context, "Authentication Failed");
+          }
+
+          // TODO: Find if it should be done differently
+          else if (state.status == FormzStatus.submissionSuccess) {
+            Navigator.pop(context);
           }
         },
         builder: (context, state) {
           return ModalProgressHUD(
-            inAsyncCall: state is CurrentUserLoading ? true : false,
+            inAsyncCall:
+                state.status == FormzStatus.submissionInProgress ? true : false,
             child: SafeArea(
               child: Stack(
                 children: [
@@ -65,9 +69,8 @@ class LoginScreen extends StatelessWidget {
                         TextField(
                           keyboardType: TextInputType.emailAddress,
                           textAlign: TextAlign.center,
-                          onChanged: (value) {
-                            email = value;
-                          },
+                          onChanged: (email) =>
+                              context.read<LoginCubit>().emailChanged(email),
                           decoration: kTextFieldDecoration,
                         ),
                         SizedBox(
@@ -76,11 +79,11 @@ class LoginScreen extends StatelessWidget {
                         TextField(
                           obscureText: true,
                           textAlign: TextAlign.center,
-                          onChanged: (value) {
-                            password = value;
-                          },
+                          onChanged: (password) => context
+                              .read<LoginCubit>()
+                              .passwordChanged(password),
                           decoration: kTextFieldDecoration.copyWith(
-                            hintText: 'Enter your password'),
+                              hintText: 'Enter your password'),
                         ),
                         SizedBox(
                           height: 24.0,
@@ -89,7 +92,8 @@ class LoginScreen extends StatelessWidget {
                           color: Colors.lightBlueAccent,
                           text: 'Log in',
                           onPressed: () async {
-                            BlocProvider.of<CurrentUserCubit>(context).loginUser(email, password);
+                            BlocProvider.of<LoginCubit>(context)
+                                .logInWithCredentials();
                           },
                         ),
                       ],

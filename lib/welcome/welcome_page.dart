@@ -3,12 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pace_app/components/rounded_button.dart';
 import 'package:pace_app/constants.dart';
+import 'package:pace_app/login/login.dart';
+import 'package:pace_app/registration/registration.dart';
 
-import 'login_screen.dart';
-import 'registration_screen.dart';
+class WelcomePage extends StatelessWidget {
 
-class WelcomeScreen extends StatelessWidget {
-  static const String id = 'welcome_screen'; // using it to make nav easier
+  static Page page() => MaterialPage<void>(child: WelcomePage());
 
   @override
   Widget build(BuildContext context) {
@@ -54,14 +54,14 @@ class WelcomeScreen extends StatelessWidget {
               color: Colors.lightBlueAccent,
               text: 'Log in',
               onPressed: () {
-                Navigator.pushNamed(context, LoginScreen.id);
+                Navigator.of(context).push<void>(LoginPage.route());
               },
             ),
             RoundedButton(
               color: Colors.blueAccent,
               text: 'Register',
               onPressed: () {
-                Navigator.pushNamed(context, RegistrationScreen.id);
+                Navigator.of(context).push<void>(RegistrationPage.route());
               },
             ),
           ],

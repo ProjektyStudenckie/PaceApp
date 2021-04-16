@@ -1,19 +1,15 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:pace_app/components/rounded_button.dart';
-import 'package:pace_app/cubit/current_user_cubit.dart';
-import 'package:pace_app/utils/firebase_exceptions_utils.dart';
-import 'package:pace_app/utils/login_validation_utils.dart';
+import 'package:pace_app/registration/registration.dart';
 import 'package:pace_app/utils/toast_utils.dart';
-import '../constants.dart';
-import 'main_screen.dart';
 
-class RegistrationScreen extends StatelessWidget {
-  static const String id = 'registration_screen';
+import '../../constants.dart';
 
+class RegistrationForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String email;
@@ -21,18 +17,28 @@ class RegistrationScreen extends StatelessWidget {
     String passwordConfirm;
 
     return Scaffold(
-      body: BlocConsumer<CurrentUserCubit, CurrentUserState>(
+      body: BlocConsumer<RegistrationCubit, RegistrationState>(
         listener: (context, state) {
-          if (state is CurrentUserError) {
-            ToastUtils.showCustomToast(
-                context, getMessageWithExceptionCode(state.message));
-          } else if (state is CurrentUserLoggedIn) {
-            Navigator.pushNamed(context, MainScreen.id);
+          // if (state is CurrentUserError) {
+          //   ToastUtils.showCustomToast(
+          //       context, getMessageWithExceptionCode(state.message));
+          // } else if (state is CurrentUserLoggedIn) {
+          //   Navigator.pushNamed(context, MainScreen.id);
+          // }
+           
+          if (state.status == FormzStatus.submissionFailure) {
+            ToastUtils.showCustomToast(context, "Authentication Failed");
+          }
+
+          // TODO: Find if it should be done differently
+          else if (state.status == FormzStatus.submissionSuccess) {
+            Navigator.pop(context);
           }
         },
         builder: (context, state) {
           return ModalProgressHUD(
-            inAsyncCall: state is CurrentUserLoading ? true : false,
+            inAsyncCall:
+                state.status == FormzStatus.submissionInProgress ? true : false,
             child: SafeArea(
               child: Stack(
                 children: [
@@ -67,9 +73,9 @@ class RegistrationScreen extends StatelessWidget {
                         TextField(
                           keyboardType: TextInputType.emailAddress,
                           textAlign: TextAlign.center,
-                          onChanged: (value) {
-                            email = value;
-                          },
+                          onChanged: (email) => context
+                              .read<RegistrationCubit>()
+                              .emailChanged(email),
                           decoration: kTextFieldDecoration,
                         ),
                         SizedBox(
@@ -78,9 +84,9 @@ class RegistrationScreen extends StatelessWidget {
                         TextField(
                           obscureText: true,
                           textAlign: TextAlign.center,
-                          onChanged: (value) {
-                            password = value;
-                          },
+                          onChanged: (password) => context
+                              .read<RegistrationCubit>()
+                              .passwordChanged(password),
                           decoration: kTextFieldDecoration.copyWith(
                             hintText: 'Enter your password',
                           ),
@@ -91,9 +97,9 @@ class RegistrationScreen extends StatelessWidget {
                         TextField(
                           obscureText: true,
                           textAlign: TextAlign.center,
-                          onChanged: (value) {
-                            passwordConfirm = value;
-                          },
+                          onChanged: (confirmedPassword) => context
+                              .read<RegistrationCubit>()
+                              .confirmedPasswordChanged(confirmedPassword),
                           decoration: kTextFieldDecoration.copyWith(
                             hintText: 'Re-Enter your password',
                           ),
@@ -105,7 +111,8 @@ class RegistrationScreen extends StatelessWidget {
                           color: Colors.blueAccent,
                           text: 'Register',
                           onPressed: () async {
-                            BlocProvider.of<CurrentUserCubit>(context).registerUser(email, password, passwordConfirm);
+                            BlocProvider.of<RegistrationCubit>(context)
+                                .registrationFormSubmitted();
                           },
                         ),
                       ],
