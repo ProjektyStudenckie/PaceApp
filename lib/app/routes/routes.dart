@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:pace_app/app/bloc/app_bloc.dart';
-import 'package:pace_app/home/home.dart';
-import 'package:pace_app/welcome/welcome_page.dart';
+import 'package:pace_app/pages/home/home.dart';
+import 'package:pace_app/pages/welcome/welcome_page.dart';
 
 
 List<Page> onGenerateAppViewPages(AppStatus state, List<Page<dynamic>> pages) {

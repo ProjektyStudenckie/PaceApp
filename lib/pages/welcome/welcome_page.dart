@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pace_app/components/rounded_button.dart';
 import 'package:pace_app/constants.dart';
-import 'package:pace_app/login/login.dart';
-import 'package:pace_app/registration/registration.dart';
+import 'package:pace_app/pages/login/login.dart';
+import 'package:pace_app/pages/registration/registration.dart';
 
 class WelcomePage extends StatelessWidget {
 

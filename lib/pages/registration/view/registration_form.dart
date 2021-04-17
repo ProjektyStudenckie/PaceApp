@@ -4,10 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:pace_app/components/rounded_button.dart';
-import 'package:pace_app/registration/registration.dart';
 import 'package:pace_app/utils/toast_utils.dart';
-
-import '../../constants.dart';
+import '../../../constants.dart';
+import '../registration.dart';
 
 class RegistrationForm extends StatelessWidget {
   @override
