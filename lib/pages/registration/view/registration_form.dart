@@ -11,25 +11,14 @@ import '../registration.dart';
 class RegistrationForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    String email;
-    String password;
-    String passwordConfirm;
-
     return Scaffold(
       body: BlocConsumer<RegistrationCubit, RegistrationState>(
         listener: (context, state) {
-          // if (state is CurrentUserError) {
-          //   ToastUtils.showCustomToast(
-          //       context, getMessageWithExceptionCode(state.message));
-          // } else if (state is CurrentUserLoggedIn) {
-          //   Navigator.pushNamed(context, MainScreen.id);
-          // }
-           
           if (state.status == FormzStatus.submissionFailure) {
             ToastUtils.showCustomToast(context, "Authentication Failed");
           }
 
-          // TODO: Find if it should be done differently
+          // TODO: Find out if it should be done differently
           else if (state.status == FormzStatus.submissionSuccess) {
             Navigator.pop(context);
           }
@@ -75,10 +64,13 @@ class RegistrationForm extends StatelessWidget {
                           onChanged: (email) => context
                               .read<RegistrationCubit>()
                               .emailChanged(email),
-                          decoration: kTextFieldDecoration,
+                          decoration: kTextFieldDecoration.copyWith(
+                              hintText: "Enter your email",
+                              errorText:
+                                  state.email.invalid ? 'invalid email' : null),
                         ),
                         SizedBox(
-                          height: 8.0,
+                          height: state.email.invalid ? 8.0 : 30.0,
                         ),
                         TextField(
                           obscureText: true,
@@ -87,11 +79,13 @@ class RegistrationForm extends StatelessWidget {
                               .read<RegistrationCubit>()
                               .passwordChanged(password),
                           decoration: kTextFieldDecoration.copyWith(
-                            hintText: 'Enter your password',
-                          ),
+                              hintText: 'Enter your password',
+                              errorText: state.password.invalid
+                                  ? 'invalid password'
+                                  : null),
                         ),
                         SizedBox(
-                          height: 8.0,
+                          height: state.password.invalid ? 8.0 : 30.0,
                         ),
                         TextField(
                           obscureText: true,
@@ -100,18 +94,22 @@ class RegistrationForm extends StatelessWidget {
                               .read<RegistrationCubit>()
                               .confirmedPasswordChanged(confirmedPassword),
                           decoration: kTextFieldDecoration.copyWith(
-                            hintText: 'Re-Enter your password',
-                          ),
+                              hintText: 'Re-Enter your password',
+                              errorText: state.confirmedPassword.invalid
+                                  ? 'passwords do not match'
+                                  : null),
                         ),
                         SizedBox(
-                          height: 24.0,
+                          height: state.confirmedPassword.invalid ? 24.0 : 46.0,
                         ),
                         RoundedButton(
                           color: Colors.blueAccent,
                           text: 'Register',
                           onPressed: () async {
-                            BlocProvider.of<RegistrationCubit>(context)
-                                .registrationFormSubmitted();
+                            if (state.status.isValidated) {
+                              BlocProvider.of<RegistrationCubit>(context)
+                                  .registrationFormSubmitted();
+                            }
                           },
                         ),
                       ],

@@ -14,18 +14,11 @@ class LoginForm extends StatelessWidget {
     return Scaffold(
       body: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
-          // if (state is CurrentUserError) {
-          //   ToastUtils.showCustomToast(
-          //       context, getMessageWithExceptionCode(state.message));
-          // } else if (state is CurrentUserLoggedIn) {
-          //   Navigator.pushNamed(context, MainScreen.id);
-          // }
-
           if (state.status == FormzStatus.submissionFailure) {
             ToastUtils.showCustomToast(context, "Authentication Failed");
           }
 
-          // TODO: Find if it should be done differently
+          // TODO: Find out if it should be done differently
           else if (state.status == FormzStatus.submissionSuccess) {
             Navigator.pop(context);
           }
@@ -70,10 +63,13 @@ class LoginForm extends StatelessWidget {
                           textAlign: TextAlign.center,
                           onChanged: (email) =>
                               context.read<LoginCubit>().emailChanged(email),
-                          decoration: kTextFieldDecoration,
+                          decoration: kTextFieldDecoration.copyWith(
+                              hintText: "Enter your email",
+                              errorText:
+                                  state.email.invalid ? 'invalid email' : null),
                         ),
                         SizedBox(
-                          height: 8.0,
+                          height: state.email.invalid ? 8.0 : 30.0,
                         ),
                         TextField(
                           obscureText: true,
@@ -82,17 +78,25 @@ class LoginForm extends StatelessWidget {
                               .read<LoginCubit>()
                               .passwordChanged(password),
                           decoration: kTextFieldDecoration.copyWith(
-                              hintText: 'Enter your password'),
+                              hintText: "Enter your password",
+                              //labelText: 'password',
+                              errorText: state.password.invalid
+                                  ? 'invalid password (at least 6 signs)'
+                                  : null),
                         ),
                         SizedBox(
-                          height: 24.0,
+                          height: state.password.invalid ? 24.0 : 46.0,
                         ),
                         RoundedButton(
-                          color: Colors.lightBlueAccent,
+                          color: state.status == FormzStatus.invalid
+                              ? Colors.grey
+                              : Colors.lightBlueAccent,
                           text: 'Log in',
                           onPressed: () async {
-                            BlocProvider.of<LoginCubit>(context)
-                                .logInWithCredentials();
+                            if (state.status.isValidated) {
+                              BlocProvider.of<LoginCubit>(context)
+                                  .logInWithCredentials();
+                            }
                           },
                         ),
                       ],
