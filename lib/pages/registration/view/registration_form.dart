@@ -17,11 +17,6 @@ class RegistrationForm extends StatelessWidget {
           if (state.status == FormzStatus.submissionFailure) {
             ToastUtils.showCustomToast(context, "Authentication Failed");
           }
-
-          // TODO: Find out if it should be done differently
-          else if (state.status == FormzStatus.submissionSuccess) {
-            Navigator.pop(context);
-          }
         },
         builder: (context, state) {
           return ModalProgressHUD(

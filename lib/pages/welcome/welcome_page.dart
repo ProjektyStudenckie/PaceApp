@@ -7,6 +7,11 @@ import 'package:pace_app/pages/login/login.dart';
 import 'package:pace_app/pages/registration/registration.dart';
 
 class WelcomePage extends StatelessWidget {
+  const WelcomePage({Key key}) : super(key: key);
+
+  static Route route() {
+    return MaterialPageRoute<void>(builder: (_) => const WelcomePage());
+  }
 
   static Page page() => MaterialPage<void>(child: WelcomePage());
 
