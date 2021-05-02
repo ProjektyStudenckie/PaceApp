@@ -5,26 +5,22 @@ import 'toast_message_animation.dart';
 
 /// Class used to display toast messages to the user.
 class ToastUtils {
-  static Timer toastTimer;
-  static OverlayEntry _overlayEntry;
+  late final Timer toastTimer;
+  late final OverlayEntry _overlayEntry;
 
-  static void showCustomToast(BuildContext context,
-      String message) {
-    
-    if (toastTimer == null || !toastTimer.isActive) {
+  ToastUtils(this._overlayEntry, this.toastTimer);
+
+  void showCustomToast(BuildContext context, String message) {
+    if (!toastTimer.isActive) {
       _overlayEntry = createOverlayEntry(context, message);
-      Overlay.of(context).insert(_overlayEntry);
+      Overlay.of(context)!.insert(_overlayEntry);
       toastTimer = Timer(Duration(seconds: 2), () {
-        if (_overlayEntry != null) {
-          _overlayEntry.remove();
-        }
+        _overlayEntry.remove();
       });
     }
   }
 
-  static OverlayEntry createOverlayEntry(BuildContext context,
-      String message) {
-    
+  static OverlayEntry createOverlayEntry(BuildContext context, String message) {
     return OverlayEntry(
         builder: (context) => Positioned(
               top: 50.0,
@@ -35,8 +31,7 @@ class ToastUtils {
                 borderRadius: BorderRadius.circular(10),
                 child: Container(
                   padding:
-                      EdgeInsets.only(left: 10, right: 10,
-                          top: 13, bottom: 10),
+                      EdgeInsets.only(left: 10, right: 10, top: 13, bottom: 10),
                   decoration: BoxDecoration(
                       color: Color(0xffe53e3f),
                       borderRadius: BorderRadius.circular(10)),

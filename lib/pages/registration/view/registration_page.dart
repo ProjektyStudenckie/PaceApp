@@ -5,10 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../registration.dart';
 
 class RegistrationPage extends StatelessWidget {
-  const RegistrationPage({Key key}) : super(key: key);
+  const RegistrationPage({required Key key}) : super(key: key);
 
   static Route route() {
-    return MaterialPageRoute<void>(builder: (_) => const RegistrationPage());
+    return MaterialPageRoute<void>(
+        builder: (_) => const RegistrationPage(
+              key: Key(''),
+            ));
   }
 
   @override
@@ -16,10 +19,11 @@ class RegistrationPage extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: BlocProvider<RegistrationCubit>(
-          create: (_) => RegistrationCubit(context.read<AuthenticationRepository>()),
-          child: RegistrationForm(),
-        ),
+        child: RegistrationForm(),
+        // child: BlocProvider<RegistrationCubit>(
+        //   create: (_) => RegistrationCubit(context.read<AuthenticationRepository>()),
+        //   child: RegistrationForm(),
+        // ),
       ),
     );
   }

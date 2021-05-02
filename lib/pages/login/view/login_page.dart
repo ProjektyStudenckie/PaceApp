@@ -1,16 +1,23 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pace_app/injection/injection.dart';
 
 import '../login.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key key}) : super(key: key);
+  const LoginPage({required Key key}) : super(key: key);
 
-  static Page page() => MaterialPage<void>(child: LoginPage());
+  static Page page() => MaterialPage<void>(
+          child: LoginPage(
+        key: Key(''),
+      ));
 
   static Route route() {
-    return MaterialPageRoute<void>(builder: (_) => const LoginPage());
+    return MaterialPageRoute<void>(
+        builder: (_) => const LoginPage(
+              key: Key(''),
+            ));
   }
 
   @override
@@ -18,10 +25,11 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: BlocProvider(
-          create: (_) => LoginCubit(context.read<AuthenticationRepository>()),
-          child: LoginForm(),
-        ),
+        child: LoginForm(),
+        // child: BlocProvider(
+        //   create: (_) => LoginCubit(getIt.get()),
+        //   child: LoginForm(),
+        // ),
       ),
     );
   }

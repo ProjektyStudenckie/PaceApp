@@ -1,20 +1,27 @@
 import 'dart:async';
 
-import 'package:authentication_repository/src/models/models.dart';
+//import 'package:authentication_repository/src/models/models.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:cache/cache.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:meta/meta.dart';
+import 'package:injectable/injectable.dart';
+
+import 'models/user.dart';
 
 class SignUpFailure implements Exception {}
+
 class LogInWithEmailAndPasswordFailure implements Exception {}
+
 class LogOutFailure implements Exception {}
 
+@lazySingleton
 class AuthenticationRepository {
   AuthenticationRepository({
-    CacheClient cache,
-    firebase_auth.FirebaseAuth firebaseAuth,
-  })  : _cache = cache ?? CacheClient(),
-        _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance;
+    required CacheClient cache,
+    required firebase_auth.FirebaseAuth firebaseAuth,
+  })   : _cache = cache,
+        _firebaseAuth = firebaseAuth;
 
   final CacheClient _cache;
   final firebase_auth.FirebaseAuth _firebaseAuth;
@@ -45,7 +52,7 @@ class AuthenticationRepository {
   /// Creates a new user with the provided [email] and [password].
   ///
   /// Throws a [SignUpFailure] if an exception occurs.
-  Future<void> signUp({String email, String password}) async {
+  Future<void> signUp({required String email, required String password}) async {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
@@ -60,8 +67,8 @@ class AuthenticationRepository {
   ///
   /// Throws a [LogInWithEmailAndPasswordFailure] if an exception occurs.
   Future<void> logInWithEmailAndPassword({
-    String email,
-    String password,
+    required String email,
+    required String password,
   }) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
@@ -89,7 +96,5 @@ class AuthenticationRepository {
 }
 
 extension on firebase_auth.User {
-  User get toUser {
-    return User(id: uid, email: email, name: displayName, photo: photoURL);
-  }
+  User get toUser => User(id: uid, photo: '', name: '', email: '');
 }

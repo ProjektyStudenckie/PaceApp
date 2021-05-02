@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class RoundedButton extends StatelessWidget {
-  RoundedButton({this.color, this.text, @required this.onPressed});
+  RoundedButton(
+      {required this.color, required this.text, required this.onPressed});
 
   final Color color;
   final String text;
-  final Function onPressed;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {

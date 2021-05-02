@@ -2,10 +2,10 @@ import 'package:equatable/equatable.dart';
 
 class User extends Equatable {
   const User({
-    this.id,
-    this.email,
-    this.name,
-    this.photo,
+    required this.id,
+    required this.email,
+    required this.name,
+    required this.photo,
   });
 
   final String email;
@@ -13,7 +13,7 @@ class User extends Equatable {
   final String name;
   final String photo;
 
-  static const anonymous = User(id: '');
+  static const anonymous = User(id: '', email: '', name: '', photo: '');
 
   bool get isAnonymous => this == User.anonymous;
   bool get isNotAnonymous => this != User.anonymous;

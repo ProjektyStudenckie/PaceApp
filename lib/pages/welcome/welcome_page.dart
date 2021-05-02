@@ -7,7 +7,6 @@ import 'package:pace_app/pages/login/login.dart';
 import 'package:pace_app/pages/registration/registration.dart';
 
 class WelcomePage extends StatelessWidget {
-
   static Page page() => MaterialPage<void>(child: WelcomePage());
 
   @override
@@ -38,7 +37,6 @@ class WelcomePage extends StatelessWidget {
                       'PaceApp',
                       textStyle: kTitleTextStyle,
                     ),
-                    // przykladowy subtitle - mozna z tym pokombinowac
                     FlickerAnimatedText(
                       'write fast',
                       textStyle: kSubTitleTextStyle,

@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pace_app/app/bloc/app_bloc.dart';
 import 'package:pace_app/app/routes/routes.dart';
+import 'package:pace_app/repository/authentication_repository.dart';
 
 class App extends StatelessWidget {
   const App({
-    Key key,
-    AuthenticationRepository authenticationRepository,
+    required Key key,
+    required AuthenticationRepository authenticationRepository,
   })   : _authenticationRepository = authenticationRepository,
         super(key: key);
 
