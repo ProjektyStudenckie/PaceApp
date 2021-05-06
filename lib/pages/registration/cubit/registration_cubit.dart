@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: import_of_legacy_library_into_null_safe
@@ -59,9 +58,11 @@ class RegistrationCubit extends Cubit<RegistrationState> {
   }
 
   Future<void> registrationFormSubmitted() async {
+    print("lmaoo1");
     if (!state.status.isValidated) return;
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
+      print("lmaoo");
       await _authenticationRepository.signUp(
         email: state.email.value,
         password: state.password.value,

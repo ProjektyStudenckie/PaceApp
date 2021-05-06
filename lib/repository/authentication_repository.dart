@@ -20,7 +20,7 @@ class AuthenticationRepository {
   AuthenticationRepository({
     CacheClient? cache,
     firebase_auth.FirebaseAuth? firebaseAuth,
-  })   : _cache = cache ?? CacheClient(),
+  })  : _cache = cache ?? CacheClient(),
         _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance;
 
   final CacheClient _cache;
@@ -58,7 +58,8 @@ class AuthenticationRepository {
         email: email,
         password: password,
       );
-    } on Exception {
+    } on Exception catch(e) {
+      print(e);
       throw SignUpFailure();
     }
   }
@@ -75,7 +76,8 @@ class AuthenticationRepository {
         email: email,
         password: password,
       );
-    } on Exception {
+    } on Exception catch (e) {
+      print(e);
       throw LogInWithEmailAndPasswordFailure();
     }
   }

@@ -19,7 +19,7 @@ class RegistrationForm extends StatelessWidget {
       body: BlocConsumer<RegistrationCubit, RegistrationState>(
         listener: (context, state) {
           if (state.status == FormzStatus.submissionFailure) {
-            _toastUtils.showCustomToast(context, "Authentication Failed");
+            //_toastUtils.showCustomToast(context, "Authentication Failed");
           }
 
           // TODO: Find out if it should be done differently
@@ -103,7 +103,11 @@ class RegistrationForm extends StatelessWidget {
                         color: Colors.blueAccent,
                         text: 'Register',
                         onPressed: () async {
+                          print("lol");
+                          print(state.status.isValid);
+                          _cubit.registrationFormSubmitted();
                           if (state.status.isValidated) {
+                            print("lol2");
                             _cubit.registrationFormSubmitted();
                           }
                         },

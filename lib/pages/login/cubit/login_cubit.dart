@@ -22,8 +22,9 @@ class LoginCubit extends Cubit<LoginState> {
 
   void passwordChanged(String value) {
     final password = Password.dirty(value);
-    print(password);
     print(Formz.validate([state.email, password]));
+    print(password);
+    print("State " + state.password.value);
     emit(state.copyWith(
       password: password,
       status: Formz.validate([state.email, password]),
@@ -31,9 +32,7 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<void> logInWithCredentials() async {
-    print("lol");
     if (!state.status.isValidated) return;
-    print("lol2");
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
       await _authenticationRepository.logInWithEmailAndPassword(
@@ -41,9 +40,11 @@ class LoginCubit extends Cubit<LoginState> {
         password: state.password.value,
       );
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
-    } on Exception {
-      emit(state.copyWith(status: FormzStatus.submissionFailure));
-    }
+    } on Exception catch (e) {}
+    // } on Exception {
+    //   //print(e.)
+    //   emit(state.copyWith(status: FormzStatus.submissionFailure));
+    // }
   }
 }
 

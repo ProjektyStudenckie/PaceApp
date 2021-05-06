@@ -77,9 +77,7 @@ class LoginForm extends StatelessWidget {
                       TextField(
                         obscureText: true,
                         textAlign: TextAlign.center,
-                        onChanged: (password) => context
-                            .read<LoginCubit>()
-                            .passwordChanged(password),
+                        onChanged: (password) => _cubit.passwordChanged(password),
                         decoration: kTextFieldDecoration.copyWith(
                             hintText: "Enter your password",
                             //labelText: 'password',
