@@ -18,13 +18,13 @@ class LogOutFailure implements Exception {}
 @lazySingleton
 class AuthenticationRepository {
   AuthenticationRepository({
-    required CacheClient cache,
-    required firebase_auth.FirebaseAuth firebaseAuth,
+    CacheClient? cache,
+    firebase_auth.FirebaseAuth? firebaseAuth,
   })   : _cache = cache,
         _firebaseAuth = firebaseAuth;
 
-  final CacheClient _cache;
-  final firebase_auth.FirebaseAuth _firebaseAuth;
+  final CacheClient? _cache;
+  final firebase_auth.FirebaseAuth? _firebaseAuth;
 
   /// User cache key.
   /// Should only be used for testing purposes.
@@ -36,9 +36,9 @@ class AuthenticationRepository {
   ///
   /// Emits [User.anonymous] if the user is not authenticated.
   Stream<User> get user {
-    return _firebaseAuth.authStateChanges().map((firebaseUser) {
+    return _firebaseAuth!.authStateChanges().map((firebaseUser) {
       final user = firebaseUser == null ? User.anonymous : firebaseUser.toUser;
-      _cache.write(key: userCacheKey, value: user);
+      _cache!.write(key: userCacheKey, value: user);
       return user;
     });
   }
@@ -46,7 +46,7 @@ class AuthenticationRepository {
   /// Returns the current cached user.x
   /// Defaults to [User.anonymous] if there is no cached user.
   User get currentUser {
-    return _cache.read<User>(key: userCacheKey) ?? User.anonymous;
+    return _cache!.read<User>(key: userCacheKey) ?? User.anonymous;
   }
 
   /// Creates a new user with the provided [email] and [password].
@@ -54,7 +54,7 @@ class AuthenticationRepository {
   /// Throws a [SignUpFailure] if an exception occurs.
   Future<void> signUp({required String email, required String password}) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
+      await _firebaseAuth!.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -71,7 +71,7 @@ class AuthenticationRepository {
     required String password,
   }) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
+      await _firebaseAuth!.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -87,7 +87,7 @@ class AuthenticationRepository {
   Future<void> logOut() async {
     try {
       await Future.wait([
-        _firebaseAuth.signOut(),
+        _firebaseAuth!.signOut(),
       ]);
     } on Exception {
       throw LogOutFailure();

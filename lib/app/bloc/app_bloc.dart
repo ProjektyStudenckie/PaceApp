@@ -1,11 +1,10 @@
 import 'dart:async';
 
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pace_app/repository/authentication_repository.dart';
+import 'package:pace_app/repository/models/models.dart';
 //import 'package:pace_app/repository/authentication_repository.dart';
 
 part 'app_event.dart';
@@ -19,8 +18,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
               ? AppState.authenticated(authenticationRepository.currentUser)
               : const AppState.unauthenticated(),
         ) {
-    _userSubscription = _authenticationRepository.user.listen(_onUserChanged)
-        as StreamSubscription<User>;
+    _userSubscription = _authenticationRepository.user.listen(_onUserChanged);
   }
 
   final AuthenticationRepository _authenticationRepository;

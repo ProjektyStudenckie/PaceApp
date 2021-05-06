@@ -11,8 +11,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  authentication_repository:
-    path: packages/authentication_repository
+  # authentication_repository:
+  #   path: packages/authentication_repository
+  cache:
+    path: packages/cache
   animated_text_kit: ^4.2.0
   cloud_firestore: ^1.0.4
   cupertino_icons: ^1.0.2
