@@ -10,8 +10,12 @@ final getIt = GetIt.instance;
 void configureDependencies() => $initGetIt(getIt);
 
 Future<void> setupGetIt() async {
-  // if (!GetIt.I.isRegistered<AuthenticationRepository>()) {
-  //   getIt.registerSingleton<AuthenticationRepository>(
-  //       AuthenticationRepository());
-  // }
+  if (GetIt.I.isRegistered<AuthenticationRepository>()) {
+    await getIt.reset();
+  }
+
+  if (!GetIt.I.isRegistered<AuthenticationRepository>()) {
+    getIt.registerSingleton<AuthenticationRepository>(
+        AuthenticationRepository());
+  }
 }

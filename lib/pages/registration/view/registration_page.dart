@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pace_app/injection/injection.dart';
+import 'package:pace_app/repository/authentication_repository.dart';
 
 import '../registration.dart';
 
@@ -19,11 +21,11 @@ class RegistrationPage extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: RegistrationForm(),
-        // child: BlocProvider<RegistrationCubit>(
-        //   create: (_) => RegistrationCubit(context.read<AuthenticationRepository>()),
-        //   child: RegistrationForm(),
-        // ),
+        //child: RegistrationForm(),
+        child: BlocProvider<RegistrationCubit>(
+          create: (_) => RegistrationCubit(getIt<AuthenticationRepository>()),
+          child: RegistrationForm(),
+        ),
       ),
     );
   }

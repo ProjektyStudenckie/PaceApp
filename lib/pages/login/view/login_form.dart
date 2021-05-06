@@ -21,7 +21,8 @@ class LoginForm extends StatelessWidget {
         bloc: _cubit,
         listener: (context, state) {
           if (state.status == FormzStatus.submissionFailure) {
-            _toastUtils.showCustomToast(context, "Authentication Failed");
+            print("failure");
+            //_toastUtils.showCustomToast(context, "Authentication Failed");
           }
 
           // TODO: Find out if it should be done differently

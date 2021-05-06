@@ -15,8 +15,8 @@ void main() async {
   configureDependencies();
   Bloc.observer = AppBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
-  await setupGetIt();
   await Firebase.initializeApp();
+  await setupGetIt();
   // final authenticationRepository = AuthenticationRepository();
   // await authenticationRepository.user.first;
   // TODO check if this key is correct as empty

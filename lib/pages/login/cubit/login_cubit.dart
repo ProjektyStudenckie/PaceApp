@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: import_of_legacy_library_into_null_safe
@@ -23,6 +22,8 @@ class LoginCubit extends Cubit<LoginState> {
 
   void passwordChanged(String value) {
     final password = Password.dirty(value);
+    print(password);
+    print(Formz.validate([state.email, password]));
     emit(state.copyWith(
       password: password,
       status: Formz.validate([state.email, password]),
@@ -30,7 +31,9 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<void> logInWithCredentials() async {
+    print("lol");
     if (!state.status.isValidated) return;
+    print("lol2");
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
       await _authenticationRepository.logInWithEmailAndPassword(
