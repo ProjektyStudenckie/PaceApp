@@ -77,7 +77,8 @@ class LoginForm extends StatelessWidget {
                       TextField(
                         obscureText: true,
                         textAlign: TextAlign.center,
-                        onChanged: (password) => _cubit.passwordChanged(password),
+                        onChanged: (password) =>
+                            _cubit.passwordChanged(password),
                         decoration: kTextFieldDecoration.copyWith(
                             hintText: "Enter your password",
                             //labelText: 'password',
@@ -92,7 +93,13 @@ class LoginForm extends StatelessWidget {
                         color: state.status == FormzStatus.invalid
                             ? Colors.grey
                             : Colors.lightBlueAccent,
-                        text: 'Log in',
+                        content:
+                            state.status != FormzStatus.submissionInProgress
+                                ? Text("LOG IN")
+                                : Container(
+                                    height: 50.0,
+                                    child: Image.asset('images/logo.png'),
+                                  ),
                         onPressed: () async {
                           if (state.status.isValidated) {
                             _cubit.logInWithCredentials();

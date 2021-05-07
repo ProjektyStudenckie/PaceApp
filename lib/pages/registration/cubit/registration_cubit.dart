@@ -47,6 +47,9 @@ class RegistrationCubit extends Cubit<RegistrationState> {
       password: state.password.value,
       value: value,
     );
+
+    print(state.status);
+
     emit(state.copyWith(
       confirmedPassword: confirmedPassword,
       status: Formz.validate([
@@ -58,11 +61,9 @@ class RegistrationCubit extends Cubit<RegistrationState> {
   }
 
   Future<void> registrationFormSubmitted() async {
-    print("lmaoo1");
     if (!state.status.isValidated) return;
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
-      print("lmaoo");
       await _authenticationRepository.signUp(
         email: state.email.value,
         password: state.password.value,

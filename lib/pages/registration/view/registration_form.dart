@@ -17,6 +17,7 @@ class RegistrationForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocConsumer<RegistrationCubit, RegistrationState>(
+        bloc: _cubit,
         listener: (context, state) {
           if (state.status == FormzStatus.submissionFailure) {
             //_toastUtils.showCustomToast(context, "Authentication Failed");
@@ -101,7 +102,13 @@ class RegistrationForm extends StatelessWidget {
                       ),
                       RoundedButton(
                         color: Colors.blueAccent,
-                        text: 'Register',
+                        content:
+                            state.status != FormzStatus.submissionInProgress
+                                ? Text("REGISTER")
+                                : Container(
+                                    height: 50.0,
+                                    child: Image.asset('images/logo.png'),
+                                  ),
                         onPressed: () async {
                           print("lol");
                           print(state.status.isValid);

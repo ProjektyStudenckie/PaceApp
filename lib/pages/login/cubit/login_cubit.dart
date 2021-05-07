@@ -22,9 +22,6 @@ class LoginCubit extends Cubit<LoginState> {
 
   void passwordChanged(String value) {
     final password = Password.dirty(value);
-    print(Formz.validate([state.email, password]));
-    print(password);
-    print("State " + state.password.value);
     emit(state.copyWith(
       password: password,
       status: Formz.validate([state.email, password]),
@@ -40,11 +37,9 @@ class LoginCubit extends Cubit<LoginState> {
         password: state.password.value,
       );
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
-    } on Exception catch (e) {}
-    // } on Exception {
-    //   //print(e.)
-    //   emit(state.copyWith(status: FormzStatus.submissionFailure));
-    // }
+    } on Exception {
+      emit(state.copyWith(status: FormzStatus.submissionFailure));
+    }
   }
 }
 

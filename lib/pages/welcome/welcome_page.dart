@@ -50,14 +50,14 @@ class WelcomePage extends StatelessWidget {
             ),
             RoundedButton(
               color: Colors.lightBlueAccent,
-              text: 'Log in',
+              content: Text('LOG IN'),
               onPressed: () {
                 Navigator.push(context, LoginPage.route());
               },
             ),
             RoundedButton(
               color: Colors.blueAccent,
-              text: 'Register',
+              content: Text('REGISTER'),
               onPressed: () {
                 Navigator.push(context, RegistrationPage.route());
               },
