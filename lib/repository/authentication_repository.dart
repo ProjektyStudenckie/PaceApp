@@ -58,8 +58,7 @@ class AuthenticationRepository {
         email: email,
         password: password,
       );
-    } on Exception catch(e) {
-      print(e);
+    } on Exception {
       throw SignUpFailure();
     }
   }
@@ -76,8 +75,7 @@ class AuthenticationRepository {
         email: email,
         password: password,
       );
-    } on Exception catch (e) {
-      print(e);
+    } on Exception {
       throw LogInWithEmailAndPasswordFailure();
     }
   }

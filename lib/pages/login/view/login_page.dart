@@ -25,7 +25,6 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        //child: LoginForm(),
         child: BlocProvider(
           create: (_) => LoginCubit(getIt.get()),
           child: LoginForm(),

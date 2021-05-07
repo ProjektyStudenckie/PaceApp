@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-//import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:pace_app/components/rounded_button.dart';
 import 'package:pace_app/utils/toast_utils.dart';
 import '../../../constants.dart';
@@ -11,8 +10,6 @@ import 'package:pace_app/injection/injection.dart';
 
 class RegistrationForm extends StatelessWidget {
   final RegistrationCubit _cubit = RegistrationCubit(getIt.get());
-  late final ToastUtils _toastUtils;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,11 +17,12 @@ class RegistrationForm extends StatelessWidget {
         bloc: _cubit,
         listener: (context, state) {
           if (state.status == FormzStatus.submissionFailure) {
-            //_toastUtils.showCustomToast(context, "Authentication Failed");
+            showErrorToast(context, "Registration Failed!");
           }
 
           // TODO: Find out if it should be done differently
           else if (state.status == FormzStatus.submissionSuccess) {
+            showSuccessToast(context, "Succesfully Registered!");
             Navigator.pop(context);
           }
         },
@@ -110,11 +108,7 @@ class RegistrationForm extends StatelessWidget {
                                     child: Image.asset('images/logo.png'),
                                   ),
                         onPressed: () async {
-                          print("lol");
-                          print(state.status.isValid);
-                          _cubit.registrationFormSubmitted();
                           if (state.status.isValidated) {
-                            print("lol2");
                             _cubit.registrationFormSubmitted();
                           }
                         },

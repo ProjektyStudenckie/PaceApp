@@ -12,8 +12,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class LoginForm extends StatelessWidget {
   final LoginCubit _cubit = LoginCubit(getIt.get());
-  late final ToastUtils _toastUtils;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,8 +19,7 @@ class LoginForm extends StatelessWidget {
         bloc: _cubit,
         listener: (context, state) {
           if (state.status == FormzStatus.submissionFailure) {
-            print("failure");
-            //_toastUtils.showCustomToast(context, "Authentication Failed");
+            showErrorToast(context, "Authentication Failed!");
           }
 
           // TODO: Find out if it should be done differently
