@@ -3,7 +3,7 @@ import 'package:pace_app/app/app.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   static Page page() => MaterialPage<void>(child: HomePage());
 
