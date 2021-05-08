@@ -93,6 +93,10 @@ class AuthenticationRepository {
       throw LogOutFailure();
     }
   }
+
+  Future<void> deleteUser() async {
+    _firebaseAuth.currentUser?.delete();
+  }
 }
 
 extension on firebase_auth.User {

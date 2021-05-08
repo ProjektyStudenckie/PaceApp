@@ -13,17 +13,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-        actions: <Widget>[
-          IconButton(
-            key: const Key('homePage_logout_iconButton'),
-            icon: const Icon(Icons.exit_to_app),
-            onPressed: () => context.read<AppBloc>().add(AppLogoutRequested()),
-          )
-        ],
-      ),
+    return Center(
+      child: Text("Home"),
     );
   }
 }

@@ -5,7 +5,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pace_app/repository/authentication_repository.dart';
 import 'package:pace_app/repository/models/models.dart';
-//import 'package:pace_app/repository/authentication_repository.dart';
 
 part 'app_event.dart';
 part 'app_state.dart';
@@ -30,8 +29,17 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   Stream<AppState> mapEventToState(AppEvent event) async* {
     if (event is AppUserChanged) {
       yield _mapUserChangedToState(event, state);
-    } else if (event is AppLogoutRequested) {
+      return;
+    }
+
+    if (event is AppLogoutRequested) {
       _authenticationRepository.logOut();
+      return;
+    }
+
+    if (event is AppUserDeleteRequested) {
+      _authenticationRepository.deleteUser();
+      return;
     }
   }
 
