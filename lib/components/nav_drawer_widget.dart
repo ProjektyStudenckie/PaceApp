@@ -8,11 +8,11 @@ class NavDrawerWidget extends StatelessWidget {
   final String accountEmail;
 
   final List<_NavigationItem> _listItems = [
-    _NavigationItem(null, null, null, type: NavigationItemType.header),
+    _NavigationItem(NavItem.none, "", null, type: NavigationItemType.header),
     _NavigationItem(NavItem.home, "Home", Icons.home),
-    _NavigationItem(null, null, null, type: NavigationItemType.divider),
+    _NavigationItem(NavItem.none, "", null, type: NavigationItemType.divider),
     _NavigationItem(NavItem.settings, "Settings", Icons.settings),
-    _NavigationItem(null, "Log Out", Icons.logout,
+    _NavigationItem(NavItem.none, "Log Out", Icons.logout,
         type: NavigationItemType.logout)
   ];
 
@@ -75,7 +75,7 @@ class NavDrawerWidget extends StatelessWidget {
           builder: (BuildContext context) => ListTile(
             tileColor: Colors.grey[900],
             title: Text(
-              data.title ?? "",
+              data.title,
               style: TextStyle(
                 color: data.item == state.selectedItem
                     ? Colors.blue
@@ -94,8 +94,8 @@ class NavDrawerWidget extends StatelessWidget {
         ),
       );
 
-  void _handleItemClick(BuildContext context, NavItem? item) {
-    if (item == null) return;
+  void _handleItemClick(BuildContext context, NavItem item) {
+    if (item == NavItem.none) return;
 
     BlocProvider.of<NavDrawerBloc>(context).add(NavigateTo(item));
     Navigator.pop(context);
@@ -111,7 +111,7 @@ class NavDrawerWidget extends StatelessWidget {
         child: Builder(
           builder: (BuildContext context) => ListTile(
             title: Text(
-              data.title ?? "",
+              data.title,
               style: TextStyle(color: Colors.blueGrey),
             ),
             leading: Icon(
@@ -125,15 +125,14 @@ class NavDrawerWidget extends StatelessWidget {
 
   void _handleLogoutClick(BuildContext context) {
     BlocProvider.of<AppBloc>(context).add(AppLogoutRequested());
-    //Navigator.pop(context);
   }
 }
 
 // helper class used to represent navigation list items
 class _NavigationItem {
   final NavigationItemType type;
-  final NavItem? item;
-  final String? title;
+  final NavItem item;
+  final String title;
   final IconData? icon;
   _NavigationItem(this.item, this.title, this.icon,
       {this.type = NavigationItemType.page});

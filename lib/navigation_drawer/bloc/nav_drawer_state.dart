@@ -5,5 +5,6 @@ class NavDrawerState {
 
 enum NavItem {
   home,
-  settings
+  settings,
+  none
 }
