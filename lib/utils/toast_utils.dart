@@ -1,59 +1,25 @@
-import 'dart:async';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
-import 'toast_message_animation.dart';
+import "package:flutter/cupertino.dart";
 
-/// Class used to display toast messages to the user.
-class ToastUtils {
-  static Timer toastTimer;
-  static OverlayEntry _overlayEntry;
+void showSuccessToast(BuildContext context, String message) {
+  Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.TOP,
+      timeInSecForIosWeb: 2,
+      backgroundColor: Colors.tealAccent[700],
+      textColor: Colors.white,
+      fontSize: 16.0);
+}
 
-  static void showCustomToast(BuildContext context,
-      String message) {
-    
-    if (toastTimer == null || !toastTimer.isActive) {
-      _overlayEntry = createOverlayEntry(context, message);
-      Overlay.of(context).insert(_overlayEntry);
-      toastTimer = Timer(Duration(seconds: 2), () {
-        if (_overlayEntry != null) {
-          _overlayEntry.remove();
-        }
-      });
-    }
-  }
-
-  static OverlayEntry createOverlayEntry(BuildContext context,
-      String message) {
-    
-    return OverlayEntry(
-        builder: (context) => Positioned(
-              top: 50.0,
-              width: MediaQuery.of(context).size.width - 20,
-              left: 10,
-              child: ToastMessageAnimation(Material(
-                elevation: 10.0,
-                borderRadius: BorderRadius.circular(10),
-                child: Container(
-                  padding:
-                      EdgeInsets.only(left: 10, right: 10,
-                          top: 13, bottom: 10),
-                  decoration: BoxDecoration(
-                      color: Color(0xffe53e3f),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      message,
-                      textAlign: TextAlign.center,
-                      softWrap: true,
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Color(0xFFFFFFFF),
-                      ),
-                    ),
-                  ),
-                ),
-              )),
-            ));
-  }
+void showErrorToast(BuildContext context, String message) {
+  Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.TOP,
+      timeInSecForIosWeb: 3,
+      backgroundColor: Colors.redAccent,
+      textColor: Colors.white,
+      fontSize: 16.0);
 }

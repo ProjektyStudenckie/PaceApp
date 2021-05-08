@@ -1,15 +1,17 @@
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:formz/formz.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pace_app/forms/forms.dart';
+import 'package:pace_app/repository/authentication_repository.dart';
 
-part 'registration_state.dart';
+part 'registration_cubit.freezed.dart';
 
 class RegistrationCubit extends Cubit<RegistrationState> {
-  RegistrationCubit(this._authenticationRepository) : super(const RegistrationState());
-
   final AuthenticationRepository _authenticationRepository;
+  RegistrationCubit(this._authenticationRepository)
+      : super(RegistrationState.init());
 
   void emailChanged(String value) {
     final email = Email.dirty(value);
@@ -45,6 +47,9 @@ class RegistrationCubit extends Cubit<RegistrationState> {
       password: state.password.value,
       value: value,
     );
+
+    print(state.status);
+
     emit(state.copyWith(
       confirmedPassword: confirmedPassword,
       status: Formz.validate([
@@ -64,8 +69,26 @@ class RegistrationCubit extends Cubit<RegistrationState> {
         password: state.password.value,
       );
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
-    } on Exception {
+    } on SignUpFailure {
       emit(state.copyWith(status: FormzStatus.submissionFailure));
     }
   }
+}
+
+@freezed
+class RegistrationState with _$RegistrationState {
+  const factory RegistrationState({
+    required Email email,
+    required Password password,
+    required ConfirmedPassword confirmedPassword,
+    required FormzStatus status,
+  }) = _RegistrationState;
+
+  const RegistrationState._();
+
+  factory RegistrationState.init() => RegistrationState(
+      email: Email.pure(),
+      password: Password.pure(),
+      confirmedPassword: ConfirmedPassword.pure(),
+      status: FormzStatus.pure);
 }

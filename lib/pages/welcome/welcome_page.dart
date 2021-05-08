@@ -7,12 +7,6 @@ import 'package:pace_app/pages/login/login.dart';
 import 'package:pace_app/pages/registration/registration.dart';
 
 class WelcomePage extends StatelessWidget {
-  const WelcomePage({Key key}) : super(key: key);
-
-  static Route route() {
-    return MaterialPageRoute<void>(builder: (_) => const WelcomePage());
-  }
-
   static Page page() => MaterialPage<void>(child: WelcomePage());
 
   @override
@@ -43,7 +37,6 @@ class WelcomePage extends StatelessWidget {
                       'PaceApp',
                       textStyle: kTitleTextStyle,
                     ),
-                    // przykladowy subtitle - mozna z tym pokombinowac
                     FlickerAnimatedText(
                       'write fast',
                       textStyle: kSubTitleTextStyle,
@@ -57,14 +50,14 @@ class WelcomePage extends StatelessWidget {
             ),
             RoundedButton(
               color: Colors.lightBlueAccent,
-              text: 'Log in',
+              content: Text('LOG IN'),
               onPressed: () {
                 Navigator.push(context, LoginPage.route());
               },
             ),
             RoundedButton(
               color: Colors.blueAccent,
-              text: 'Register',
+              content: Text('REGISTER'),
               onPressed: () {
                 Navigator.push(context, RegistrationPage.route());
               },

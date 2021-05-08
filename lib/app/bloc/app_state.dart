@@ -7,7 +7,7 @@ enum AppStatus {
 
 class AppState extends Equatable {
   const AppState._({
-    this.status,
+    required this.status,
     this.user = User.anonymous,
   });
 

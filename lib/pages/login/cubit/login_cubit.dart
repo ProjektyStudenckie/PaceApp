@@ -1,15 +1,16 @@
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:formz/formz.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pace_app/forms/models/models.dart';
+import 'package:pace_app/repository/authentication_repository.dart';
 
-part 'login_state.dart';
+part 'login_cubit.freezed.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  LoginCubit(this._authenticationRepository) : super(const LoginState());
-
   final AuthenticationRepository _authenticationRepository;
+  LoginCubit(this._authenticationRepository) : super(LoginState.init());
 
   void emailChanged(String value) {
     final email = Email.dirty(value);
@@ -40,4 +41,18 @@ class LoginCubit extends Cubit<LoginState> {
       emit(state.copyWith(status: FormzStatus.submissionFailure));
     }
   }
+}
+
+@freezed
+class LoginState with _$LoginState {
+  const factory LoginState({
+    required Email email,
+    required Password password,
+    required FormzStatus status,
+  }) = _LoginState;
+
+  const LoginState._();
+
+  factory LoginState.init() => LoginState(
+      email: Email.pure(), password: Password.pure(), status: FormzStatus.pure);
 }

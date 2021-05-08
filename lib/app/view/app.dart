@@ -1,16 +1,15 @@
-import 'package:authentication_repository/authentication_repository.dart';
+import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pace_app/app/bloc/app_bloc.dart';
-import 'package:pace_app/pages/home/home.dart';
-import 'package:pace_app/pages/splash/splash_page.dart';
-import 'package:pace_app/pages/welcome/welcome_page.dart';
+import 'package:pace_app/app/routes/routes.dart';
+import 'package:pace_app/repository/authentication_repository.dart';
 
 class App extends StatelessWidget {
   const App({
-    Key key,
-    AuthenticationRepository authenticationRepository,
-  })  : _authenticationRepository = authenticationRepository,
+    required Key key,
+    required AuthenticationRepository authenticationRepository,
+  })   : _authenticationRepository = authenticationRepository,
         super(key: key);
 
   final AuthenticationRepository _authenticationRepository;
@@ -30,41 +29,15 @@ class App extends StatelessWidget {
 }
 
 class AppView extends StatelessWidget {
-  final _navigatorKey = GlobalKey<NavigatorState>();
-
-  NavigatorState get _navigator => _navigatorKey.currentState;
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: _navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
-      builder: (context, child) {
-        return BlocListener<AppBloc, AppState>(
-          listener: (context, state) {
-            switch (state.status) {
-              case AppStatus.authenticated:
-                print("Okej");
-                _navigator.pushAndRemoveUntil<void>(
-                  HomePage.route(),
-                  (route) => false,
-                );
-                break;
-              case AppStatus.unauthenticated:
-                _navigator.pushAndRemoveUntil<void>(
-                  WelcomePage.route(),
-                  (route) => false,
-                );
-                break;
-              default:
-                break;
-            }
-          },
-          child: child,
-        );
-      },
-      onGenerateRoute: (_) => SplashPage.route(),
+      home: FlowBuilder<AppStatus>(
+        state: context.select((AppBloc bloc) => bloc.state.status),
+        onGeneratePages: onGenerateAppViewPages,
+      ),
     );
   }
 }
