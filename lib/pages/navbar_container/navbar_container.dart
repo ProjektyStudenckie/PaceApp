@@ -1,49 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pace_app/app/app.dart';
-import 'package:pace_app/components/nav_drawer_widget.dart';
-import 'package:pace_app/navigation_drawer/navigation_drawer.dart';
+import 'package:pace_app/bottom_navbar/bloc/bottom_navbar_bloc.dart';
+import 'package:pace_app/bottom_navbar/bloc/bottom_navbar_state.dart';
+import 'package:pace_app/components/bottom_navbar_widget.dart';
 import 'package:pace_app/pages/home/home.dart';
 import 'package:pace_app/pages/settings/view/settings_page.dart';
+import 'package:pace_app/pages/stats/page/stats_page.dart';
 
-class DrawerContainer extends StatefulWidget {
-  const DrawerContainer({Key? key}) : super(key: key);
+class NavbarContainer extends StatefulWidget {
+  const NavbarContainer({Key? key}) : super(key: key);
 
-  static Page page() => MaterialPage<void>(child: DrawerContainer());
+  static Page page() => MaterialPage<void>(child: NavbarContainer());
 
   static Route route() {
-    return MaterialPageRoute<void>(builder: (_) => const DrawerContainer());
+    return MaterialPageRoute<void>(builder: (_) => const NavbarContainer());
   }
 
   @override
-  _DrawerContainerState createState() => _DrawerContainerState();
+  _NavbarContainerState createState() => _NavbarContainerState();
 }
 
-class _DrawerContainerState extends State<DrawerContainer> {
-  late NavDrawerBloc _bloc;
+class _NavbarContainerState extends State<NavbarContainer> {
+  late BottomNavbarBloc _bloc;
   late Widget _content;
 
   @override
   void initState() {
     super.initState();
-    _bloc = NavDrawerBloc();
+    _bloc = BottomNavbarBloc();
     _content = _bodyForState(_bloc.state.selectedItem) ?? Container();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: BlocProvider<NavDrawerBloc>(
-          create: (_) => NavDrawerBloc(),
-          child: BlocConsumer<NavDrawerBloc, NavDrawerState>(
-              listener: (BuildContext context, NavDrawerState state) {
+      child: BlocProvider<BottomNavbarBloc>(
+          create: (_) => BottomNavbarBloc(),
+          child: BlocConsumer<BottomNavbarBloc, BottomNavbarState>(
+              listener: (BuildContext context, BottomNavbarState state) {
             setState(() {
               _content = _bodyForState(state.selectedItem) ?? Container();
             });
           }, builder: (context, state) {
             return Scaffold(
-                drawer: NavDrawerWidget(
-                    BlocProvider.of<AppBloc>(context).state.user.email),
+                bottomNavigationBar: BottomNavbarWidget(),
                 appBar: AppBar(
                   title: Text(_titleForState(state.selectedItem) ?? "Pace App"),
                 ),
@@ -62,6 +62,8 @@ String? _titleForState(NavItem state) {
   switch (state) {
     case NavItem.home:
       return "Home";
+    case NavItem.stats:
+      return "Stats";
     case NavItem.settings:
       return "Settings";
     default:
@@ -73,18 +75,11 @@ Widget? _bodyForState(NavItem state) {
   switch (state) {
     case NavItem.home:
       return HomePage();
+    case NavItem.stats:
+      return StatsPage();
     case NavItem.settings:
       return SettingsPage();
     default:
       return null;
   }
 }
-
-// FloatingActionButton? _fabForState(NavItem state, BuildContext context) {
-//   switch (state) {
-//     case NavItem.home:
-//       return HomePage().homeFAB(context);
-//     default:
-//       return null;
-//   }
-// }
