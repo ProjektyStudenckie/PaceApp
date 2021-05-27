@@ -14,7 +14,8 @@ class _BottomNavbarWidgetState extends State<BottomNavbarWidget> {
   int _selectedIndex = 0;
 
   final List<BottomNavigationBarItem> _listItems = [
-    BottomNavigationBarItem(label: 'Home', icon: Icon(Icons.home)),
+    BottomNavigationBarItem(
+        label: 'Play', icon: Icon(Icons.videogame_asset_outlined)),
     BottomNavigationBarItem(label: 'Stats', icon: Icon(Icons.show_chart)),
     BottomNavigationBarItem(label: 'Settings', icon: Icon(Icons.settings)),
   ];
@@ -25,7 +26,7 @@ class _BottomNavbarWidgetState extends State<BottomNavbarWidget> {
       currentIndex: _selectedIndex,
       onTap: (index) => _handleItemClick(context, index),
       items: _listItems,
-      backgroundColor: ThemeData.dark().appBarTheme.color,
+      backgroundColor: Colors.black38,
     );
   }
 
