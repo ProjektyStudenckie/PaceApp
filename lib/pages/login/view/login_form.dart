@@ -20,10 +20,7 @@ class LoginForm extends StatelessWidget {
         listener: (context, state) {
           if (state.status == FormzStatus.submissionFailure) {
             showErrorToast(context, "Authentication Failed!");
-          }
-
-          // TODO: Find out if it should be done differently
-          else if (state.status == FormzStatus.submissionSuccess) {
+          } else if (state.status == FormzStatus.submissionSuccess) {
             Navigator.pop(context);
           }
         },
