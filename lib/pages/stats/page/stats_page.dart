@@ -9,13 +9,53 @@ class StatsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Header(title: "Jakub"),
-          )
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Header(title: "Jakub Sosna"),
+            SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: GradientContainer(
+                    center: Alignment.bottomLeft,
+                      accentColor: Color(0x44b15151),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          DataField(label: "WPM", value: "129"),
+                          Divider(color: Colors.white24, thickness: 2),
+                          DataField(label: "Rank", value: "44"),
+                        ],
+                      )),
+                  flex: 2,
+                ),
+                SizedBox(
+                  width: 12,
+                ),
+                Expanded(
+                  child: GradientContainer(
+                    center: Alignment.topCenter,
+                      accentColor: Color(0x4411c1a1),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          DataField(label: "ACCURACY", value: "100"),
+                          Divider(
+                            color: Colors.white24,
+                            thickness: 2,
+                          ),
+                          DataField(label: "Rank", value: "1"),
+                        ],
+                      )),
+                  flex: 3,
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -30,34 +70,38 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return GradientContainer(
         child: Row(
-      children: [
-        CircleAvatar(
-          radius: 30,
-          backgroundColor: Theme.of(context).accentColor,
-          child: Icon(
-            Icons.person,
-            size: 40,
-          ),
-        ),
-        SizedBox(width: 12),
-        Expanded(
-          child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                title,
-                softWrap: true,
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 34),
-              )),
-        )
-      ],
-    ));
+          children: [
+            CircleAvatar(
+              radius: 30,
+              backgroundColor: Theme.of(context).accentColor,
+              child: Icon(
+                Icons.person,
+                size: 40,
+              ),
+            ),
+            SizedBox(width: 12),
+            Expanded(
+              child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    title,
+                    softWrap: true,
+                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 34),
+                  )),
+            )
+          ],
+        ));
   }
 }
 
 class GradientContainer extends StatelessWidget {
-  const GradientContainer({Key? key, required this.child}) : super(key: key);
+  const GradientContainer(
+      {Key? key, required this.child, this.accentColor = const Color(0x4411a1c1), this.center = Alignment.topRight})
+      : super(key: key);
 
   final Widget child;
+  final Color accentColor;
+  final AlignmentGeometry center;
 
   @override
   Widget build(BuildContext context) {
@@ -74,18 +118,47 @@ class GradientContainer extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
             gradient: RadialGradient(
-              center: Alignment.topRight,
+              center: center,
               radius: 1.5,
               colors: [
-                Color(0x4411c1a1),
+                accentColor,
                 Color(0x44111111),
               ],
             ),
             borderRadius: BorderRadius.circular(10)),
         child: Padding(
             padding:
-                const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
+                const EdgeInsets.symmetric(vertical: 18.0, horizontal: 20.0),
             child: child),
+      ),
+    );
+  }
+}
+
+class DataField extends StatelessWidget {
+  const DataField({Key? key, required this.label, required this.value})
+      : super(key: key);
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return FittedBox(
+      child: Row(
+        children: [
+          Text(
+            label,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Text(
+            value,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+          )
+        ],
       ),
     );
   }
