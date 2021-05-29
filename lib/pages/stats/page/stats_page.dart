@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pace_app/app/app.dart';
-import 'dart:math';
+import 'package:pace_app/components/gradient_container.dart';
+import 'package:pace_app/components/wpm_change_chart.dart';
 
 class StatsPage extends StatelessWidget {
   const StatsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: SingleChildScrollView(
         child: Column(
           children: [
             Header(title: "Jakub Sosna"),
@@ -20,7 +19,7 @@ class StatsPage extends StatelessWidget {
               children: [
                 Expanded(
                   child: GradientContainer(
-                    center: Alignment.bottomLeft,
+                      center: Alignment.bottomLeft,
                       accentColor: Color(0x44b15151),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,7 +36,7 @@ class StatsPage extends StatelessWidget {
                 ),
                 Expanded(
                   child: GradientContainer(
-                    center: Alignment.topCenter,
+                      center: Alignment.topCenter,
                       accentColor: Color(0x4411c1a1),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,7 +52,12 @@ class StatsPage extends StatelessWidget {
                   flex: 3,
                 )
               ],
-            )
+            ),
+            Divider(
+              height: 36,
+              thickness: 2,
+            ),
+            WPMChangeChart(),
           ],
         ),
       ),
@@ -70,68 +74,27 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return GradientContainer(
         child: Row(
-          children: [
-            CircleAvatar(
-              radius: 30,
-              backgroundColor: Theme.of(context).accentColor,
-              child: Icon(
-                Icons.person,
-                size: 40,
-              ),
-            ),
-            SizedBox(width: 12),
-            Expanded(
-              child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    title,
-                    softWrap: true,
-                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 34),
-                  )),
-            )
-          ],
-        ));
-  }
-}
-
-class GradientContainer extends StatelessWidget {
-  const GradientContainer(
-      {Key? key, required this.child, this.accentColor = const Color(0x4411a1c1), this.center = Alignment.topRight})
-      : super(key: key);
-
-  final Widget child;
-  final Color accentColor;
-  final AlignmentGeometry center;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          gradient: RadialGradient(
-            radius: 3.5,
-            colors: [
-              Color(0xFF111130),
-              Color(0xFF111111),
-            ],
+      children: [
+        CircleAvatar(
+          radius: 30,
+          backgroundColor: Theme.of(context).accentColor,
+          child: Icon(
+            Icons.person,
+            size: 40,
           ),
-          borderRadius: BorderRadius.circular(10)),
-      child: Container(
-        decoration: BoxDecoration(
-            gradient: RadialGradient(
-              center: center,
-              radius: 1.5,
-              colors: [
-                accentColor,
-                Color(0x44111111),
-              ],
-            ),
-            borderRadius: BorderRadius.circular(10)),
-        child: Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 18.0, horizontal: 20.0),
-            child: child),
-      ),
-    );
+        ),
+        SizedBox(width: 12),
+        Expanded(
+          child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                title,
+                softWrap: true,
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 34),
+              )),
+        )
+      ],
+    ));
   }
 }
 
