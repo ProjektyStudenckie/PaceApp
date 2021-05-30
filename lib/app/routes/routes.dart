@@ -6,7 +6,7 @@ import 'package:pace_app/pages/welcome/welcome_page.dart';
 List<Page> onGenerateAppViewPages(AppStatus state, List<Page<dynamic>> pages) {
   switch (state) {
     case AppStatus.authenticated:
-      return [NavbarContainer.page()];
+      return [NavBarContainer.page()];
     case AppStatus.unauthenticated:
     default:
       return [WelcomePage.page()];

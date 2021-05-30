@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pace_app/bottom_navbar/bloc/bottom_navbar_bloc.dart';
-import 'package:pace_app/bottom_navbar/bloc/bottom_navbar_event.dart';
-import 'package:pace_app/bottom_navbar/bloc/bottom_navbar_state.dart';
+import 'package:pace_app/pages/navbar_container/cubit/navbar_cubit.dart';
 
 class BottomNavbarWidget extends StatefulWidget {
+  final NavBarCubit _cubit;
+  BottomNavbarWidget(this._cubit);
+
   @override
   _BottomNavbarWidgetState createState() => _BottomNavbarWidgetState();
 }
@@ -31,8 +31,7 @@ class _BottomNavbarWidgetState extends State<BottomNavbarWidget> {
   }
 
   void _handleItemClick(BuildContext context, int index) {
-    BlocProvider.of<BottomNavbarBloc>(context)
-        .add(NavigateTo(_findItem(index)));
+    widget._cubit.selectNewNavBarItem(_findItem(index));
     setState(() => _selectedIndex = index);
   }
 
