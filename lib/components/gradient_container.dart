@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:pace_app/constants.dart';
 
 class GradientContainer extends StatelessWidget {
   const GradientContainer(
       {Key? key,
       required this.child,
-      this.accentColor = const Color(0x4411a1c1),
+      this.accentColor = kDarkBlue,
       this.center = Alignment.topRight})
       : super(key: key);
 
@@ -19,8 +20,8 @@ class GradientContainer extends StatelessWidget {
           gradient: RadialGradient(
             radius: 3.5,
             colors: [
-              Color(0xFF111130),
-              Color(0xFF111111),
+              kVeryDarkBlue,
+              kDarkGrey,
             ],
           ),
           borderRadius: BorderRadius.circular(13)),
@@ -31,7 +32,7 @@ class GradientContainer extends StatelessWidget {
               radius: 1.5,
               colors: [
                 accentColor,
-                Color(0x44111111),
+                kDarkGrey,
               ],
             ),
             borderRadius: BorderRadius.circular(13)),

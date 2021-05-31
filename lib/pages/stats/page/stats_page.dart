@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pace_app/components/gradient_container.dart';
 import 'package:pace_app/components/wpm_change_chart.dart';
+import 'package:pace_app/constants.dart';
 
 class StatsPage extends StatelessWidget {
   const StatsPage({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class StatsPage extends StatelessWidget {
                 Expanded(
                   child: GradientContainer(
                       center: Alignment.bottomLeft,
-                      accentColor: Color(0x44b15151),
+                      accentColor: kDarkRed,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -37,7 +38,7 @@ class StatsPage extends StatelessWidget {
                 Expanded(
                   child: GradientContainer(
                       center: Alignment.topCenter,
-                      accentColor: Color(0x4411c1a1),
+                      accentColor: kDarkGreen,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
