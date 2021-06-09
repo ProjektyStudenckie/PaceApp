@@ -48,6 +48,7 @@ class RegistrationForm extends StatelessWidget {
                     children: [
                       Flexible(
                         child: Hero(
+                          key: Key("Hero3"),
                           tag: 'logo',
                           child: Container(
                             height: 200.0,

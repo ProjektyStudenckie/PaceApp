@@ -30,7 +30,7 @@ class NavBarContainer extends StatelessWidget {
             body: AnimatedSwitcher(
               switchInCurve: Curves.easeInExpo,
               switchOutCurve: Curves.easeOutExpo,
-              duration: Duration(milliseconds: 200),
+              duration: Duration(milliseconds: 0),
               child: _bodyForState(state.navItem),
             ),
           );
