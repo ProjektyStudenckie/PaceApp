@@ -24,6 +24,7 @@ class WelcomePage extends StatelessWidget {
                   width: 16.0,
                 ),
                 Hero(
+                  key: Key("Hero1"),
                   tag: 'logo',
                   child: Container(
                     child: Image.asset('images/logo.png'),
@@ -49,6 +50,7 @@ class WelcomePage extends StatelessWidget {
               height: 48.0,
             ),
             RoundedButton(
+              key: ValueKey("log in"),
               color: Colors.lightBlueAccent,
               content: Text('LOG IN'),
               onPressed: () {
@@ -56,6 +58,7 @@ class WelcomePage extends StatelessWidget {
               },
             ),
             RoundedButton(
+              key: ValueKey("register"),
               color: Colors.blueAccent,
               content: Text('REGISTER'),
               onPressed: () {

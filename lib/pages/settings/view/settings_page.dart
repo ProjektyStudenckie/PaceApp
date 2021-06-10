@@ -14,9 +14,9 @@ class SettingsPage extends StatelessWidget {
           Text("Settings!"),
           ElevatedButton(
               onPressed: () {
-                BlocProvider.of<AppBloc>(context).add(AppUserDeleteRequested());
+                BlocProvider.of<AppBloc>(context).add(AppLogoutRequested());
               },
-              child: Text("Delete User"))
+              child: Text("Logout User"))
         ],
       ),
     );
