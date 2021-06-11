@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pace_app/components/bottom_navbar_widget.dart';
+import 'package:pace_app/pages/game_settings/game_settings.dart';
 import 'package:pace_app/pages/home/home.dart';
 import 'package:pace_app/pages/navbar_container/cubit/navbar_cubit.dart';
 import 'package:pace_app/pages/settings/view/settings_page.dart';
@@ -26,6 +27,16 @@ class NavBarContainer extends StatelessWidget {
             bottomNavigationBar: BottomNavbarWidget(_cubit),
             appBar: AppBar(
               title: Text(_titleForState(state.navItem) ?? "Pace App"),
+              actions: [
+                state.navItem == NavItem.home
+                    ? GestureDetector(
+                        child: Icon(Icons.menu),
+                        onTap: () {
+                          Navigator.push(context, GameSettingsPage.route());
+                        },
+                      )
+                    : Text(''),
+              ],
             ),
             body: AnimatedSwitcher(
               switchInCurve: Curves.easeInExpo,

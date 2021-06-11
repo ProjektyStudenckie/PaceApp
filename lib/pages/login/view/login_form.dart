@@ -2,13 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-//import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:pace_app/components/rounded_button.dart';
 import 'package:pace_app/injection/injection.dart';
 import 'package:pace_app/utils/toast_utils.dart';
 import '../../../constants.dart';
 import '../login.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class LoginForm extends StatelessWidget {
   final LoginCubit _cubit = LoginCubit(getIt.get());

@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pace_app/forms/forms.dart';
-import 'package:pace_app/repository/stats_repository.dart';
+import 'package:pace_app/repository/game_repository.dart';
 
 part 'navbar_cubit.freezed.dart';
 
@@ -14,7 +14,7 @@ class NavBarCubit extends Cubit<NavBarState> {
 }
 
 @freezed
-class NavBarState with _$NavbarState {
+class NavBarState with _$NavBarState {
   const factory NavBarState({
     required NavItem navItem,
   }) = _NavbarState;

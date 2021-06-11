@@ -13,8 +13,8 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-class _$NavbarStateTearOff {
-  const _$NavbarStateTearOff();
+class _$NavBarStateTearOff {
+  const _$NavBarStateTearOff();
 
   _NavbarState call({required NavItem navItem}) {
     return _NavbarState(
@@ -24,28 +24,28 @@ class _$NavbarStateTearOff {
 }
 
 /// @nodoc
-const $NavbarState = _$NavbarStateTearOff();
+const $NavBarState = _$NavBarStateTearOff();
 
 /// @nodoc
-mixin _$NavbarState {
+mixin _$NavBarState {
   NavItem get navItem => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $NavbarStateCopyWith<NavBarState> get copyWith =>
+  $NavBarStateCopyWith<NavBarState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $NavbarStateCopyWith<$Res> {
-  factory $NavbarStateCopyWith(
+abstract class $NavBarStateCopyWith<$Res> {
+  factory $NavBarStateCopyWith(
           NavBarState value, $Res Function(NavBarState) then) =
-      _$NavbarStateCopyWithImpl<$Res>;
+      _$NavBarStateCopyWithImpl<$Res>;
   $Res call({NavItem navItem});
 }
 
 /// @nodoc
-class _$NavbarStateCopyWithImpl<$Res> implements $NavbarStateCopyWith<$Res> {
-  _$NavbarStateCopyWithImpl(this._value, this._then);
+class _$NavBarStateCopyWithImpl<$Res> implements $NavBarStateCopyWith<$Res> {
+  _$NavBarStateCopyWithImpl(this._value, this._then);
 
   final NavBarState _value;
   // ignore: unused_field
@@ -66,7 +66,7 @@ class _$NavbarStateCopyWithImpl<$Res> implements $NavbarStateCopyWith<$Res> {
 
 /// @nodoc
 abstract class _$NavbarStateCopyWith<$Res>
-    implements $NavbarStateCopyWith<$Res> {
+    implements $NavBarStateCopyWith<$Res> {
   factory _$NavbarStateCopyWith(
           _NavbarState value, $Res Function(_NavbarState) then) =
       __$NavbarStateCopyWithImpl<$Res>;
@@ -75,7 +75,7 @@ abstract class _$NavbarStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$NavbarStateCopyWithImpl<$Res> extends _$NavbarStateCopyWithImpl<$Res>
+class __$NavbarStateCopyWithImpl<$Res> extends _$NavBarStateCopyWithImpl<$Res>
     implements _$NavbarStateCopyWith<$Res> {
   __$NavbarStateCopyWithImpl(
       _NavbarState _value, $Res Function(_NavbarState) _then)
@@ -106,7 +106,7 @@ class _$_NavbarState extends _NavbarState {
 
   @override
   String toString() {
-    return 'NavbarState(navItem: $navItem)';
+    return 'NavBarState(navItem: $navItem)';
   }
 
   @override
