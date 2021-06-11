@@ -44,6 +44,7 @@ class LoginForm extends StatelessWidget {
                     children: [
                       Flexible(
                         child: Hero(
+                          key: Key("Hero2"),
                           tag: 'logo',
                           child: Container(
                             height: 200.0,
