@@ -8,6 +8,11 @@ class Password extends FormzInput<String, PasswordValidationError> {
 
   @override
   PasswordValidationError? validator(String value) {
+    print("Password validator called");
+    // return _passwordRegExp.hasMatch(value ?? '')
+    //     ? null
+    //     : PasswordValidationError.invalid;
+    //
     return value.length >= 6 ? null : PasswordValidationError.invalid;
   }
 }
