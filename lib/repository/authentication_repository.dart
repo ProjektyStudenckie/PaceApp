@@ -97,6 +97,13 @@ class AuthenticationRepository {
   Future<void> deleteUser() async {
     _firebaseAuth.currentUser?.delete();
   }
+
+  Future<void> sendPasswordResetEmail() async {
+    if(_firebaseAuth.currentUser != null) return;
+    if(_firebaseAuth.currentUser!.email != null) return;
+
+    _firebaseAuth.sendPasswordResetEmail(email: _firebaseAuth.currentUser!.email!);
+  }
 }
 
 extension on firebase_auth.User {
