@@ -146,7 +146,7 @@ class MyTextController extends TextEditingController {
   MyTextController({required this.cubit});
 
   @override
-  TextSpan buildTextSpan({TextStyle? style, required bool withComposing}) {
+  TextSpan buildTextSpan({required BuildContext context, TextStyle? style, required bool withComposing}) {
     List<InlineSpan> children = [];
     String gameText = cubit.state.gameText;
 

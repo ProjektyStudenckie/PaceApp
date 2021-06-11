@@ -35,6 +35,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        multiDexEnabled true
         applicationId "com.sosnawitalis.paceApp"
         minSdkVersion 16
         targetSdkVersion 30
@@ -58,4 +59,6 @@ flutter {
 dependencies {
     implementation platform('com.google.firebase:firebase-bom:26.7.0')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    def multidex_version = "2.0.1"
+    implementation "androidx.multidex:multidex:$multidex_version"
 }
