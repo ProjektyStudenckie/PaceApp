@@ -6,6 +6,7 @@ import 'package:pace_app/components/color_picker.dart';
 import 'package:pace_app/components/default_text_form_field.dart';
 import 'package:pace_app/pages/settings/cubit/settings_cubit.dart';
 import 'package:pace_app/repository/authentication_repository.dart';
+import 'package:pace_app/utils/toast_utils.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:pace_app/constants.dart';
 
@@ -123,6 +124,8 @@ class SettingsPage extends StatelessWidget {
                             RepositoryProvider.of<AuthenticationRepository>(
                                     context)
                                 .sendPasswordResetEmail();
+
+                            showSuccessToast(context, "Email with reset link has been sent");
                           }),
                       getSettingsTileButton(
                           title: "Reset data",
