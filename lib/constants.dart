@@ -31,3 +31,16 @@ const kTextFieldDecoration = InputDecoration(
     borderRadius: BorderRadius.all(Radius.circular(32.0)),
   ),
 );
+
+// RichText
+const kTextStyleRed = TextStyle(
+  color: Colors.redAccent,
+  fontSize: 27.0,
+  fontWeight: FontWeight.bold,
+);
+
+const kTextStyleWhite = TextStyle(
+  color: Colors.white,
+  fontSize: 27.0,
+  fontWeight: FontWeight.bold,
+);

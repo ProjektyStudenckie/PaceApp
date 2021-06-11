@@ -35,7 +35,15 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.6.1"
+master
+version: "2.5.0"
+  basic_utils:
+    dependency: "direct main"
+    description:
+      name: basic_utils
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.0"
   bloc:
     dependency: "direct main"
     description:
@@ -407,7 +415,15 @@ packages:
       name: graphs
       url: "https://pub.dartlang.org"
     source: hosted
+    version: "1.0.0"
+  http:
+    dependency: transitive
+    description:
+      name: http
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "2.0.0"
+master
   http_multi_server:
     dependency: transitive
     description:
@@ -548,6 +564,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+  pointycastle:
+    dependency: transitive
+    description:
+      name: pointycastle
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.1"
   pool:
     dependency: transitive
     description:
@@ -643,7 +666,7 @@ packages:
       name: source_span
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.1"
+    version: "1.8.0"
   stack_trace:
     dependency: transitive
     description:
@@ -700,6 +723,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.19"
+master
   timing:
     dependency: transitive
     description:

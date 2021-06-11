@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pace_app/app/app.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pace_app/injection/injection.dart';
+import 'package:pace_app/pages/home/cubit/home_cubit.dart';
+import 'package:pace_app/pages/home/view/home_form.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,8 +15,12 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text("Home"),
+    return Padding(
+      padding: const EdgeInsets.all(30.0),
+      child: BlocProvider(
+        create: (_) => HomeCubit(getIt.get()),
+        child: HomeForm(),
+      ),
     );
   }
 }
