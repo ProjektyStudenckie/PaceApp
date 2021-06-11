@@ -18,15 +18,13 @@ class SettingsPage extends StatelessWidget {
         stream: context.read<AppBloc>().outTheme,
         builder: (context, snapshot) {
           return BlocProvider<SettingsCubit>(create: (context) {
-            var darkTheme = true;
+            var themeSettings = ThemeSettings();
 
             if (snapshot.hasData) {
-              if (snapshot.data!.themeBrightness == Brightness.light) {
-                darkTheme = false;
-              }
+              themeSettings = snapshot.data!;
             }
 
-            return SettingsCubit(nickname: "", darkTheme: darkTheme);
+            return SettingsCubit(nickname: "", themeSettings: themeSettings);
           }, child: BlocBuilder<SettingsCubit, SettingsState>(
             builder: (context, state) {
               return Center(
@@ -46,6 +44,8 @@ class SettingsPage extends StatelessWidget {
                               .read<SettingsCubit>()
                               .changeThemeBrightness(value);
 
+                          context.read<AppBloc>().saveThemeBrightness(value);
+
                           context.read<AppBloc>().inTheme.call(ThemeSettings(
                               themeBrightness:
                                   value ? Brightness.dark : Brightness.light,
@@ -64,14 +64,29 @@ class SettingsPage extends StatelessWidget {
                         onPressed: (context) {
                           showDialog(
                               context: context,
-                              builder: (context) {
+                              builder: (context1) {
                                 return AlertDialog(
                                     content: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                       ColorPicker(
                                         onColorTap: (Color color) {
-                                          Navigator.pop(context);
+                                          context
+                                              .read<SettingsCubit>()
+                                              .changeIndicatorColor(color);
+
+                                          context
+                                              .read<AppBloc>()
+                                              .saveIndicatorColor(color);
+
+                                          context.read<AppBloc>().inTheme.call(
+                                              ThemeSettings(
+                                                  themeBrightness: snapshot.data
+                                                          ?.themeBrightness ??
+                                                      Brightness.dark,
+                                                  indicatorColor: color));
+
+                                          Navigator.pop(context1);
                                         },
                                       ),
                                     ]));

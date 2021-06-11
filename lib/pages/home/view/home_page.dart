@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pace_app/app/app.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pace_app/app/models/theme_settings.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -14,7 +15,12 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text("Home"),
+      child: StreamBuilder<ThemeSettings>(
+        stream: context.read<AppBloc>().outTheme,
+        builder: (context, snapshot) {
+          return Text("Home");
+        }
+      ),
     );
   }
 }

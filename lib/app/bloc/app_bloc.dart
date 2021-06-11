@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:pace_app/app/models/theme_settings.dart';
 import 'package:pace_app/repository/authentication_repository.dart';
 import 'package:pace_app/repository/models/models.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'app_event.dart';
 part 'app_state.dart';
@@ -20,7 +22,11 @@ class AppBloc extends Bloc<AppEvent, AppState> {
               : const AppState.unauthenticated(),
         ) {
     _userSubscription = _authenticationRepository.user.listen(_onUserChanged);
+    _loadTheme();
   }
+
+  static const darkThemeKey = "dark_theme";
+  static const indicatorColorKey = "indicator_color";
 
   final AuthenticationRepository _authenticationRepository;
   late final StreamSubscription<User> _userSubscription;
@@ -30,6 +36,35 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   Stream<ThemeSettings> get outTheme => _theme.stream;
 
   void _onUserChanged(User user) => add(AppUserChanged(user));
+
+  void saveThemeBrightness(bool darkTheme) async {
+    final shared = await SharedPreferences.getInstance();
+
+    shared.setBool(darkThemeKey, darkTheme);
+  }
+
+  void saveIndicatorColor(Color color) async {
+    final shared = await SharedPreferences.getInstance();
+
+    shared.setInt(indicatorColorKey, color.value);
+  }
+
+  void _loadTheme() async {
+    final shared = await SharedPreferences.getInstance();
+
+    final darkTheme = shared.getBool(darkThemeKey);
+    final indicatorColorInt = shared.getInt(indicatorColorKey);
+
+    var indicatorColor =
+        indicatorColorInt != null ? Color(indicatorColorInt) : null;
+
+    if (indicatorColor != null && darkTheme != null) {
+      inTheme.call(ThemeSettings(
+          indicatorColor: indicatorColor,
+          themeBrightness: darkTheme ? Brightness.dark : Brightness.light));
+      print("loaded");
+    }
+  }
 
   @override
   Stream<AppState> mapEventToState(AppEvent event) async* {
