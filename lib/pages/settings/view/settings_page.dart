@@ -1,112 +1,139 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pace_app/app/app.dart';
+import 'package:pace_app/app/models/theme_settings.dart';
 import 'package:pace_app/components/color_picker.dart';
 import 'package:pace_app/components/default_text_form_field.dart';
 import 'package:pace_app/pages/settings/cubit/settings_cubit.dart';
 import 'package:pace_app/repository/authentication_repository.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:pace_app/constants.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SettingsCubit(nickname: ""),
-      child: BlocBuilder<SettingsCubit, SettingsState>(
-        builder: (context, state) {
-          return Center(
-              child: SettingsList(
-            sections: [
-              SettingsSection(
-                title: "Theme",
-                tiles: [
-                  SettingsTile.switchTile(
-                      leading: Icon(Icons.mode_night),
-                      title: "Dark mode",
-                      onToggle: (bool) {},
-                      switchValue: true)
-                ],
-              ),
-              SettingsSection(
-                title: "Game",
-                tiles: [
-                  SettingsTile(
-                    title: "Indicator color",
-                    leading: Icon(Icons.color_lens),
-                    onPressed: (context) {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                                content: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                  ColorPicker(
-                                    onColorTap: (Color color) {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ]));
-                          });
-                    },
+    return StreamBuilder<ThemeSettings>(
+        stream: context.read<AppBloc>().outTheme,
+        builder: (context, snapshot) {
+          return BlocProvider<SettingsCubit>(create: (context) {
+            var darkTheme = true;
+
+            if (snapshot.hasData) {
+              if (snapshot.data!.themeBrightness == Brightness.light) {
+                darkTheme = false;
+              }
+            }
+
+            return SettingsCubit(nickname: "", darkTheme: darkTheme);
+          }, child: BlocBuilder<SettingsCubit, SettingsState>(
+            builder: (context, state) {
+              return Center(
+                  child: SettingsList(
+                backgroundColor: kDarkGrey,
+                sections: [
+                  SettingsSection(
+                    titlePadding: EdgeInsets.only(left: 14, top: 20),
+                    title: "Theme",
+                    tiles: [
+                      SettingsTile.switchTile(
+                        leading: Icon(Icons.mode_night),
+                        title: "Dark mode",
+                        switchValue: state.darkTheme,
+                        onToggle: (bool value) {
+                          context
+                              .read<SettingsCubit>()
+                              .changeThemeBrightness(value);
+
+                          context.read<AppBloc>().inTheme.call(ThemeSettings(
+                              themeBrightness:
+                                  value ? Brightness.dark : Brightness.light,
+                              indicatorColor: snapshot.data?.indicatorColor ??
+                                  Colors.yellow));
+                        },
+                      )
+                    ],
                   ),
-                ],
-              ),
-              SettingsSection(
-                title: "User",
-                tiles: [
-                  SettingsTile(
-                    title: "Nickname",
-                    subtitle: "John_Doe",
-                    leading: Icon(Icons.color_lens),
-                    onPressed: (context1) {
-                      displayTextInputDialog(
-                          context: context1,
-                          title: "Enter new nickname",
-                          onChanged: (newValue) {
-                            context
-                                .read<SettingsCubit>()
-                                .changeNickname(newValue);
+                  SettingsSection(
+                    title: "Game",
+                    tiles: [
+                      SettingsTile(
+                        title: "Indicator color",
+                        leading: Icon(Icons.color_lens),
+                        onPressed: (context) {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                    content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                      ColorPicker(
+                                        onColorTap: (Color color) {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ]));
+                              });
+                        },
+                      ),
+                    ],
+                  ),
+                  SettingsSection(
+                    title: "User",
+                    tiles: [
+                      SettingsTile(
+                        title: "Nickname",
+                        subtitle: "John_Doe",
+                        leading: Icon(Icons.color_lens),
+                        onPressed: (context1) {
+                          displayTextInputDialog(
+                              context: context1,
+                              title: "Enter new nickname",
+                              onChanged: (newValue) {
+                                context
+                                    .read<SettingsCubit>()
+                                    .changeNickname(newValue);
+                              },
+                              onConfirmed: () {
+                                // TODO: Change nickname in db
+                              });
+                        },
+                      ),
+                      getSettingsTileButton(
+                          title: "Reset password",
+                          leadingIconData: Icons.password,
+                          onPressed: (context) {
+                            RepositoryProvider.of<AuthenticationRepository>(
+                                    context)
+                                .sendPasswordResetEmail();
+                          }),
+                      getSettingsTileButton(
+                          title: "Reset data",
+                          leadingIconData: Icons.delete,
+                          onPressed: (context) {
+                            // TODO: Reset user data
                           },
-                          onConfirmed: () {
-                            // TODO: Change nickname in db
-                          });
-                    },
+                          color: Colors.redAccent),
+                    ],
                   ),
-                  getSettingsTileButton(
-                      title: "Reset password",
-                      leadingIconData: Icons.password,
-                      onPressed: (context) {
-                        RepositoryProvider.of<AuthenticationRepository>(context)
-                            .sendPasswordResetEmail();
-                      }),
-                  getSettingsTileButton(
-                      title: "Reset data",
-                      leadingIconData: Icons.delete,
-                      onPressed: (context) {
-                        // TODO: Reset user data
-                      },
-                      color: Colors.redAccent),
+                  SettingsSection(
+                    tiles: [
+                      getSettingsTileButton(
+                          title: "Log out",
+                          leadingIconData: Icons.logout,
+                          onPressed: (context) {
+                            BlocProvider.of<AppBloc>(context)
+                                .add(AppLogoutRequested());
+                          }),
+                    ],
+                  )
                 ],
-              ),
-              SettingsSection(
-                tiles: [
-                  getSettingsTileButton(
-                      title: "Log out",
-                      leadingIconData: Icons.logout,
-                      onPressed: (context) {
-                        BlocProvider.of<AppBloc>(context)
-                            .add(AppLogoutRequested());
-                      }),
-                ],
-              )
-            ],
+              ));
+            },
           ));
-        },
-      ),
-    );
+        });
   }
 }
 

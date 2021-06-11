@@ -32,6 +32,8 @@ dependencies:
   injectable: ^1.2.2
   provider: ^5.0.0
   settings_ui: ^1.0.0
+  shared_preferences: ^2.0.6
+  rxdart: ^0.27.1
 
 dev_dependencies:
   flutter_test:

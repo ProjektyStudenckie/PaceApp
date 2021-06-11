@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:pace_app/app/models/theme_settings.dart';
 import 'package:pace_app/repository/authentication_repository.dart';
 import 'package:pace_app/repository/models/models.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'app_event.dart';
 part 'app_state.dart';
@@ -22,6 +24,10 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   final AuthenticationRepository _authenticationRepository;
   late final StreamSubscription<User> _userSubscription;
+
+  final _theme = BehaviorSubject<ThemeSettings>();
+  Function(ThemeSettings) get inTheme => _theme.sink.add;
+  Stream<ThemeSettings> get outTheme => _theme.stream;
 
   void _onUserChanged(User user) => add(AppUserChanged(user));
 
@@ -52,6 +58,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   @override
   Future<void> close() {
     _userSubscription.cancel();
+    _theme.close();
     return super.close();
   }
 }
