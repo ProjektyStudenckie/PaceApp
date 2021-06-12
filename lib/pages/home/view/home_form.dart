@@ -3,6 +3,8 @@ import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pace_app/app/app.dart';
+import 'package:pace_app/app/models/theme_settings.dart';
 import 'package:pace_app/constants.dart';
 import 'package:pace_app/injection/injection.dart';
 import 'package:pace_app/pages/home/cubit/home_cubit.dart';
@@ -33,17 +35,21 @@ class _HomeFormState extends State<HomeForm> {
             return Center(
               child: Stack(
                 children: [
-                  TextField(
-                    textInputAction: TextInputAction.done,
-                    maxLines: 99,
-                    style: TextStyle(fontSize: 27.0),
-                    controller: _controller,
-                    cursorColor: Colors.yellow,
-                    autofocus: true,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                    ),
-                  ),
+                  StreamBuilder<ThemeSettings>(
+                      stream: context.read<AppBloc>().outTheme,
+                      builder: (context, snapshot) {
+                        return TextField(
+                          textInputAction: TextInputAction.done,
+                          maxLines: 99,
+                          style: TextStyle(fontSize: 27.0),
+                          controller: _controller,
+                          cursorColor: snapshot.data?.indicatorColor ?? Colors.yellow,
+                          autofocus: true,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                          ),
+                        );
+                      }),
                   Padding(
                     padding: const EdgeInsets.only(top: 13.0),
                     child: RichText(
@@ -146,7 +152,10 @@ class MyTextController extends TextEditingController {
   MyTextController({required this.cubit});
 
   @override
-  TextSpan buildTextSpan({required BuildContext context, TextStyle? style, required bool withComposing}) {
+  TextSpan buildTextSpan(
+      {required BuildContext context,
+      TextStyle? style,
+      required bool withComposing}) {
     List<InlineSpan> children = [];
     String gameText = cubit.state.gameText;
 
