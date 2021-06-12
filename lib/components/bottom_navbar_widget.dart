@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pace_app/constants.dart';
 import 'package:pace_app/pages/navbar_container/cubit/navbar_cubit.dart';
 
 class BottomNavbarWidget extends StatefulWidget {
@@ -23,10 +24,11 @@ class _BottomNavbarWidgetState extends State<BottomNavbarWidget> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      backgroundColor:
+          Theme.of(context).brightness == Brightness.dark ? kDarkGrey : null,
       currentIndex: _selectedIndex,
       onTap: (index) => _handleItemClick(context, index),
       items: _listItems,
-      backgroundColor: Colors.black38,
     );
   }
 

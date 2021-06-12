@@ -16,6 +16,9 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<ThemeSettings>(
+        initialData: ThemeSettings(
+          themeBrightness: Theme.of(context).brightness
+        ),
         stream: context.read<AppBloc>().outTheme,
         builder: (context, snapshot) {
           return BlocProvider<SettingsCubit>(create: (context) {
@@ -30,7 +33,7 @@ class SettingsPage extends StatelessWidget {
             builder: (context, state) {
               return Center(
                   child: SettingsList(
-                backgroundColor: kDarkGrey,
+                backgroundColor: Theme.of(context).backgroundColor,
                 sections: [
                   SettingsSection(
                     titlePadding: EdgeInsets.only(left: 14, top: 20),

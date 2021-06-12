@@ -28,6 +28,7 @@ class _HomeFormState extends State<HomeForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       body: BlocBuilder<HomeCubit, HomeState>(
         bloc: _cubit,
         builder: (context, state) {
