@@ -91,7 +91,10 @@ class Header extends StatelessWidget {
               child: Text(
                 title,
                 softWrap: true,
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 34),
+                style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 34,
+                    color: Colors.white),
               )),
         )
       ],
@@ -113,14 +116,16 @@ class DataField extends StatelessWidget {
         children: [
           Text(
             label,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
+            style: TextStyle(
+                fontSize: 20, fontWeight: FontWeight.w300, color: Colors.white),
           ),
           SizedBox(
             width: 10,
           ),
           Text(
             value,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+            style: TextStyle(
+                fontSize: 20, fontWeight: FontWeight.w700, color: Colors.white),
           )
         ],
       ),

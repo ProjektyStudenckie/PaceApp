@@ -5,6 +5,7 @@ import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:pace_app/app/bloc/app_bloc.dart';
 import 'package:pace_app/app/models/theme_settings.dart';
 import 'package:pace_app/app/routes/routes.dart';
+import 'package:pace_app/constants.dart';
 import 'package:pace_app/repository/authentication_repository.dart';
 
 class App extends StatelessWidget {
@@ -41,7 +42,7 @@ class AppView extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: snapshot.hasData
                 ? _buildThemeSettings(snapshot.data!)
-                : ThemeData.dark(),
+                : ThemeData.dark().copyWith(backgroundColor: kGrey),
             home: FlowBuilder<AppStatus>(
               state: context.select((AppBloc bloc) => bloc.state.status),
               onGeneratePages: onGenerateAppViewPages,
@@ -53,6 +54,7 @@ class AppView extends StatelessWidget {
   ThemeData _buildThemeSettings(ThemeSettings themeSettings) {
     return ThemeData(
       brightness: themeSettings.themeBrightness,
+      backgroundColor: themeSettings.themeBrightness == Brightness.dark ? kGrey : kDarkWhite
     );
   }
 }
