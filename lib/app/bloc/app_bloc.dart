@@ -52,18 +52,15 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   void _loadTheme() async {
     final shared = await SharedPreferences.getInstance();
 
-    final darkTheme = shared.getBool(darkThemeKey);
-    final indicatorColorInt = shared.getInt(indicatorColorKey);
+    final darkTheme = shared.getBool(darkThemeKey) ?? false;
+    final indicatorColorInt =
+        shared.getInt(indicatorColorKey) ?? Colors.yellow.value;
 
-    var indicatorColor =
-        indicatorColorInt != null ? Color(indicatorColorInt) : null;
+    var indicatorColor = Color(indicatorColorInt);
 
-    if (indicatorColor != null && darkTheme != null) {
-      inTheme.call(ThemeSettings(
-          indicatorColor: indicatorColor,
-          themeBrightness: darkTheme ? Brightness.dark : Brightness.light));
-      print("loaded");
-    }
+    inTheme.call(ThemeSettings(
+        indicatorColor: indicatorColor,
+        themeBrightness: darkTheme ? Brightness.dark : Brightness.light));
   }
 
   @override
