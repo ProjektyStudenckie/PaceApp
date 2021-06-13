@@ -16,9 +16,10 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$NavBarStateTearOff {
   const _$NavBarStateTearOff();
 
-  _NavbarState call({required NavItem navItem}) {
+  _NavbarState call({required NavItem navItem, required int time}) {
     return _NavbarState(
       navItem: navItem,
+      time: time,
     );
   }
 }
@@ -29,6 +30,7 @@ const $NavBarState = _$NavBarStateTearOff();
 /// @nodoc
 mixin _$NavBarState {
   NavItem get navItem => throw _privateConstructorUsedError;
+  int get time => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $NavBarStateCopyWith<NavBarState> get copyWith =>
@@ -40,7 +42,7 @@ abstract class $NavBarStateCopyWith<$Res> {
   factory $NavBarStateCopyWith(
           NavBarState value, $Res Function(NavBarState) then) =
       _$NavBarStateCopyWithImpl<$Res>;
-  $Res call({NavItem navItem});
+  $Res call({NavItem navItem, int time});
 }
 
 /// @nodoc
@@ -54,12 +56,17 @@ class _$NavBarStateCopyWithImpl<$Res> implements $NavBarStateCopyWith<$Res> {
   @override
   $Res call({
     Object? navItem = freezed,
+    Object? time = freezed,
   }) {
     return _then(_value.copyWith(
       navItem: navItem == freezed
           ? _value.navItem
           : navItem // ignore: cast_nullable_to_non_nullable
               as NavItem,
+      time: time == freezed
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -71,7 +78,7 @@ abstract class _$NavbarStateCopyWith<$Res>
           _NavbarState value, $Res Function(_NavbarState) then) =
       __$NavbarStateCopyWithImpl<$Res>;
   @override
-  $Res call({NavItem navItem});
+  $Res call({NavItem navItem, int time});
 }
 
 /// @nodoc
@@ -87,26 +94,34 @@ class __$NavbarStateCopyWithImpl<$Res> extends _$NavBarStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? navItem = freezed,
+    Object? time = freezed,
   }) {
     return _then(_NavbarState(
       navItem: navItem == freezed
           ? _value.navItem
           : navItem // ignore: cast_nullable_to_non_nullable
               as NavItem,
+      time: time == freezed
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
 /// @nodoc
+
 class _$_NavbarState extends _NavbarState {
-  const _$_NavbarState({required this.navItem}) : super._();
+  const _$_NavbarState({required this.navItem, required this.time}) : super._();
 
   @override
   final NavItem navItem;
+  @override
+  final int time;
 
   @override
   String toString() {
-    return 'NavBarState(navItem: $navItem)';
+    return 'NavBarState(navItem: $navItem, time: $time)';
   }
 
   @override
@@ -114,12 +129,17 @@ class _$_NavbarState extends _NavbarState {
     return identical(this, other) ||
         (other is _NavbarState &&
             (identical(other.navItem, navItem) ||
-                const DeepCollectionEquality().equals(other.navItem, navItem)));
+                const DeepCollectionEquality()
+                    .equals(other.navItem, navItem)) &&
+            (identical(other.time, time) ||
+                const DeepCollectionEquality().equals(other.time, time)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(navItem);
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(navItem) ^
+      const DeepCollectionEquality().hash(time);
 
   @JsonKey(ignore: true)
   @override
@@ -128,11 +148,14 @@ class _$_NavbarState extends _NavbarState {
 }
 
 abstract class _NavbarState extends NavBarState {
-  const factory _NavbarState({required NavItem navItem}) = _$_NavbarState;
+  const factory _NavbarState({required NavItem navItem, required int time}) =
+      _$_NavbarState;
   const _NavbarState._() : super._();
 
   @override
   NavItem get navItem => throw _privateConstructorUsedError;
+  @override
+  int get time => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$NavbarStateCopyWith<_NavbarState> get copyWith =>

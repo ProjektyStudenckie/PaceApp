@@ -83,6 +83,7 @@ class __$InitialCopyWithImpl<$Res> extends _$StatsStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$_Initial implements _Initial {
   const _$_Initial();
 

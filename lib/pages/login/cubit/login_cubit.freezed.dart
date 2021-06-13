@@ -124,6 +124,7 @@ class __$LoginStateCopyWithImpl<$Res> extends _$LoginStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$_LoginState extends _LoginState {
   const _$_LoginState(
       {required this.email, required this.password, required this.status})
