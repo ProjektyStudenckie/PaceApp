@@ -9,8 +9,6 @@ part 'navbar_cubit.freezed.dart';
 class NavBarCubit extends Cubit<NavBarState> {
   final GameRepository _gameRepository;
   late StreamSubscription _playGameChange;
-  late Stream<int> _timerStream;
-  late StreamSubscription<int> _timerSubscription;
   NavBarCubit(this._gameRepository) : super(NavBarState.init());
 
   void setup() {
@@ -34,18 +32,9 @@ class NavBarCubit extends Cubit<NavBarState> {
     emit(state.copyWith(navItem: item));
   }
 
-  void startTimer() {
-    _timerStream = timer();
-    _timerSubscription = _timerStream.listen((int newTick) {
-      //String seconds = (newTick % 60).floor().toString().padLeft(2, '0');
-      emit(state.copyWith(time: newTick));
-      print(newTick.toString());
-    });
-  }
-
-  void stopTimer() {
-    _gameRepository.setTimerValue(state.time);
-    emit(state.copyWith(time: 0));
+  void saveData(int time) {
+    print('timeeeeeee $time');
+    _gameRepository.setTimerValue(time);
   }
 
   @override
@@ -59,12 +48,11 @@ class NavBarCubit extends Cubit<NavBarState> {
 class NavBarState with _$NavBarState {
   const factory NavBarState({
     required NavItem navItem,
-    required int time,
   }) = _NavbarState;
 
   const NavBarState._();
 
-  factory NavBarState.init() => NavBarState(navItem: NavItem.home, time: 0);
+  factory NavBarState.init() => NavBarState(navItem: NavItem.home);
 }
 
 enum NavItem {

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pace_app/components/bottom_navbar_widget.dart';
-import 'package:pace_app/constants.dart';
 import 'package:pace_app/injection/injection.dart';
 import 'package:pace_app/pages/game/game.dart';
 import 'package:pace_app/pages/home/home.dart';
 import 'package:pace_app/pages/navbar_container/cubit/navbar_cubit.dart';
 import 'package:pace_app/pages/settings/view/settings_page.dart';
 import 'package:pace_app/pages/stats/page/stats_page.dart';
+import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 class NavBarContainer extends StatefulWidget {
   NavBarContainer({Key? key}) : super(key: key);
@@ -23,12 +23,14 @@ class NavBarContainer extends StatefulWidget {
 }
 
 class _NavBarContainerState extends State<NavBarContainer> {
-  final NavBarCubit _cubit = NavBarCubit(getIt.get());
+  final NavBarCubit _cubit = NavBarCubit(getIt.get())..setup();
+  final StopWatchTimer _stopWatchTimer =
+      StopWatchTimer(mode: StopWatchMode.countUp);
 
   @override
-  void initState() {
-    _cubit.setup();
-    super.initState();
+  void dispose() async {
+    super.dispose();
+    await _stopWatchTimer.dispose();
   }
 
   @override
@@ -38,13 +40,19 @@ class _NavBarContainerState extends State<NavBarContainer> {
         bloc: _cubit,
         builder: (context, state) {
           if (state.navItem == NavItem.game) {
-            _cubit.startTimer();
+            _stopWatchTimer.onExecute.add(StopWatchExecute.start);
           }
+
+          if (state.navItem != NavItem.game) {
+            _cubit.saveData(_stopWatchTimer.secondTime.value);
+            _stopWatchTimer.onExecute.add(StopWatchExecute.reset);
+          }
+
           return Scaffold(
             backgroundColor: Theme.of(context).backgroundColor,
             bottomNavigationBar: BottomNavbarWidget(_cubit),
             appBar: AppBar(
-              title: _titleForState(state.navItem, state.time),
+              title: _titleForState(state.navItem, _stopWatchTimer),
               actions: [
                 state.navItem == NavItem.game
                     ? GestureDetector(
@@ -52,10 +60,7 @@ class _NavBarContainerState extends State<NavBarContainer> {
                           Icons.close,
                           color: Colors.redAccent,
                         ),
-                        onTap: () {
-                          // send data - finish the game
-                          _cubit.selectNewNavBarItem(NavItem.home);
-                        },
+                        onTap: () => _cubit.selectNewNavBarItem(NavItem.home),
                       )
                     : Text(''),
               ],
@@ -73,12 +78,12 @@ class _NavBarContainerState extends State<NavBarContainer> {
   }
 }
 
-Widget? _titleForState(NavItem item, int time) {
+Widget _titleForState(NavItem item, StopWatchTimer timer) {
   switch (item) {
     case NavItem.home:
       return Text('Home');
     case NavItem.game:
-      return Text(_buildTimer(time));
+      return _buildTimer(timer);
     case NavItem.stats:
       return Text("Stats");
     case NavItem.settings:
@@ -103,19 +108,15 @@ Widget? _bodyForState(NavItem item) {
   }
 }
 
-String _buildTimer(int seconds) {
-  if (seconds < 10) {
-    return '00:0$seconds';
-  }
-
-  if (seconds < 60) {
-    return '00:$seconds';
-  }
-
-  if (seconds < 70) {
-    return '01:0${seconds - 60}';
-  }
-
-  // max one minute for now
-  return '01:${seconds - 60}';
+StreamBuilder _buildTimer(StopWatchTimer _stopWatchTimer) {
+  return StreamBuilder<int>(
+    stream: _stopWatchTimer.rawTime,
+    initialData: _stopWatchTimer.secondTime.value,
+    builder: (context, snap) {
+      final value = snap.data!;
+      final displayTime = StopWatchTimer.getDisplayTime(value,
+          hours: false, milliSecond: false);
+      return Text(displayTime);
+    },
+  );
 }

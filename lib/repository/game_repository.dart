@@ -23,15 +23,6 @@ class GameRepository {
     _timerValue = time;
   }
 
-  // StreamValue<int> _playGame =
-  //     StreamValue(initValue: false as BehaviorSubject<bool>);
-  // Stream<bool> get playGameValue => _playGame.getStreamValue;
-  //
-  // void changePlayGameValue(bool b) {
-  //   _playGame.setCallback(_callback);
-  //   _playGame.setValue(b);
-  // }
-
   void _callback() {
     print('Stream value changed');
   }
