@@ -107,6 +107,7 @@ class MyTextController extends TextEditingController {
           text: text[i],
         ));
         gameText = StringUtils.addCharAtPosition(gameText, text[i], i);
+        cubit.addMistake();
         continue;
       }
 
@@ -115,6 +116,7 @@ class MyTextController extends TextEditingController {
           style: kTextStyleRed,
           text: gameText[i],
         ));
+        cubit.addMistake();
       }
 
       if (text[i] == gameText[i]) {

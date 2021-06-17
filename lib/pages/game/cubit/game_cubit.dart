@@ -21,6 +21,16 @@ class GameCubit extends Cubit<GameState> {
   void setCurrentIndex(int index) {
     emit(state.copyWith(currentIndex: index));
   }
+
+  void addMistake() {
+    if (state.savedIndex == state.currentIndex) {
+      return;
+    }
+
+    int _currentNrOfMistakes = _gameRepository.mistakes;
+    _gameRepository.setMistakes(nrOfMistakes: _currentNrOfMistakes + 1);
+    emit(state.copyWith(savedIndex: state.currentIndex));
+  }
 }
 
 @freezed
@@ -29,10 +39,11 @@ class GameState with _$GameState {
     required bool playGame,
     required String gameText,
     required int currentIndex,
+    required int savedIndex,
   }) = _GameState;
 
   const GameState._();
 
   factory GameState.init() =>
-      GameState(playGame: false, gameText: '', currentIndex: 0);
+      GameState(playGame: false, gameText: '', currentIndex: 0, savedIndex: -1);
 }

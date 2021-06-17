@@ -19,11 +19,13 @@ class _$GameStateTearOff {
   _GameState call(
       {required bool playGame,
       required String gameText,
-      required int currentIndex}) {
+      required int currentIndex,
+      required int savedIndex}) {
     return _GameState(
       playGame: playGame,
       gameText: gameText,
       currentIndex: currentIndex,
+      savedIndex: savedIndex,
     );
   }
 }
@@ -36,6 +38,7 @@ mixin _$GameState {
   bool get playGame => throw _privateConstructorUsedError;
   String get gameText => throw _privateConstructorUsedError;
   int get currentIndex => throw _privateConstructorUsedError;
+  int get savedIndex => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $GameStateCopyWith<GameState> get copyWith =>
@@ -46,7 +49,7 @@ mixin _$GameState {
 abstract class $GameStateCopyWith<$Res> {
   factory $GameStateCopyWith(GameState value, $Res Function(GameState) then) =
       _$GameStateCopyWithImpl<$Res>;
-  $Res call({bool playGame, String gameText, int currentIndex});
+  $Res call({bool playGame, String gameText, int currentIndex, int savedIndex});
 }
 
 /// @nodoc
@@ -62,6 +65,7 @@ class _$GameStateCopyWithImpl<$Res> implements $GameStateCopyWith<$Res> {
     Object? playGame = freezed,
     Object? gameText = freezed,
     Object? currentIndex = freezed,
+    Object? savedIndex = freezed,
   }) {
     return _then(_value.copyWith(
       playGame: playGame == freezed
@@ -76,6 +80,10 @@ class _$GameStateCopyWithImpl<$Res> implements $GameStateCopyWith<$Res> {
           ? _value.currentIndex
           : currentIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      savedIndex: savedIndex == freezed
+          ? _value.savedIndex
+          : savedIndex // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -86,7 +94,7 @@ abstract class _$GameStateCopyWith<$Res> implements $GameStateCopyWith<$Res> {
           _GameState value, $Res Function(_GameState) then) =
       __$GameStateCopyWithImpl<$Res>;
   @override
-  $Res call({bool playGame, String gameText, int currentIndex});
+  $Res call({bool playGame, String gameText, int currentIndex, int savedIndex});
 }
 
 /// @nodoc
@@ -103,6 +111,7 @@ class __$GameStateCopyWithImpl<$Res> extends _$GameStateCopyWithImpl<$Res>
     Object? playGame = freezed,
     Object? gameText = freezed,
     Object? currentIndex = freezed,
+    Object? savedIndex = freezed,
   }) {
     return _then(_GameState(
       playGame: playGame == freezed
@@ -117,6 +126,10 @@ class __$GameStateCopyWithImpl<$Res> extends _$GameStateCopyWithImpl<$Res>
           ? _value.currentIndex
           : currentIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      savedIndex: savedIndex == freezed
+          ? _value.savedIndex
+          : savedIndex // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -127,7 +140,8 @@ class _$_GameState extends _GameState {
   const _$_GameState(
       {required this.playGame,
       required this.gameText,
-      required this.currentIndex})
+      required this.currentIndex,
+      required this.savedIndex})
       : super._();
 
   @override
@@ -136,10 +150,12 @@ class _$_GameState extends _GameState {
   final String gameText;
   @override
   final int currentIndex;
+  @override
+  final int savedIndex;
 
   @override
   String toString() {
-    return 'GameState(playGame: $playGame, gameText: $gameText, currentIndex: $currentIndex)';
+    return 'GameState(playGame: $playGame, gameText: $gameText, currentIndex: $currentIndex, savedIndex: $savedIndex)';
   }
 
   @override
@@ -154,7 +170,10 @@ class _$_GameState extends _GameState {
                     .equals(other.gameText, gameText)) &&
             (identical(other.currentIndex, currentIndex) ||
                 const DeepCollectionEquality()
-                    .equals(other.currentIndex, currentIndex)));
+                    .equals(other.currentIndex, currentIndex)) &&
+            (identical(other.savedIndex, savedIndex) ||
+                const DeepCollectionEquality()
+                    .equals(other.savedIndex, savedIndex)));
   }
 
   @override
@@ -162,7 +181,8 @@ class _$_GameState extends _GameState {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(playGame) ^
       const DeepCollectionEquality().hash(gameText) ^
-      const DeepCollectionEquality().hash(currentIndex);
+      const DeepCollectionEquality().hash(currentIndex) ^
+      const DeepCollectionEquality().hash(savedIndex);
 
   @JsonKey(ignore: true)
   @override
@@ -174,7 +194,8 @@ abstract class _GameState extends GameState {
   const factory _GameState(
       {required bool playGame,
       required String gameText,
-      required int currentIndex}) = _$_GameState;
+      required int currentIndex,
+      required int savedIndex}) = _$_GameState;
   const _GameState._() : super._();
 
   @override
@@ -183,6 +204,8 @@ abstract class _GameState extends GameState {
   String get gameText => throw _privateConstructorUsedError;
   @override
   int get currentIndex => throw _privateConstructorUsedError;
+  @override
+  int get savedIndex => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$GameStateCopyWith<_GameState> get copyWith =>

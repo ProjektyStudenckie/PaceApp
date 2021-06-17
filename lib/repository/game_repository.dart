@@ -1,5 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:pace_app/extensions/stream_value.dart';
+import 'package:pace_app/injection/injection.dart';
+import 'package:pace_app/repository/stats_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 @lazySingleton
@@ -19,11 +21,22 @@ class GameRepository {
 
   int _timerValue = 0;
   int get time => _timerValue;
-  void setTimerValue(int time) {
+  void setTimerValue({required int time}) {
     _timerValue = time;
+  }
+
+  int _mistakes = 0;
+  int get mistakes => _mistakes;
+  void setMistakes({required int nrOfMistakes}) {
+    _mistakes = nrOfMistakes;
   }
 
   void _callback() {
     print('Stream value changed');
+  }
+
+  void saveDataInFirebase() {
+    getIt.get<StatsRepository>().addNewStat(time, mistakes);
+    setMistakes(nrOfMistakes: 0);
   }
 }
