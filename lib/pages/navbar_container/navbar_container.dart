@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pace_app/components/bottom_navbar_widget.dart';
-import 'package:pace_app/constants.dart';
-import 'package:pace_app/pages/game_settings/game_settings.dart';
+import 'package:pace_app/injection/injection.dart';
+import 'package:pace_app/pages/game/game.dart';
 import 'package:pace_app/pages/home/home.dart';
 import 'package:pace_app/pages/navbar_container/cubit/navbar_cubit.dart';
 import 'package:pace_app/pages/settings/view/settings_page.dart';
 import 'package:pace_app/pages/stats/page/stats_page.dart';
+import 'package:stop_watch_timer/stop_watch_timer.dart';
 
-class NavBarContainer extends StatelessWidget {
+class NavBarContainer extends StatefulWidget {
   NavBarContainer({Key? key}) : super(key: key);
 
   static Page page() => MaterialPage<void>(child: NavBarContainer());
@@ -17,25 +18,49 @@ class NavBarContainer extends StatelessWidget {
     return MaterialPageRoute<void>(builder: (_) => NavBarContainer());
   }
 
-  final NavBarCubit _cubit = NavBarCubit();
+  @override
+  _NavBarContainerState createState() => _NavBarContainerState();
+}
+
+class _NavBarContainerState extends State<NavBarContainer> {
+  final NavBarCubit _cubit = NavBarCubit(getIt.get())..setup();
+  final StopWatchTimer _stopWatchTimer =
+      StopWatchTimer(mode: StopWatchMode.countUp);
+
+  @override
+  void dispose() async {
+    super.dispose();
+    await _stopWatchTimer.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       child: BlocBuilder<NavBarCubit, NavBarState>(
         bloc: _cubit,
         builder: (context, state) {
+          if (state.navItem == NavItem.game) {
+            _stopWatchTimer.onExecute.add(StopWatchExecute.start);
+          }
+
+          if (state.navItem != NavItem.game) {
+            _cubit.saveData(_stopWatchTimer.secondTime.value);
+            _stopWatchTimer.onExecute.add(StopWatchExecute.reset);
+          }
+
           return Scaffold(
             backgroundColor: Theme.of(context).backgroundColor,
             bottomNavigationBar: BottomNavbarWidget(_cubit),
             appBar: AppBar(
-              title: Text(_titleForState(state.navItem) ?? "Pace App"),
+              title: _titleForState(state.navItem, _stopWatchTimer),
               actions: [
-                state.navItem == NavItem.home
+                state.navItem == NavItem.game
                     ? GestureDetector(
-                        child: Icon(Icons.menu),
-                        onTap: () {
-                          Navigator.push(context, GameSettingsPage.route());
-                        },
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.redAccent,
+                        ),
+                        onTap: () => _cubit.selectNewNavBarItem(NavItem.home),
                       )
                     : Text(''),
               ],
@@ -53,16 +78,18 @@ class NavBarContainer extends StatelessWidget {
   }
 }
 
-String? _titleForState(NavItem item) {
+Widget _titleForState(NavItem item, StopWatchTimer timer) {
   switch (item) {
     case NavItem.home:
-      return "Home";
+      return Text('Home');
+    case NavItem.game:
+      return _buildTimer(timer);
     case NavItem.stats:
-      return "Stats";
+      return Text("Stats");
     case NavItem.settings:
-      return "Settings";
+      return Text("Settings");
     default:
-      return null;
+      return Text('PaceApp');
   }
 }
 
@@ -70,6 +97,8 @@ Widget? _bodyForState(NavItem item) {
   switch (item) {
     case NavItem.home:
       return HomePage();
+    case NavItem.game:
+      return GamePage();
     case NavItem.stats:
       return StatsPage();
     case NavItem.settings:
@@ -77,4 +106,17 @@ Widget? _bodyForState(NavItem item) {
     default:
       return null;
   }
+}
+
+StreamBuilder _buildTimer(StopWatchTimer _stopWatchTimer) {
+  return StreamBuilder<int>(
+    stream: _stopWatchTimer.rawTime,
+    initialData: _stopWatchTimer.secondTime.value,
+    builder: (context, snap) {
+      final value = snap.data!;
+      final displayTime = StopWatchTimer.getDisplayTime(value,
+          hours: false, milliSecond: false);
+      return Text(displayTime);
+    },
+  );
 }

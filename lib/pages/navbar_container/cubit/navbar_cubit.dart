@@ -1,15 +1,46 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:pace_app/forms/forms.dart';
 import 'package:pace_app/repository/game_repository.dart';
 
 part 'navbar_cubit.freezed.dart';
 
 class NavBarCubit extends Cubit<NavBarState> {
-  NavBarCubit() : super(NavBarState.init());
+  final GameRepository _gameRepository;
+  late StreamSubscription _playGameChange;
+  NavBarCubit(this._gameRepository) : super(NavBarState.init());
+
+  void setup() {
+    _gameRepository.setPlayGameValue(false);
+    _gameRepository.playGameValue.listen((data) {
+      startTheGame(data);
+    });
+  }
+
+  void startTheGame(bool playGame) {
+    if (playGame) {
+      emit(state.copyWith(navItem: NavItem.game));
+    }
+
+    if (!playGame) {
+      emit(state.copyWith(navItem: NavItem.home));
+    }
+  }
 
   void selectNewNavBarItem(NavItem item) {
     emit(state.copyWith(navItem: item));
+  }
+
+  void saveData(int time) {
+    _gameRepository.setTimerValue(time: time);
+    _gameRepository.saveDataInFirebase();
+  }
+
+  @override
+  Future<void> close() {
+    _playGameChange.cancel();
+    return super.close();
   }
 }
 
@@ -28,4 +59,5 @@ enum NavItem {
   home,
   settings,
   stats,
+  game,
 }

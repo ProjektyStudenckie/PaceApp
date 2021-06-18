@@ -8,18 +8,8 @@ class HomeCubit extends Cubit<HomeState> {
   final GameRepository _gameRepository;
   HomeCubit(this._gameRepository) : super(HomeState.init());
 
-  void setup() {
-    emit(state.copyWith(gameText: getText));
-  }
-
-  void startOrFinishTheGame({required bool startTheGame}) {
-    emit(state.copyWith(playGame: startTheGame));
-  }
-
-  String get getText => _gameRepository.gameText;
-
-  void setCurrentIndex(int index) {
-    emit(state.copyWith(currentIndex: index));
+  void startTheGame() {
+    _gameRepository.setPlayGameValue(true);
   }
 }
 

@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:pace_app/repository/authentication_repository.dart';
 import 'package:pace_app/repository/game_repository.dart';
+import 'package:pace_app/repository/stats_repository.dart';
 
 import 'injection.config.dart';
 
@@ -12,7 +13,8 @@ void configureDependencies() => $initGetIt(getIt);
 
 Future<void> setupGetIt() async {
   if (GetIt.I.isRegistered<AuthenticationRepository>() &&
-      GetIt.I.isRegistered<GameRepository>()) {
+      GetIt.I.isRegistered<GameRepository>() &&
+      GetIt.I.isRegistered<StatsRepository>()) {
     await getIt.reset();
   }
 
@@ -23,5 +25,9 @@ Future<void> setupGetIt() async {
 
   if (!GetIt.I.isRegistered<GameRepository>()) {
     getIt.registerSingleton<GameRepository>(GameRepository());
+  }
+
+  if (!GetIt.I.isRegistered<StatsRepository>()) {
+    getIt.registerSingleton<StatsRepository>(StatsRepository());
   }
 }

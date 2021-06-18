@@ -1,7 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
-part of 'home_cubit.dart';
+part of 'game_cubit.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -13,55 +13,59 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-class _$HomeStateTearOff {
-  const _$HomeStateTearOff();
+class _$GameStateTearOff {
+  const _$GameStateTearOff();
 
-  _HomeState call(
+  _GameState call(
       {required bool playGame,
       required String gameText,
-      required int currentIndex}) {
-    return _HomeState(
+      required int currentIndex,
+      required int savedIndex}) {
+    return _GameState(
       playGame: playGame,
       gameText: gameText,
       currentIndex: currentIndex,
+      savedIndex: savedIndex,
     );
   }
 }
 
 /// @nodoc
-const $HomeState = _$HomeStateTearOff();
+const $GameState = _$GameStateTearOff();
 
 /// @nodoc
-mixin _$HomeState {
+mixin _$GameState {
   bool get playGame => throw _privateConstructorUsedError;
   String get gameText => throw _privateConstructorUsedError;
   int get currentIndex => throw _privateConstructorUsedError;
+  int get savedIndex => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $HomeStateCopyWith<HomeState> get copyWith =>
+  $GameStateCopyWith<GameState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $HomeStateCopyWith<$Res> {
-  factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
-      _$HomeStateCopyWithImpl<$Res>;
-  $Res call({bool playGame, String gameText, int currentIndex});
+abstract class $GameStateCopyWith<$Res> {
+  factory $GameStateCopyWith(GameState value, $Res Function(GameState) then) =
+      _$GameStateCopyWithImpl<$Res>;
+  $Res call({bool playGame, String gameText, int currentIndex, int savedIndex});
 }
 
 /// @nodoc
-class _$HomeStateCopyWithImpl<$Res> implements $HomeStateCopyWith<$Res> {
-  _$HomeStateCopyWithImpl(this._value, this._then);
+class _$GameStateCopyWithImpl<$Res> implements $GameStateCopyWith<$Res> {
+  _$GameStateCopyWithImpl(this._value, this._then);
 
-  final HomeState _value;
+  final GameState _value;
   // ignore: unused_field
-  final $Res Function(HomeState) _then;
+  final $Res Function(GameState) _then;
 
   @override
   $Res call({
     Object? playGame = freezed,
     Object? gameText = freezed,
     Object? currentIndex = freezed,
+    Object? savedIndex = freezed,
   }) {
     return _then(_value.copyWith(
       playGame: playGame == freezed
@@ -76,35 +80,40 @@ class _$HomeStateCopyWithImpl<$Res> implements $HomeStateCopyWith<$Res> {
           ? _value.currentIndex
           : currentIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      savedIndex: savedIndex == freezed
+          ? _value.savedIndex
+          : savedIndex // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
 /// @nodoc
-abstract class _$HomeStateCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
-  factory _$HomeStateCopyWith(
-          _HomeState value, $Res Function(_HomeState) then) =
-      __$HomeStateCopyWithImpl<$Res>;
+abstract class _$GameStateCopyWith<$Res> implements $GameStateCopyWith<$Res> {
+  factory _$GameStateCopyWith(
+          _GameState value, $Res Function(_GameState) then) =
+      __$GameStateCopyWithImpl<$Res>;
   @override
-  $Res call({bool playGame, String gameText, int currentIndex});
+  $Res call({bool playGame, String gameText, int currentIndex, int savedIndex});
 }
 
 /// @nodoc
-class __$HomeStateCopyWithImpl<$Res> extends _$HomeStateCopyWithImpl<$Res>
-    implements _$HomeStateCopyWith<$Res> {
-  __$HomeStateCopyWithImpl(_HomeState _value, $Res Function(_HomeState) _then)
-      : super(_value, (v) => _then(v as _HomeState));
+class __$GameStateCopyWithImpl<$Res> extends _$GameStateCopyWithImpl<$Res>
+    implements _$GameStateCopyWith<$Res> {
+  __$GameStateCopyWithImpl(_GameState _value, $Res Function(_GameState) _then)
+      : super(_value, (v) => _then(v as _GameState));
 
   @override
-  _HomeState get _value => super._value as _HomeState;
+  _GameState get _value => super._value as _GameState;
 
   @override
   $Res call({
     Object? playGame = freezed,
     Object? gameText = freezed,
     Object? currentIndex = freezed,
+    Object? savedIndex = freezed,
   }) {
-    return _then(_HomeState(
+    return _then(_GameState(
       playGame: playGame == freezed
           ? _value.playGame
           : playGame // ignore: cast_nullable_to_non_nullable
@@ -117,17 +126,22 @@ class __$HomeStateCopyWithImpl<$Res> extends _$HomeStateCopyWithImpl<$Res>
           ? _value.currentIndex
           : currentIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      savedIndex: savedIndex == freezed
+          ? _value.savedIndex
+          : savedIndex // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
 /// @nodoc
 
-class _$_HomeState extends _HomeState {
-  const _$_HomeState(
+class _$_GameState extends _GameState {
+  const _$_GameState(
       {required this.playGame,
       required this.gameText,
-      required this.currentIndex})
+      required this.currentIndex,
+      required this.savedIndex})
       : super._();
 
   @override
@@ -136,16 +150,18 @@ class _$_HomeState extends _HomeState {
   final String gameText;
   @override
   final int currentIndex;
+  @override
+  final int savedIndex;
 
   @override
   String toString() {
-    return 'HomeState(playGame: $playGame, gameText: $gameText, currentIndex: $currentIndex)';
+    return 'GameState(playGame: $playGame, gameText: $gameText, currentIndex: $currentIndex, savedIndex: $savedIndex)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _HomeState &&
+        (other is _GameState &&
             (identical(other.playGame, playGame) ||
                 const DeepCollectionEquality()
                     .equals(other.playGame, playGame)) &&
@@ -154,7 +170,10 @@ class _$_HomeState extends _HomeState {
                     .equals(other.gameText, gameText)) &&
             (identical(other.currentIndex, currentIndex) ||
                 const DeepCollectionEquality()
-                    .equals(other.currentIndex, currentIndex)));
+                    .equals(other.currentIndex, currentIndex)) &&
+            (identical(other.savedIndex, savedIndex) ||
+                const DeepCollectionEquality()
+                    .equals(other.savedIndex, savedIndex)));
   }
 
   @override
@@ -162,20 +181,22 @@ class _$_HomeState extends _HomeState {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(playGame) ^
       const DeepCollectionEquality().hash(gameText) ^
-      const DeepCollectionEquality().hash(currentIndex);
+      const DeepCollectionEquality().hash(currentIndex) ^
+      const DeepCollectionEquality().hash(savedIndex);
 
   @JsonKey(ignore: true)
   @override
-  _$HomeStateCopyWith<_HomeState> get copyWith =>
-      __$HomeStateCopyWithImpl<_HomeState>(this, _$identity);
+  _$GameStateCopyWith<_GameState> get copyWith =>
+      __$GameStateCopyWithImpl<_GameState>(this, _$identity);
 }
 
-abstract class _HomeState extends HomeState {
-  const factory _HomeState(
+abstract class _GameState extends GameState {
+  const factory _GameState(
       {required bool playGame,
       required String gameText,
-      required int currentIndex}) = _$_HomeState;
-  const _HomeState._() : super._();
+      required int currentIndex,
+      required int savedIndex}) = _$_GameState;
+  const _GameState._() : super._();
 
   @override
   bool get playGame => throw _privateConstructorUsedError;
@@ -184,7 +205,9 @@ abstract class _HomeState extends HomeState {
   @override
   int get currentIndex => throw _privateConstructorUsedError;
   @override
+  int get savedIndex => throw _privateConstructorUsedError;
+  @override
   @JsonKey(ignore: true)
-  _$HomeStateCopyWith<_HomeState> get copyWith =>
+  _$GameStateCopyWith<_GameState> get copyWith =>
       throw _privateConstructorUsedError;
 }

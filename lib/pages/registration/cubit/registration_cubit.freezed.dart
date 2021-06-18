@@ -148,6 +148,7 @@ class __$RegistrationStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$_RegistrationState extends _RegistrationState {
   const _$_RegistrationState(
       {required this.email,

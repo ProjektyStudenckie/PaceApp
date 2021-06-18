@@ -98,6 +98,7 @@ class __$NavbarStateCopyWithImpl<$Res> extends _$NavBarStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
+
 class _$_NavbarState extends _NavbarState {
   const _$_NavbarState({required this.navItem}) : super._();
 
