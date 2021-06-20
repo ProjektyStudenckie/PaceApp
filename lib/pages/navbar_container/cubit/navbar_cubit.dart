@@ -29,12 +29,20 @@ class NavBarCubit extends Cubit<NavBarState> {
   }
 
   void selectNewNavBarItem(NavItem item) {
+    if (state.navItem == NavItem.game) {
+      setBool(saveStats: true);
+    }
+
     emit(state.copyWith(navItem: item));
   }
 
   void saveData(int time) {
     _gameRepository.setTimerValue(time: time);
     _gameRepository.saveDataInFirebase();
+  }
+
+  void setBool({required bool saveStats}) {
+    emit(state.copyWith(saveStats: saveStats));
   }
 
   @override
@@ -48,11 +56,15 @@ class NavBarCubit extends Cubit<NavBarState> {
 class NavBarState with _$NavBarState {
   const factory NavBarState({
     required NavItem navItem,
+    required bool saveStats,
   }) = _NavbarState;
 
   const NavBarState._();
 
-  factory NavBarState.init() => NavBarState(navItem: NavItem.home);
+  factory NavBarState.init() => NavBarState(
+        navItem: NavItem.home,
+        saveStats: false,
+      );
 }
 
 enum NavItem {

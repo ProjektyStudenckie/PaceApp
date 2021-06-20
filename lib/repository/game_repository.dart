@@ -36,7 +36,7 @@ class GameRepository {
   }
 
   void saveDataInFirebase() {
-    getIt.get<StatsRepository>().addNewStat(time, mistakes);
+    getIt.get<StatsRepository>().addNewStat(time, mistakes, _tmpText.length);
     setMistakes(nrOfMistakes: 0);
   }
 }

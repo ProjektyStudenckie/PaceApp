@@ -11,10 +11,11 @@ class StatsRepository {
 
   String get user => getIt.get<AuthenticationRepository>().currentUser.id;
 
-  void addNewStat(int time, int mistakes) {
+  void addNewStat(int time, int mistakes, int textLength) {
     usersReference.add({
       'time': time,
       'mistakes': mistakes,
+      'textLength': textLength,
       'owner': user,
       // ignore: invalid_return_type_for_catch_error
     }).catchError((error) => print('Failed to add new item: $error'));
