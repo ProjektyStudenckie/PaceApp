@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pace_app/app/models/theme_settings.dart';
 import 'package:pace_app/injection/injection.dart';
 import 'package:pace_app/pages/home/cubit/home_cubit.dart';
 import 'package:pace_app/pages/home/view/home_form.dart';

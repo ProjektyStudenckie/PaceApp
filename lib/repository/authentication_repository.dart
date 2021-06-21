@@ -99,10 +99,11 @@ class AuthenticationRepository {
   }
 
   Future<void> sendPasswordResetEmail() async {
-    if(_firebaseAuth.currentUser != null) return;
-    if(_firebaseAuth.currentUser!.email != null) return;
+    if (_firebaseAuth.currentUser != null) return;
+    if (_firebaseAuth.currentUser!.email != null) return;
 
-    _firebaseAuth.sendPasswordResetEmail(email: _firebaseAuth.currentUser!.email!);
+    _firebaseAuth.sendPasswordResetEmail(
+        email: _firebaseAuth.currentUser!.email!);
   }
 }
 

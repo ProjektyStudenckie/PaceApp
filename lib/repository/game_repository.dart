@@ -2,7 +2,6 @@ import 'package:injectable/injectable.dart';
 import 'package:pace_app/extensions/stream_value.dart';
 import 'package:pace_app/injection/injection.dart';
 import 'package:pace_app/repository/stats_repository.dart';
-import 'package:rxdart/rxdart.dart';
 
 @lazySingleton
 class GameRepository {

@@ -12,7 +12,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await setupGetIt();
-  // TODO check if this key is correct as empty
+  
   runApp(App(
     authenticationRepository: getIt<AuthenticationRepository>(),
     key: Key(''),

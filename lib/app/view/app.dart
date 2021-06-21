@@ -1,7 +1,6 @@
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:pace_app/app/bloc/app_bloc.dart';
 import 'package:pace_app/app/models/theme_settings.dart';
 import 'package:pace_app/app/routes/routes.dart';

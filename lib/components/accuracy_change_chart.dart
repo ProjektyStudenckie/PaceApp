@@ -5,19 +5,19 @@ import 'package:pace_app/repository/models/stats.dart';
 
 import 'gradient_container.dart';
 
-class WPMChangeChart extends StatefulWidget {
+class AccuracyChangeChart extends StatefulWidget {
   final List<Stats> allStats;
 
-  WPMChangeChart(this.allStats);
+  AccuracyChangeChart(this.allStats);
 
   @override
-  _WPMChangeChartState createState() => _WPMChangeChartState();
+  _AccuracyChangeChartState createState() => _AccuracyChangeChartState();
 }
 
-class _WPMChangeChartState extends State<WPMChangeChart> {
+class _AccuracyChangeChartState extends State<AccuracyChangeChart> {
   List<Color> gradientColors = [
-    const Color(0xffa35646),
-    const Color(0xffe2938a),
+    const Color(0xff23b6e6),
+    const Color(0xff02d39a),
   ];
 
   @override
@@ -25,11 +25,11 @@ class _WPMChangeChartState extends State<WPMChangeChart> {
     return AspectRatio(
       aspectRatio: 1.40,
       child: GradientContainer(
-        accentColor: kDarkRed,
+        accentColor: kDarkGreen,
         child: Column(
           children: [
             Text(
-              "WPM Over time",
+              "Accuracy Over time",
               style: TextStyle(
                   fontSize: 24,
                   color: Colors.white70,
@@ -91,22 +91,6 @@ class _WPMChangeChartState extends State<WPMChangeChart> {
                 return "80";
               case 100:
                 return "100";
-              case 120:
-                return "120";
-              case 140:
-                return "140";
-              case 160:
-                return "160";
-              case 180:
-                return "180";
-              case 200:
-                return "200";
-              case 220:
-                return "220";
-              case 240:
-                return "240";
-              case 260:
-                return "260";
             }
             return '';
           },
@@ -119,16 +103,13 @@ class _WPMChangeChartState extends State<WPMChangeChart> {
       minX: 0,
       maxX: widget.allStats.length.toDouble() - 1,
       minY: 0,
-      maxY: getUpperBoundary().toDouble() + 10,
+      maxY: 100,
       lineBarsData: [
         LineChartBarData(
           spots: [
             for (int i = 0; i < widget.allStats.length; i++)
-              FlSpot(i.toDouble(), widget.allStats[i].wpm)
+              FlSpot(i.toDouble(), widget.allStats[i].accuracy.toDouble())
 
-            // FlSpot(8, 4),
-            // FlSpot(9.5, 3),
-            // FlSpot(11, 4),
           ],
           isCurved: true,
           colors: gradientColors,
@@ -147,47 +128,27 @@ class _WPMChangeChartState extends State<WPMChangeChart> {
     );
   }
 
-  double getLowestWPM() {
-    double minWPM = double.maxFinite;
+  double getLowestAccuracy() {
+    double minAccuracy = double.maxFinite;
 
     for (int i = 0; i < widget.allStats.length; i++) {
-      if (widget.allStats[i].wpm < minWPM) {
-        minWPM = widget.allStats[i].wpm;
+      if (widget.allStats[i].accuracy < minAccuracy) {
+        minAccuracy = widget.allStats[i].accuracy.toDouble();
       }
     }
 
-    return minWPM;
+    return minAccuracy;
   }
 
-  double getHighestWPM() {
-    double maxWPM = 0;
+  double getHighestAccuracy() {
+    double maxAccuracy = 0;
 
     for (int i = 0; i < widget.allStats.length; i++) {
-      if (widget.allStats[i].wpm > maxWPM) {
-        maxWPM = widget.allStats[i].wpm;
+      if (widget.allStats[i].accuracy > maxAccuracy) {
+        maxAccuracy = widget.allStats[i].accuracy.toDouble();
       }
     }
 
-    return maxWPM;
-  }
-
-  int getUpperBoundary() {
-    double highestWPM = getHighestWPM();
-    highestWPM /= 10;
-
-    return highestWPM.ceil() * 10;
-  }
-
-  int getLowerBoundary() {
-    double lowestWPM = getLowestWPM();
-    lowestWPM /= 10;
-
-    return lowestWPM.floor() * 10;
-  }
-
-  int getMediumValue() {
-    int sum = getUpperBoundary() + getLowerBoundary();
-
-    return (sum ~/ 2);
+    return maxAccuracy;
   }
 }

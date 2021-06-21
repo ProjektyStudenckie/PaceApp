@@ -8,7 +8,6 @@ import 'package:pace_app/app/models/theme_settings.dart';
 import 'package:pace_app/constants.dart';
 import 'package:pace_app/injection/injection.dart';
 import 'package:pace_app/pages/game/cubit/game_cubit.dart';
-import 'package:pace_app/pages/home/cubit/home_cubit.dart';
 
 class GameForm extends StatefulWidget {
   @override
