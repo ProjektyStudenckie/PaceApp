@@ -122,6 +122,19 @@ class StatsRepository {
       });
     });
 
-    return userStats;
+    // TODO: Testing remove later
+    userStats.add(Stats(accuracy: 0.99, wpm: 40));
+    userStats.add(Stats(accuracy: 0.94, wpm: 140));
+    userStats.add(Stats(accuracy: 0.95, wpm: 69));
+    userStats.add(Stats(accuracy: 0.91, wpm: 83));
+    userStats.add(Stats(accuracy: 0.91, wpm: 70));
+    userStats.add(Stats(accuracy: 0.95, wpm: 69));
+    userStats.add(Stats(accuracy: 0.91, wpm: 83));
+    userStats.add(Stats(accuracy: 0.91, wpm: 70));
+
+    if(userStats.length > 30)
+      return userStats.sublist(userStats.length-30);
+      else
+      return userStats;
   }
 }
