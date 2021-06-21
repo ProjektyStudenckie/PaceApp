@@ -5,6 +5,7 @@ import 'package:pace_app/repository/authentication_repository.dart';
 import 'app/bloc_observer.dart';
 import 'app/view/app.dart';
 import 'injection/injection.dart';
+import 'package:pace_app/repository/quotes_repository.dart';
 
 void main() async {
   configureDependencies();
@@ -12,7 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await setupGetIt();
-  
+
   runApp(App(
     authenticationRepository: getIt<AuthenticationRepository>(),
     key: Key(''),
