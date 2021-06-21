@@ -13,18 +13,15 @@ class StatsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => StatsCubit(
-          statsRepository: getIt()),
+      create: (context) => StatsCubit(statsRepository: getIt()),
       child: BlocBuilder<StatsCubit, StatsState>(
         builder: (context, state) {
-
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
               child: Column(
                 children: [
-                  //Header(title: state.email.split("@").first),
                   SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -42,7 +39,9 @@ class StatsPage extends StatelessWidget {
                                       value:
                                           state.averageWPM.toInt().toString()),
                                   Divider(color: Colors.white24, thickness: 2),
-                                  DataField(label: "Rank", value: "44"),
+                                  DataField(
+                                      label: "Rank",
+                                      value: state.wpmRanking.toString()),
                                 ] else
                                   Center(child: CircularProgressIndicator())
                               ],
@@ -69,7 +68,9 @@ class StatsPage extends StatelessWidget {
                                     color: Colors.white24,
                                     thickness: 2,
                                   ),
-                                  DataField(label: "Rank", value: "1"),
+                                  DataField(
+                                      label: "Rank",
+                                      value: state.accuracyRanking.toString()),
                                 ] else
                                   Center(child: CircularProgressIndicator())
                               ],

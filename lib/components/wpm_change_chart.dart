@@ -123,12 +123,8 @@ class _WPMChangeChartState extends State<WPMChangeChart> {
       lineBarsData: [
         LineChartBarData(
           spots: [
-            for (int i = 0; i < widget.allStats.length; i++)
-              FlSpot(i.toDouble(), widget.allStats[i].wpm)
-
-            // FlSpot(8, 4),
-            // FlSpot(9.5, 3),
-            // FlSpot(11, 4),
+            for (int i = widget.allStats.length-1; i >= 0; i--)
+              FlSpot(-i.toDouble() + widget.allStats.length-1, widget.allStats[i].wpm)
           ],
           isCurved: true,
           colors: gradientColors,

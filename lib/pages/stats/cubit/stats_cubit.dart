@@ -31,9 +31,14 @@ class StatsCubit extends Cubit<StatsState> {
 
     final allStats = await statsRepository.getAllUserStats();
 
+    final accuracyRanking = await statsRepository.getAccuracyRanking();
+    final wpmRanking = await statsRepository.getWPMRanking();
+
     emit(state.copyWith(
         averageWPM: avgWPM,
         averageAccuracy: avgAccuracy,
+        accuracyRanking: accuracyRanking,
+        wpmRanking: wpmRanking,
         allStats: allStats,
         loaded: true));
   }

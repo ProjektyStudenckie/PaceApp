@@ -107,9 +107,8 @@ class _AccuracyChangeChartState extends State<AccuracyChangeChart> {
       lineBarsData: [
         LineChartBarData(
           spots: [
-            for (int i = 0; i < widget.allStats.length; i++)
-              FlSpot(i.toDouble(), widget.allStats[i].accuracy.toDouble())
-
+            for (int i = widget.allStats.length-1; i >= 0; i--)
+              FlSpot(-i.toDouble() + widget.allStats.length-1, widget.allStats[i].accuracy.toDouble())
           ],
           isCurved: true,
           colors: gradientColors,

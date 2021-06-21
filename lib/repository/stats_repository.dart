@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 import 'package:pace_app/injection/injection.dart';
 import 'package:pace_app/repository/models/stats.dart';
-
+import 'package:sortedmap/sortedmap.dart';
 import 'authentication_repository.dart';
 
 @lazySingleton
@@ -10,7 +10,8 @@ class StatsRepository {
   CollectionReference get usersReference =>
       FirebaseFirestore.instance.collection('stats');
 
-  String get user => getIt.get<AuthenticationRepository>().currentUser.id;
+  String get currentUser =>
+      getIt.get<AuthenticationRepository>().currentUser.id;
 
   void addNewStat(int time, int correctLetters, int mistakes, int textLength) {
     usersReference.add({
@@ -18,7 +19,7 @@ class StatsRepository {
       'correctsLetters': correctLetters,
       'mistakes': mistakes,
       'textLength': textLength,
-      'owner': user,
+      'owner': currentUser,
     }).catchError((error) {
       print('Failed to add new item: $error');
     });
@@ -28,7 +29,7 @@ class StatsRepository {
     List<double> wpms = [];
 
     await usersReference
-        .where("owner", isEqualTo: user)
+        .where("owner", isEqualTo: currentUser)
         .get()
         .then((querySnapshot) {
       querySnapshot.docs.forEach((doc) {
@@ -62,7 +63,7 @@ class StatsRepository {
     List<double> accuracyList = [];
 
     await usersReference
-        .where("owner", isEqualTo: user)
+        .where("owner", isEqualTo: currentUser)
         .get()
         .then((querySnapshot) {
       querySnapshot.docs.forEach((doc) {
@@ -109,7 +110,7 @@ class StatsRepository {
     List<Stats> userStats = [];
 
     await usersReference
-        .where("owner", isEqualTo: user)
+        .where("owner", isEqualTo: currentUser)
         .get()
         .then((querySnapshot) {
       querySnapshot.docs.forEach((doc) {
@@ -128,19 +129,122 @@ class StatsRepository {
       });
     });
 
-    // TODO: Testing remove later
-    userStats.add(Stats(accuracy: 99, wpm: 40));
-    userStats.add(Stats(accuracy: 94, wpm: 140));
-    userStats.add(Stats(accuracy: 95, wpm: 69));
-    userStats.add(Stats(accuracy: 91, wpm: 83));
-    userStats.add(Stats(accuracy: 91, wpm: 70));
-    userStats.add(Stats(accuracy: 95, wpm: 69));
-    userStats.add(Stats(accuracy: 91, wpm: 83));
-    userStats.add(Stats(accuracy: 91, wpm: 70));
-
-    if(userStats.length > 30)
-      return userStats.sublist(userStats.length-30);
-      else
+    if (userStats.length > 30)
+      return userStats.sublist(userStats.length - 30);
+    else
       return userStats;
+  }
+
+  Future<int> getAccuracyRanking() async {
+    Set<String> users = {};
+    var sortedScores = new FilteredMap(new Filter(reversed: true));
+
+    await usersReference.get().then((QuerySnapshot snapshot) {
+      snapshot.docs.forEach((f) => users.add(f["owner"]));
+    });
+
+    for (var user in users) {
+      sortedScores[user] = await _getAverageAccuracy(user);
+    }
+
+    var place = 1;
+    bool found = false;
+
+    sortedScores.forEach((key, value) {
+      if (key == currentUser) found = true;
+      if (!found) place += 1;
+    });
+
+    return place;
+  }
+
+  Future<int> getWPMRanking() async {
+    Set<String> users = {};
+    var sortedScores = new FilteredMap(new Filter(reversed: true));
+
+    await usersReference.get().then((QuerySnapshot snapshot) {
+      snapshot.docs.forEach((f) => users.add(f["owner"]));
+    });
+
+    for (var user in users) {
+      sortedScores[user] = await _getAverageWPM(user);
+    }
+
+    var place = 1;
+    bool found = false;
+
+    sortedScores.forEach((key, value) {
+      if (key == currentUser) found = true;
+      if (!found) place += 1;
+    });
+
+    return place;
+  }
+
+  Future<double> _getAverageAccuracy(String user) async {
+    List<double> accuracyList = [];
+
+    await usersReference
+        .where("owner", isEqualTo: user)
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        try {
+          final textLength = int.parse(doc["textLength"].toString());
+          final mistakes = int.parse(doc["mistakes"].toString());
+
+          final accuracy = calculateAccuracy(textLength, mistakes);
+
+          accuracyList.add(accuracy);
+        } catch (e) {
+          print(e);
+        }
+      });
+    });
+
+    double sum = 0;
+
+    if (accuracyList.length > 1)
+      sum = accuracyList.reduce((a, b) => a + b);
+    else if (accuracyList.length == 1)
+      sum = accuracyList[0];
+    else
+      return 0;
+
+    return sum / accuracyList.length;
+  }
+
+  Future<double> _getAverageWPM(String user) async {
+    List<double> wpms = [];
+
+    await usersReference
+        .where("owner", isEqualTo: user)
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        try {
+          final textLength = int.parse(doc["textLength"].toString());
+          final mistakes = int.parse(doc["mistakes"].toString());
+          final time = int.parse(doc["time"].toString());
+
+          final netWPM = calculateNetWPM(textLength, mistakes, time);
+
+          wpms.add(netWPM);
+        } catch (e) {
+          print(e);
+        }
+      });
+    });
+
+    double sum = 0;
+
+    if (wpms.length > 1)
+      sum = wpms.reduce((a, b) => a + b);
+    else if (wpms.length == 1)
+      sum = wpms[0];
+    else
+      return 0;
+
+    return sum / wpms.length;
   }
 }
