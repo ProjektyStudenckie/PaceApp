@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pace_app/components/gradient_container.dart';
 import 'package:pace_app/components/wpm_change_chart.dart';
 import 'package:pace_app/constants.dart';
+import 'package:pace_app/injection/injection.dart';
 import 'package:pace_app/pages/stats/cubit/stats_cubit.dart';
 
 class StatsPage extends StatelessWidget {
@@ -11,17 +12,18 @@ class StatsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => StatsCubit(),
+      create: (context) => StatsCubit(
+          statsRepository: getIt()),
       child: BlocBuilder<StatsCubit, StatsState>(
         builder: (context, state) {
-          BlocProvider.of<StatsCubit>(context).getWPM();
+          BlocProvider.of<StatsCubit>(context).loadStats();
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Header(title: "Jakub Sosna"),
+                  //Header(title: state.email.split("@").first),
                   SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -33,9 +35,15 @@ class StatsPage extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                DataField(label: "WPM", value: "129"),
-                                Divider(color: Colors.white24, thickness: 2),
-                                DataField(label: "Rank", value: "44"),
+                                if (state.loaded) ...[
+                                  DataField(
+                                      label: "WPM",
+                                      value:
+                                          state.averageWPM.toInt().toString()),
+                                  Divider(color: Colors.white24, thickness: 2),
+                                  DataField(label: "Rank", value: "44"),
+                                ] else
+                                  Center(child: CircularProgressIndicator())
                               ],
                             )),
                         flex: 2,
@@ -50,12 +58,19 @@ class StatsPage extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                DataField(label: "ACCURACY", value: "100"),
-                                Divider(
-                                  color: Colors.white24,
-                                  thickness: 2,
-                                ),
-                                DataField(label: "Rank", value: "1"),
+                                if (state.loaded) ...[
+                                  DataField(
+                                      label: "ACCURACY",
+                                      value: (state.averageAccuracy * 100)
+                                          .toInt()
+                                          .toString()),
+                                  Divider(
+                                    color: Colors.white24,
+                                    thickness: 2,
+                                  ),
+                                  DataField(label: "Rank", value: "1"),
+                                ] else
+                                  Center(child: CircularProgressIndicator())
                               ],
                             )),
                         flex: 3,
@@ -66,7 +81,7 @@ class StatsPage extends StatelessWidget {
                     height: 36,
                     thickness: 2,
                   ),
-                  WPMChangeChart(),
+                  WPMChangeChart(state.allStats),
                 ],
               ),
             ),
@@ -84,30 +99,36 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Title: $title");
+    print("title: ${title.isEmpty}");
+
     return GradientContainer(
         child: Row(
       children: [
         CircleAvatar(
           radius: 30,
-          backgroundColor: Theme.of(context).accentColor,
+          backgroundColor: Theme.of(context).colorScheme.secondary,
           child: Icon(
             Icons.person,
             size: 40,
           ),
         ),
         SizedBox(width: 12),
-        Expanded(
-          child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                title,
-                softWrap: true,
-                style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 34,
-                    color: Colors.white),
-              )),
-        )
+        if (title.isNotEmpty)
+          Expanded(
+            child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  title,
+                  softWrap: true,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 34,
+                      color: Colors.white),
+                )),
+          )
+        else
+          CircularProgressIndicator()
       ],
     ));
   }

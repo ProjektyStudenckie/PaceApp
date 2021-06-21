@@ -8,7 +8,6 @@ import 'package:pace_app/pages/settings/cubit/settings_cubit.dart';
 import 'package:pace_app/repository/authentication_repository.dart';
 import 'package:pace_app/utils/toast_utils.dart';
 import 'package:settings_ui/settings_ui.dart';
-import 'package:pace_app/constants.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -102,24 +101,24 @@ class SettingsPage extends StatelessWidget {
                   SettingsSection(
                     title: "User",
                     tiles: [
-                      SettingsTile(
-                        title: "Nickname",
-                        subtitle: "John_Doe",
-                        leading: Icon(Icons.color_lens),
-                        onPressed: (context1) {
-                          displayTextInputDialog(
-                              context: context1,
-                              title: "Enter new nickname",
-                              onChanged: (newValue) {
-                                context
-                                    .read<SettingsCubit>()
-                                    .changeNickname(newValue);
-                              },
-                              onConfirmed: () {
-                                // TODO: Change nickname in db
-                              });
-                        },
-                      ),
+                      // SettingsTile(
+                      //   title: "Nickname",
+                      //   subtitle: "John_Doe",
+                      //   leading: Icon(Icons.color_lens),
+                      //   onPressed: (context1) {
+                      //     displayTextInputDialog(
+                      //         context: context1,
+                      //         title: "Enter new nickname",
+                      //         onChanged: (newValue) {
+                      //           context
+                      //               .read<SettingsCubit>()
+                      //               .changeNickname(newValue);
+                      //         },
+                      //         onConfirmed: () {
+                      //           
+                      //         });
+                      //   },
+                      // ),
                       getSettingsTileButton(
                           title: "Reset password",
                           leadingIconData: Icons.password,

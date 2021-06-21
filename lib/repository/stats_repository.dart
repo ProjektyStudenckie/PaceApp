@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 import 'package:pace_app/injection/injection.dart';
+import 'package:pace_app/repository/models/stats.dart';
 
 import 'authentication_repository.dart';
 
@@ -24,7 +25,10 @@ class StatsRepository {
   Future<double> getUserAverageWPM() async {
     List<double> wpms = [];
 
-    usersReference.where("owner", isEqualTo: user).get().then((querySnapshot) {
+    await usersReference
+        .where("owner", isEqualTo: user)
+        .get()
+        .then((querySnapshot) {
       querySnapshot.docs.forEach((doc) {
         try {
           final textLength = int.parse(doc["textLength"].toString());
@@ -55,7 +59,10 @@ class StatsRepository {
   Future<double> getUserAverageAccuracy() async {
     List<double> accuracyList = [];
 
-    usersReference.where("owner", isEqualTo: user).get().then((querySnapshot) {
+    await usersReference
+        .where("owner", isEqualTo: user)
+        .get()
+        .then((querySnapshot) {
       querySnapshot.docs.forEach((doc) {
         try {
           final textLength = int.parse(doc["textLength"].toString());
@@ -90,5 +97,31 @@ class StatsRepository {
 
   double calculateAccuracy(int textLength, int mistakes) {
     return (textLength - mistakes) / textLength;
+  }
+
+  Future<List<Stats>> getAllUserStats() async {
+    List<Stats> userStats = [];
+
+    await usersReference
+        .where("owner", isEqualTo: user)
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        try {
+          final textLength = int.parse(doc["textLength"].toString());
+          final mistakes = int.parse(doc["mistakes"].toString());
+          final time = int.parse(doc["time"].toString());
+
+          final wpm = calculateNetWPM(textLength, mistakes, time);
+          final accuracy = calculateAccuracy(textLength, mistakes);
+
+          userStats.add(Stats(wpm: wpm, accuracy: accuracy));
+        } catch (e) {
+          print(e);
+        }
+      });
+    });
+
+    return userStats;
   }
 }

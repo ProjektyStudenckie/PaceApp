@@ -1,9 +1,14 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:pace_app/repository/models/stats.dart';
 
 import 'gradient_container.dart';
 
 class WPMChangeChart extends StatefulWidget {
+  final List<Stats> allStats;
+
+  WPMChangeChart(this.allStats);
+
   @override
   _WPMChangeChartState createState() => _WPMChangeChartState();
 }
@@ -64,9 +69,7 @@ class _WPMChangeChartState extends State<WPMChangeChart> {
           showTitles: true,
           reservedSize: 22,
           getTextStyles: (value) => const TextStyle(
-              color: Colors.white70,
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
+              color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 16),
           getTitles: (value) {
             switch (value.toInt()) {
               case 2:
@@ -103,8 +106,7 @@ class _WPMChangeChartState extends State<WPMChangeChart> {
         ),
       ),
       borderData: FlBorderData(
-          show: true,
-          border: Border.all(color: Colors.blueGrey, width: 1)),
+          show: true, border: Border.all(color: Colors.blueGrey, width: 1)),
       minX: 0,
       maxX: 11,
       minY: 0,

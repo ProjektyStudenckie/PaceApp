@@ -19,8 +19,7 @@ class RegistrationForm extends StatelessWidget {
           if (state.status == FormzStatus.submissionFailure) {
             showErrorToast(context, "Registration Failed!");
           }
-
-          // TODO: Find out if it should be done differently
+          
           else if (state.status == FormzStatus.submissionSuccess) {
             showSuccessToast(context, "Succesfully Registered!");
             Navigator.pop(context);
