@@ -99,6 +99,10 @@ class StatsRepository {
     return (textLength - mistakes) / textLength;
   }
 
+  int calculateAccuracyPercent(int textLength, int mistakes) {
+    return (((textLength - mistakes) / textLength) * 100).toInt();
+  }
+
   Future<List<Stats>> getAllUserStats() async {
     List<Stats> userStats = [];
 
@@ -113,7 +117,7 @@ class StatsRepository {
           final time = int.parse(doc["time"].toString());
 
           final wpm = calculateNetWPM(textLength, mistakes, time);
-          final accuracy = calculateAccuracy(textLength, mistakes);
+          final accuracy = calculateAccuracyPercent(textLength, mistakes);
 
           userStats.add(Stats(wpm: wpm, accuracy: accuracy));
         } catch (e) {
@@ -123,14 +127,14 @@ class StatsRepository {
     });
 
     // TODO: Testing remove later
-    userStats.add(Stats(accuracy: 0.99, wpm: 40));
-    userStats.add(Stats(accuracy: 0.94, wpm: 140));
-    userStats.add(Stats(accuracy: 0.95, wpm: 69));
-    userStats.add(Stats(accuracy: 0.91, wpm: 83));
-    userStats.add(Stats(accuracy: 0.91, wpm: 70));
-    userStats.add(Stats(accuracy: 0.95, wpm: 69));
-    userStats.add(Stats(accuracy: 0.91, wpm: 83));
-    userStats.add(Stats(accuracy: 0.91, wpm: 70));
+    userStats.add(Stats(accuracy: 99, wpm: 40));
+    userStats.add(Stats(accuracy: 94, wpm: 140));
+    userStats.add(Stats(accuracy: 95, wpm: 69));
+    userStats.add(Stats(accuracy: 91, wpm: 83));
+    userStats.add(Stats(accuracy: 91, wpm: 70));
+    userStats.add(Stats(accuracy: 95, wpm: 69));
+    userStats.add(Stats(accuracy: 91, wpm: 83));
+    userStats.add(Stats(accuracy: 91, wpm: 70));
 
     if(userStats.length > 30)
       return userStats.sublist(userStats.length-30);

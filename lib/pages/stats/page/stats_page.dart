@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pace_app/components/accuracy_change_chart.dart';
 import 'package:pace_app/components/gradient_container.dart';
 import 'package:pace_app/components/wpm_change_chart.dart';
 import 'package:pace_app/constants.dart';
@@ -16,11 +17,11 @@ class StatsPage extends StatelessWidget {
           statsRepository: getIt()),
       child: BlocBuilder<StatsCubit, StatsState>(
         builder: (context, state) {
-          BlocProvider.of<StatsCubit>(context).loadStats();
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
               child: Column(
                 children: [
                   //Header(title: state.email.split("@").first),
@@ -82,6 +83,11 @@ class StatsPage extends StatelessWidget {
                     thickness: 2,
                   ),
                   WPMChangeChart(state.allStats),
+                  Divider(
+                    height: 36,
+                    thickness: 2,
+                  ),
+                  AccuracyChangeChart(state.allStats)
                 ],
               ),
             ),

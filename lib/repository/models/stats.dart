@@ -1,6 +1,6 @@
 class Stats {
   final double wpm;
-  final double accuracy;
+  final int accuracy;
 
   Stats({required this.wpm, required this.accuracy});
 }
