@@ -43,9 +43,10 @@ class _NavBarContainerState extends State<NavBarContainer> {
             _stopWatchTimer.onExecute.add(StopWatchExecute.start);
           }
 
-          if (state.navItem != NavItem.game) {
+          if (state.navItem != NavItem.game && state.saveStats == true) {
             _cubit.saveData(_stopWatchTimer.secondTime.value);
             _stopWatchTimer.onExecute.add(StopWatchExecute.reset);
+            _cubit.setBool(saveStats: false);
           }
 
           return Scaffold(

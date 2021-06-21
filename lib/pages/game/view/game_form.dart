@@ -40,6 +40,15 @@ class _GameFormState extends State<GameForm> {
                       stream: context.read<AppBloc>().outTheme,
                       builder: (context, snapshot) {
                         return TextField(
+                          onChanged: (text) {
+                            _cubit.enableCountingMistakes(true);
+                            _cubit.addLetter();
+                            if (text.length == state.gameText.length) {
+                              _controller.clear();
+                              _cubit.setTextPartIndex(state.textPartIndex + 1);
+                              _cubit.getText();
+                            }
+                          },
                           textInputAction: TextInputAction.done,
                           maxLines: 99,
                           style: TextStyle(fontSize: 27.0),
@@ -97,20 +106,13 @@ class MyTextController extends TextEditingController {
       required bool withComposing}) {
     List<InlineSpan> children = [];
     String gameText = cubit.state.gameText;
+    cubit.setIndex(text.length);
 
-    cubit.setCurrentIndex(text.length);
+    if (text.length == gameText.length) {
+      cubit.setTextPartIndex(cubit.state.textPartIndex + 1);
+    }
 
     for (int i = 0; i < text.length; i++) {
-      if (gameText[i] == ' ' && text[i] != ' ') {
-        children.add(TextSpan(
-          style: kTextStyleRed,
-          text: text[i],
-        ));
-        gameText = StringUtils.addCharAtPosition(gameText, text[i], i);
-        cubit.addMistake();
-        continue;
-      }
-
       if (text[i] != gameText[i]) {
         children.add(TextSpan(
           style: kTextStyleRed,
@@ -124,6 +126,7 @@ class MyTextController extends TextEditingController {
           style: kTextStyleWhite,
           text: gameText[i],
         ));
+        //cubit.addLetter();
       }
     }
 

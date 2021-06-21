@@ -9,27 +9,45 @@ class GameCubit extends Cubit<GameState> {
   GameCubit(this._gameRepository) : super(GameState.init());
 
   void setup() {
-    emit(state.copyWith(gameText: getText));
+    getText();
   }
 
   void startOrFinishTheGame({required bool startTheGame}) {
     emit(state.copyWith(playGame: startTheGame));
   }
 
-  String get getText => _gameRepository.gameText;
-
-  void setCurrentIndex(int index) {
-    emit(state.copyWith(currentIndex: index));
+  void getText() {
+    String text = _gameRepository.gameText(state.textPartIndex);
+    emit(state.copyWith(gameText: text));
   }
 
   void addMistake() {
-    if (state.savedIndex == state.currentIndex) {
+    if (!state.enableCountingMistakes) {
       return;
     }
 
-    int _currentNrOfMistakes = _gameRepository.mistakes;
-    _gameRepository.setMistakes(nrOfMistakes: _currentNrOfMistakes + 1);
-    emit(state.copyWith(savedIndex: state.currentIndex));
+    int _currentNrOfMistakes = _gameRepository.mistakes + 1;
+    print('mistakes: $_currentNrOfMistakes');
+    _gameRepository.setMistakes(nrOfMistakes: _currentNrOfMistakes);
+    enableCountingMistakes(false);
+  }
+
+  void addLetter() {
+    int _currentNrOfLetters = _gameRepository.lettersCount + 1;
+    print('lettersCount: $_currentNrOfLetters');
+    _gameRepository.setLettersCount(nrOfLetters: _currentNrOfLetters);
+  }
+
+  void enableCountingMistakes(bool b) {
+    emit(state.copyWith(enableCountingMistakes: b));
+  }
+
+  void setIndex(int i) {
+    emit(state.copyWith(currentIndex: i));
+  }
+
+  void setTextPartIndex(int i) {
+    emit(state.copyWith(textPartIndex: i));
   }
 }
 
@@ -39,11 +57,17 @@ class GameState with _$GameState {
     required bool playGame,
     required String gameText,
     required int currentIndex,
-    required int savedIndex,
+    required bool enableCountingMistakes,
+    required int textPartIndex,
   }) = _GameState;
 
   const GameState._();
 
-  factory GameState.init() =>
-      GameState(playGame: false, gameText: '', currentIndex: 0, savedIndex: -1);
+  factory GameState.init() => GameState(
+        playGame: false,
+        gameText: '',
+        currentIndex: 0,
+        enableCountingMistakes: false,
+        textPartIndex: 0,
+      );
 }
