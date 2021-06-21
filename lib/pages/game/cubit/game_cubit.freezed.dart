@@ -20,12 +20,14 @@ class _$GameStateTearOff {
       {required bool playGame,
       required String gameText,
       required int currentIndex,
-      required int savedIndex}) {
+      required bool enableCountingMistakes,
+      required int textPartIndex}) {
     return _GameState(
       playGame: playGame,
       gameText: gameText,
       currentIndex: currentIndex,
-      savedIndex: savedIndex,
+      enableCountingMistakes: enableCountingMistakes,
+      textPartIndex: textPartIndex,
     );
   }
 }
@@ -38,7 +40,8 @@ mixin _$GameState {
   bool get playGame => throw _privateConstructorUsedError;
   String get gameText => throw _privateConstructorUsedError;
   int get currentIndex => throw _privateConstructorUsedError;
-  int get savedIndex => throw _privateConstructorUsedError;
+  bool get enableCountingMistakes => throw _privateConstructorUsedError;
+  int get textPartIndex => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $GameStateCopyWith<GameState> get copyWith =>
@@ -49,7 +52,12 @@ mixin _$GameState {
 abstract class $GameStateCopyWith<$Res> {
   factory $GameStateCopyWith(GameState value, $Res Function(GameState) then) =
       _$GameStateCopyWithImpl<$Res>;
-  $Res call({bool playGame, String gameText, int currentIndex, int savedIndex});
+  $Res call(
+      {bool playGame,
+      String gameText,
+      int currentIndex,
+      bool enableCountingMistakes,
+      int textPartIndex});
 }
 
 /// @nodoc
@@ -65,7 +73,8 @@ class _$GameStateCopyWithImpl<$Res> implements $GameStateCopyWith<$Res> {
     Object? playGame = freezed,
     Object? gameText = freezed,
     Object? currentIndex = freezed,
-    Object? savedIndex = freezed,
+    Object? enableCountingMistakes = freezed,
+    Object? textPartIndex = freezed,
   }) {
     return _then(_value.copyWith(
       playGame: playGame == freezed
@@ -80,9 +89,13 @@ class _$GameStateCopyWithImpl<$Res> implements $GameStateCopyWith<$Res> {
           ? _value.currentIndex
           : currentIndex // ignore: cast_nullable_to_non_nullable
               as int,
-      savedIndex: savedIndex == freezed
-          ? _value.savedIndex
-          : savedIndex // ignore: cast_nullable_to_non_nullable
+      enableCountingMistakes: enableCountingMistakes == freezed
+          ? _value.enableCountingMistakes
+          : enableCountingMistakes // ignore: cast_nullable_to_non_nullable
+              as bool,
+      textPartIndex: textPartIndex == freezed
+          ? _value.textPartIndex
+          : textPartIndex // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -94,7 +107,12 @@ abstract class _$GameStateCopyWith<$Res> implements $GameStateCopyWith<$Res> {
           _GameState value, $Res Function(_GameState) then) =
       __$GameStateCopyWithImpl<$Res>;
   @override
-  $Res call({bool playGame, String gameText, int currentIndex, int savedIndex});
+  $Res call(
+      {bool playGame,
+      String gameText,
+      int currentIndex,
+      bool enableCountingMistakes,
+      int textPartIndex});
 }
 
 /// @nodoc
@@ -111,7 +129,8 @@ class __$GameStateCopyWithImpl<$Res> extends _$GameStateCopyWithImpl<$Res>
     Object? playGame = freezed,
     Object? gameText = freezed,
     Object? currentIndex = freezed,
-    Object? savedIndex = freezed,
+    Object? enableCountingMistakes = freezed,
+    Object? textPartIndex = freezed,
   }) {
     return _then(_GameState(
       playGame: playGame == freezed
@@ -126,9 +145,13 @@ class __$GameStateCopyWithImpl<$Res> extends _$GameStateCopyWithImpl<$Res>
           ? _value.currentIndex
           : currentIndex // ignore: cast_nullable_to_non_nullable
               as int,
-      savedIndex: savedIndex == freezed
-          ? _value.savedIndex
-          : savedIndex // ignore: cast_nullable_to_non_nullable
+      enableCountingMistakes: enableCountingMistakes == freezed
+          ? _value.enableCountingMistakes
+          : enableCountingMistakes // ignore: cast_nullable_to_non_nullable
+              as bool,
+      textPartIndex: textPartIndex == freezed
+          ? _value.textPartIndex
+          : textPartIndex // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -141,7 +164,8 @@ class _$_GameState extends _GameState {
       {required this.playGame,
       required this.gameText,
       required this.currentIndex,
-      required this.savedIndex})
+      required this.enableCountingMistakes,
+      required this.textPartIndex})
       : super._();
 
   @override
@@ -151,11 +175,13 @@ class _$_GameState extends _GameState {
   @override
   final int currentIndex;
   @override
-  final int savedIndex;
+  final bool enableCountingMistakes;
+  @override
+  final int textPartIndex;
 
   @override
   String toString() {
-    return 'GameState(playGame: $playGame, gameText: $gameText, currentIndex: $currentIndex, savedIndex: $savedIndex)';
+    return 'GameState(playGame: $playGame, gameText: $gameText, currentIndex: $currentIndex, enableCountingMistakes: $enableCountingMistakes, textPartIndex: $textPartIndex)';
   }
 
   @override
@@ -171,9 +197,12 @@ class _$_GameState extends _GameState {
             (identical(other.currentIndex, currentIndex) ||
                 const DeepCollectionEquality()
                     .equals(other.currentIndex, currentIndex)) &&
-            (identical(other.savedIndex, savedIndex) ||
+            (identical(other.enableCountingMistakes, enableCountingMistakes) ||
+                const DeepCollectionEquality().equals(
+                    other.enableCountingMistakes, enableCountingMistakes)) &&
+            (identical(other.textPartIndex, textPartIndex) ||
                 const DeepCollectionEquality()
-                    .equals(other.savedIndex, savedIndex)));
+                    .equals(other.textPartIndex, textPartIndex)));
   }
 
   @override
@@ -182,7 +211,8 @@ class _$_GameState extends _GameState {
       const DeepCollectionEquality().hash(playGame) ^
       const DeepCollectionEquality().hash(gameText) ^
       const DeepCollectionEquality().hash(currentIndex) ^
-      const DeepCollectionEquality().hash(savedIndex);
+      const DeepCollectionEquality().hash(enableCountingMistakes) ^
+      const DeepCollectionEquality().hash(textPartIndex);
 
   @JsonKey(ignore: true)
   @override
@@ -195,7 +225,8 @@ abstract class _GameState extends GameState {
       {required bool playGame,
       required String gameText,
       required int currentIndex,
-      required int savedIndex}) = _$_GameState;
+      required bool enableCountingMistakes,
+      required int textPartIndex}) = _$_GameState;
   const _GameState._() : super._();
 
   @override
@@ -205,7 +236,9 @@ abstract class _GameState extends GameState {
   @override
   int get currentIndex => throw _privateConstructorUsedError;
   @override
-  int get savedIndex => throw _privateConstructorUsedError;
+  bool get enableCountingMistakes => throw _privateConstructorUsedError;
+  @override
+  int get textPartIndex => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$GameStateCopyWith<_GameState> get copyWith =>
