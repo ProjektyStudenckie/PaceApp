@@ -18,6 +18,7 @@ class GameForm extends StatefulWidget {
 class _GameFormState extends State<GameForm> {
   final GameCubit _cubit = GameCubit(getIt.get());
   late final TextEditingController _controller;
+  late TextEditingValue previousPart = TextEditingValue(text: '');
 
   @override
   void initState() {
@@ -36,31 +37,42 @@ class _GameFormState extends State<GameForm> {
             return Center(
               child: Stack(
                 children: [
-                  StreamBuilder<ThemeSettings>(
-                      stream: context.read<AppBloc>().outTheme,
-                      builder: (context, snapshot) {
-                        return TextField(
-                          onChanged: (text) {
-                            _cubit.enableCountingMistakes(true);
-                            _cubit.addLetter();
-                            if (text.length == state.gameText.length) {
-                              _controller.clear();
-                              _cubit.setTextPartIndex(state.textPartIndex + 1);
-                              _cubit.getText();
-                            }
-                          },
-                          textInputAction: TextInputAction.done,
-                          maxLines: 99,
-                          style: TextStyle(fontSize: 27.0),
-                          controller: _controller,
-                          cursorColor:
-                              snapshot.data?.indicatorColor ?? Colors.yellow,
-                          autofocus: true,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                          ),
-                        );
-                      }),
+                  Column(
+                    children: [
+                      TextField(
+                        controller: _controller,
+                      ),
+                      StreamBuilder<ThemeSettings>(
+                          stream: context.read<AppBloc>().outTheme,
+                          builder: (context, snapshot) {
+                            return TextField(
+                              onChanged: (text) {
+                                _cubit.enableCountingMistakes(true);
+                                _cubit.addLetter();
+                                if (text.length == state.gameText.length) {
+                                  _controller.clear();
+                                  setState(() {
+                                    print(previousPart);
+                                  });
+                                  _cubit.setTextPartIndex(
+                                      state.textPartIndex + 1);
+                                  _cubit.getText();
+                                }
+                              },
+                              textInputAction: TextInputAction.done,
+                              maxLines: 99,
+                              style: TextStyle(fontSize: 27.0),
+                              controller: _controller,
+                              cursorColor: snapshot.data?.indicatorColor ??
+                                  Colors.yellow,
+                              autofocus: true,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                              ),
+                            );
+                          }),
+                    ],
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 13.0),
                     child: RichText(
@@ -126,7 +138,6 @@ class MyTextController extends TextEditingController {
           style: kTextStyleWhite,
           text: gameText[i],
         ));
-        //cubit.addLetter();
       }
     }
 
