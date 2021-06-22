@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pace_app/repository/game_repository.dart';
@@ -34,7 +35,7 @@ class GameCubit extends Cubit<GameState> {
 
   void addLetter() {
     int _currentNrOfLetters = _gameRepository.lettersCount + 1;
-    print('lettersCount: $_currentNrOfLetters');
+    //print('lettersCount: $_currentNrOfLetters');
     _gameRepository.setLettersCount(nrOfLetters: _currentNrOfLetters);
   }
 
@@ -49,6 +50,34 @@ class GameCubit extends Cubit<GameState> {
   void setTextPartIndex(int i) {
     emit(state.copyWith(textPartIndex: i));
   }
+
+  void setOldTextPart(TextSpan textSpan) {
+    emit(state.copyWith(textSpan: textSpan));
+  }
+
+  TextSpan get getOldTextPart => state.textSpan;
+
+  int get textPartsCount => _gameRepository.textPartsCount;
+
+  void stopTheGame() {
+    _gameRepository.setStopGameValue(true);
+  }
+
+  void finishGame(bool b) {
+    emit(state.copyWith(gameFinished: b));
+  }
+
+  double accuracy() {
+    return _gameRepository.accuracy;
+  }
+
+  double wpm() {
+    return _gameRepository.wpm;
+  }
+
+  int mistakes() {
+    return _gameRepository.lastSavedMistakes;
+  }
 }
 
 @freezed
@@ -59,6 +88,8 @@ class GameState with _$GameState {
     required int currentIndex,
     required bool enableCountingMistakes,
     required int textPartIndex,
+    required TextSpan textSpan,
+    required bool gameFinished,
   }) = _GameState;
 
   const GameState._();
@@ -69,5 +100,7 @@ class GameState with _$GameState {
         currentIndex: 0,
         enableCountingMistakes: false,
         textPartIndex: 0,
+        textSpan: TextSpan(),
+        gameFinished: false,
       );
 }

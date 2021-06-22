@@ -24,8 +24,16 @@ class NavBarContainer extends StatefulWidget {
 
 class _NavBarContainerState extends State<NavBarContainer> {
   final NavBarCubit _cubit = NavBarCubit(getIt.get())..setup();
-  final StopWatchTimer _stopWatchTimer =
-      StopWatchTimer(mode: StopWatchMode.countUp);
+  late final StopWatchTimer _stopWatchTimer;
+
+  @override
+  void initState() {
+    _stopWatchTimer = StopWatchTimer(
+      mode: StopWatchMode.countUp,
+      onChange: (value) => _cubit.setTime(value),
+    );
+    super.initState();
+  }
 
   @override
   void dispose() async {
@@ -39,7 +47,7 @@ class _NavBarContainerState extends State<NavBarContainer> {
       child: BlocBuilder<NavBarCubit, NavBarState>(
         bloc: _cubit,
         builder: (context, state) {
-          if (state.navItem == NavItem.game) {
+          if (state.navItem == NavItem.game && state.playGame) {
             _stopWatchTimer.onExecute.add(StopWatchExecute.start);
           }
 
@@ -47,6 +55,13 @@ class _NavBarContainerState extends State<NavBarContainer> {
             _cubit.saveData(_stopWatchTimer.secondTime.value);
             _stopWatchTimer.onExecute.add(StopWatchExecute.reset);
             _cubit.setBool(saveStats: false);
+          }
+
+          if (state.stopGame) {
+            _cubit.saveData(_stopWatchTimer.secondTime.value);
+            _stopWatchTimer.onExecute.add(StopWatchExecute.reset);
+            _cubit.setPlayGame(playGame: false);
+            _cubit.stopTheGame(false);
           }
 
           return Scaffold(

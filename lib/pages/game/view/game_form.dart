@@ -17,12 +17,20 @@ class GameForm extends StatefulWidget {
 class _GameFormState extends State<GameForm> {
   final GameCubit _cubit = GameCubit(getIt.get());
   late final TextEditingController _controller;
+  late List<TextSpan> _textSpans;
 
   @override
   void initState() {
     _cubit.setup();
     _controller = MyTextController(cubit: _cubit);
+    _textSpans = [];
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _cubit.finishGame(false);
+    super.dispose();
   }
 
   @override
@@ -32,62 +40,109 @@ class _GameFormState extends State<GameForm> {
       body: BlocBuilder<GameCubit, GameState>(
           bloc: _cubit,
           builder: (context, state) {
-            return Center(
-              child: Stack(
+            if (state.gameFinished) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  StreamBuilder<ThemeSettings>(
-                      stream: context.read<AppBloc>().outTheme,
-                      builder: (context, snapshot) {
-                        return TextField(
-                          onChanged: (text) {
-                            _cubit.enableCountingMistakes(true);
-                            _cubit.addLetter();
-                            if (text.length == state.gameText.length) {
-                              _controller.clear();
-                              _cubit.setTextPartIndex(state.textPartIndex + 1);
-                              _cubit.getText();
-                            }
-                          },
-                          textInputAction: TextInputAction.done,
-                          maxLines: 99,
-                          style: TextStyle(fontSize: 27.0),
-                          controller: _controller,
-                          cursorColor:
-                              snapshot.data?.indicatorColor ?? Colors.yellow,
-                          autofocus: true,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                          ),
-                        );
-                      }),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 13.0),
-                    child: RichText(
-                      text: TextSpan(
-                        children: <TextSpan>[
-                          TextSpan(
-                            text:
-                                state.gameText.substring(0, state.currentIndex),
-                            style: TextStyle(
-                              color: Colors.grey.withOpacity(0.0),
-                              fontSize: 27.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          TextSpan(
-                            text: state.gameText.substring(state.currentIndex),
-                            style: TextStyle(
-                              color: Colors.grey.withOpacity(0.7),
-                              fontSize: 27.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
+                  Text(
+                    'Congratulations on finishing the game!',
+                    style: kTextStyleCongrats,
+                  ),
+                  SizedBox(height: 100),
+                  Text(
+                    'Accuracy: ${_cubit.accuracy()}',
+                    style: kTextStyleStats,
+                  ),
+                  Text(
+                    'WPM: ${_cubit.wpm()}',
+                    style: kTextStyleStats,
+                  ),
+                  Text(
+                    'Mistakes: ${_cubit.mistakes()}',
+                    style: kTextStyleStats,
+                  ),
                 ],
-              ),
+              );
+            }
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Stack(
+                    children: [
+                      StreamBuilder<ThemeSettings>(
+                          stream: context.read<AppBloc>().outTheme,
+                          builder: (context, snapshot) {
+                            return TextField(
+                              onChanged: (text) async {
+                                _cubit.enableCountingMistakes(true);
+                                _cubit.addLetter();
+                                if (text.length == state.gameText.length) {
+                                  await Future.delayed(
+                                      Duration(milliseconds: 20));
+                                  _textSpans.add(_cubit.getOldTextPart);
+                                  _controller.clear();
+
+                                  // finish the game
+                                  if (_cubit.textPartsCount ==
+                                      state.textPartIndex + 1) {
+                                    _cubit.stopTheGame();
+                                    _cubit.finishGame(true);
+                                    return;
+                                  }
+
+                                  _cubit.setTextPartIndex(
+                                      state.textPartIndex + 1);
+                                  _cubit.getText();
+                                }
+                              },
+                              textInputAction: TextInputAction.done,
+                              maxLines: 99,
+                              style: TextStyle(fontSize: 45.0),
+                              controller: _controller,
+                              cursorColor: snapshot.data?.indicatorColor ??
+                                  Colors.yellow,
+                              autofocus: true,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                              ),
+                            );
+                          }),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 13.0),
+                        child: RichText(
+                          text: TextSpan(
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: state.gameText
+                                    .substring(0, state.currentIndex),
+                                style: TextStyle(
+                                  color: Colors.grey.withOpacity(0.0),
+                                  fontSize: 45.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              TextSpan(
+                                text: state.gameText
+                                    .substring(state.currentIndex),
+                                style: TextStyle(
+                                  color: Colors.grey.withOpacity(0.7),
+                                  fontSize: 45.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Column(
+                  children: getChildren(_textSpans),
+                ),
+              ],
             );
           }),
     );
@@ -104,6 +159,7 @@ class MyTextController extends TextEditingController {
       TextStyle? style,
       required bool withComposing}) {
     List<InlineSpan> children = [];
+    List<InlineSpan> oldPart = [];
     String gameText = cubit.state.gameText;
     cubit.setIndex(text.length);
 
@@ -117,6 +173,10 @@ class MyTextController extends TextEditingController {
           style: kTextStyleRed,
           text: gameText[i],
         ));
+        oldPart.add(TextSpan(
+          style: kTextStyleOldPartRed,
+          text: gameText[i],
+        ));
         cubit.addMistake();
       }
 
@@ -125,10 +185,24 @@ class MyTextController extends TextEditingController {
           style: kTextStyleWhite,
           text: gameText[i],
         ));
-        //cubit.addLetter();
+        oldPart.add(TextSpan(
+          style: kTextStyleOldPartWhite,
+          text: gameText[i],
+        ));
       }
     }
 
+    cubit.setOldTextPart(TextSpan(style: style, children: oldPart));
     return TextSpan(style: style, children: children);
   }
+}
+
+List<RichText> getChildren(List<TextSpan> spans) {
+  List<RichText> list = [];
+  for (int i = 0; i < spans.length; i++) {
+    list.add(RichText(
+      text: spans[i],
+    ));
+  }
+  return list;
 }

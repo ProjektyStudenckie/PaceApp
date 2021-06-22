@@ -23,13 +23,13 @@ class QuotesRepository {
     } catch (e) {
       print(e);
       var randomBackupQuote =
-          _backupQuotes[Random().nextInt(_backupQuotes.length)];
+          backupQuotes[Random().nextInt(backupQuotes.length)];
 
       return Quote(content: randomBackupQuote, author: "");
     }
   }
 
-  static List<String> _backupQuotes = [
+  static List<String> backupQuotes = [
     "Let the future tell the truth, and evaluate each one according to his work and accomplishments. The present is theirs; the future, for which I have really worked, is mine.",
     "Moral excellence comes about as a result of habit. We become just by doing just acts, temperate by doing temperate acts, brave by doing brave acts.",
     "It is with words as with sunbeams. The more they are condensed, the deeper they burn.",

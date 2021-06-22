@@ -37,12 +37,36 @@ const kTextFieldDecoration = InputDecoration(
 // RichText
 const kTextStyleRed = TextStyle(
   color: Colors.redAccent,
-  fontSize: 27.0,
+  fontSize: 45.0,
   fontWeight: FontWeight.bold,
 );
 
 const kTextStyleWhite = TextStyle(
   color: Colors.white,
-  fontSize: 27.0,
+  fontSize: 45.0,
+  fontWeight: FontWeight.bold,
+);
+
+var kTextStyleOldPartWhite = TextStyle(
+  color: Colors.white.withOpacity(0.6),
+  fontSize: 22.0,
+  fontWeight: FontWeight.bold,
+);
+
+var kTextStyleOldPartRed = TextStyle(
+  color: Colors.redAccent.withOpacity(0.6),
+  fontSize: 22.0,
+  fontWeight: FontWeight.bold,
+);
+
+const kTextStyleCongrats = TextStyle(
+  color: Colors.white,
+  fontSize: 32.0,
+  fontWeight: FontWeight.bold,
+);
+
+const kTextStyleStats = TextStyle(
+  color: Colors.white,
+  fontSize: 25.0,
   fontWeight: FontWeight.bold,
 );

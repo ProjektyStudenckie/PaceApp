@@ -11,6 +11,7 @@ class GameRepository {
     'dolor',
   ];
   String gameText(int index) => _textParts[index];
+  int get textPartsCount => _textParts.length;
 
   StreamValue<bool> _playGame = StreamValue();
   Stream<bool> get playGameValue => _playGame.getStreamValue;
@@ -20,11 +21,23 @@ class GameRepository {
     _playGame.setValue(b);
   }
 
+  StreamValue<bool> _stopGame = StreamValue();
+  Stream<bool> get stopGameValue => _stopGame.getStreamValue;
+
+  void setStopGameValue(bool b) {
+    _stopGame.setCallback(_callback);
+    _stopGame.setValue(b);
+  }
+
   int _timerValue = 0;
   int get time => _timerValue;
   void setTimerValue({required int time}) {
     _timerValue = time;
   }
+
+  double wpm = 0;
+  double accuracy = 0;
+  int lastSavedMistakes = 0;
 
   int _mistakes = 0;
   int get mistakes => _mistakes;
@@ -46,6 +59,14 @@ class GameRepository {
     getIt
         .get<StatsRepository>()
         .addNewStat(time, lettersCount - mistakes, mistakes, 100);
+    wpm = getIt
+        .get<StatsRepository>()
+        .calculateNetWPM(lettersCount - mistakes, mistakes, time);
+    lastSavedMistakes = mistakes;
+    accuracy = getIt
+        .get<StatsRepository>()
+        .calculateAccuracy(lettersCount - mistakes, mistakes);
+
     setMistakes(nrOfMistakes: 0);
     setLettersCount(nrOfLetters: 0);
   }
