@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pace_app/repository/game_repository.dart';
@@ -48,6 +49,10 @@ class GameCubit extends Cubit<GameState> {
 
   void setTextPartIndex(int i) {
     emit(state.copyWith(textPartIndex: i));
+  }
+
+  void setLastPartValue(TextEditingValue value) {
+    TextEditingValue oldValue = value;
   }
 }
 
