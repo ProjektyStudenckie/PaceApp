@@ -252,4 +252,19 @@ class StatsRepository {
 
     return sum / wpms.length;
   }
+
+  Future<void> removeUserStats() async {
+    await usersReference
+        .where("owner", isEqualTo: currentUser)
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        try {
+          doc.reference.delete();
+        } catch (e) {
+          print(e);
+        }
+      });
+    });
+  }
 }

@@ -52,21 +52,25 @@ class _GameFormState extends State<GameForm> {
                 children: [
                   Text(
                     'Congratulations on finishing the game!',
-                    style: kTextStyleCongrats,
+                    style: kTextStyleCongrats.copyWith(
+                        color: !state.isDarkMode ? Colors.black : Colors.white),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 100),
                   Text(
                     'Accuracy: ${(_cubit.accuracy() * 100).toInt()}%',
-                    style: kTextStyleStats,
+                    style: kTextStyleStats.copyWith(
+                        color: !state.isDarkMode ? Colors.black : Colors.white),
                   ),
                   Text(
                     'WPM: ${_cubit.wpm().round()}',
-                    style: kTextStyleStats,
+                    style: kTextStyleStats.copyWith(
+                        color: !state.isDarkMode ? Colors.black : Colors.white),
                   ),
                   Text(
                     'Mistakes: ${_cubit.mistakes()}',
-                    style: kTextStyleStats,
+                    style: kTextStyleStats.copyWith(
+                        color: !state.isDarkMode ? Colors.black : Colors.white),
                   ),
                 ],
               );
@@ -83,7 +87,7 @@ class _GameFormState extends State<GameForm> {
                             stream: context.read<AppBloc>().outTheme,
                             builder: (context, snapshot) {
                               _cubit.isDarkMode(
-                                  isDarkMode: snapshot.data!.themeBrightness ==
+                                  isDarkMode: snapshot.data?.themeBrightness ==
                                       Brightness.dark);
                               return TextField(
                                 onChanged: (text) async {
@@ -102,9 +106,9 @@ class _GameFormState extends State<GameForm> {
                                         Duration(milliseconds: 100));
 
                                     // add to right column
-                                    if (_textSpans2.length > 10) {
+                                    if (_textSpans2.length > 8) {
                                       _textSpans3.add(_cubit.getOldTextPart);
-                                    } else if (_textSpans.length > 10) {
+                                    } else if (_textSpans.length > 8) {
                                       _textSpans2.add(_cubit.getOldTextPart);
                                     } else {
                                       _textSpans.add(_cubit.getOldTextPart);

@@ -4,6 +4,7 @@ import 'package:pace_app/app/app.dart';
 import 'package:pace_app/app/models/theme_settings.dart';
 import 'package:pace_app/components/color_picker.dart';
 import 'package:pace_app/components/default_text_form_field.dart';
+import 'package:pace_app/injection/injection.dart';
 import 'package:pace_app/pages/settings/cubit/settings_cubit.dart';
 import 'package:pace_app/repository/authentication_repository.dart';
 import 'package:pace_app/utils/toast_utils.dart';
@@ -26,7 +27,10 @@ class SettingsPage extends StatelessWidget {
               themeSettings = snapshot.data!;
             }
 
-            return SettingsCubit(nickname: "", themeSettings: themeSettings);
+            return SettingsCubit(
+                statsRepository: getIt(),
+                nickname: "",
+                themeSettings: themeSettings);
           }, child: BlocBuilder<SettingsCubit, SettingsState>(
             builder: (context, state) {
               return Center(
@@ -115,7 +119,7 @@ class SettingsPage extends StatelessWidget {
                           title: "Reset data",
                           leadingIconData: Icons.delete,
                           onPressed: (context) {
-                            // TODO: Reset user data
+                            context.read<SettingsCubit>().removeUserStats();
                           },
                           color: Colors.redAccent),
                     ],

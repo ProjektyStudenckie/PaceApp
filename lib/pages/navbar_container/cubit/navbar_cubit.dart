@@ -61,7 +61,7 @@ class NavBarCubit extends Cubit<NavBarState> {
 
   void selectNewNavBarItem(NavItem item) {
     if (state.navItem == NavItem.game) {
-      setBool(saveStats: true);
+      setBool(saveStats: false);
     }
 
     emit(state.copyWith(navItem: item));
