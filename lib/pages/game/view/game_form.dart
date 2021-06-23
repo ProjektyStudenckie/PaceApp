@@ -49,14 +49,15 @@ class _GameFormState extends State<GameForm> {
                   Text(
                     'Congratulations on finishing the game!',
                     style: kTextStyleCongrats,
+                    textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 100),
                   Text(
-                    'Accuracy: ${_cubit.accuracy()}',
+                    'Accuracy: ${(_cubit.accuracy() * 100).toInt()}%',
                     style: kTextStyleStats,
                   ),
                   Text(
-                    'WPM: ${_cubit.wpm()}',
+                    'WPM: ${_cubit.wpm().round()}',
                     style: kTextStyleStats,
                   ),
                   Text(

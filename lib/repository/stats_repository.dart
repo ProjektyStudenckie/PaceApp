@@ -14,6 +14,8 @@ class StatsRepository {
       getIt.get<AuthenticationRepository>().currentUser.id;
 
   void addNewStat(int time, int correctLetters, int mistakes, int textLength) {
+    if (time == 0 || correctLetters == 0 || textLength == 0) return;
+
     usersReference.add({
       'time': time,
       'correctsLetters': correctLetters,
@@ -94,8 +96,11 @@ class StatsRepository {
 
   double calculateNetWPM(int textLength, int mistakes, int seconds) {
     final grossWPM = (textLength / 5.0) / (seconds / 60.0);
+    final netWPM = grossWPM - (mistakes / (seconds / 60));
 
-    return grossWPM - (mistakes / (seconds / 60));
+    if (netWPM < 0) return 0;
+
+    return netWPM.roundToDouble();
   }
 
   double calculateAccuracy(int textLength, int mistakes) {

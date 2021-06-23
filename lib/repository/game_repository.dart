@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:injectable/injectable.dart';
 import 'package:pace_app/extensions/stream_value.dart';
 import 'package:pace_app/injection/injection.dart';
@@ -9,7 +11,8 @@ class GameRepository {
   // Future<String> get quote async =>
   //     (await QuotesRepository.fetchRandomQuote()).content;
 
-  String get quote => QuotesRepository.backupQuotes.first;
+  String get quote => QuotesRepository
+      .backupQuotes[Random().nextInt(QuotesRepository.backupQuotes.length)];
 
   StreamValue<bool> _playGame = StreamValue();
   Stream<bool> get playGameValue => _playGame.getStreamValue;
@@ -56,7 +59,7 @@ class GameRepository {
   void saveDataInFirebase() {
     getIt
         .get<StatsRepository>()
-        .addNewStat(time, lettersCount - mistakes, mistakes, 100);
+        .addNewStat(time, lettersCount - mistakes, mistakes, _lettersCount);
     wpm = getIt
         .get<StatsRepository>()
         .calculateNetWPM(lettersCount - mistakes, mistakes, time);
