@@ -31,43 +31,37 @@ class GameCubit extends Cubit<GameState> {
     emit(state.copyWith(isLoading: b));
   }
 
-  getQuote() {
-    String quote = _gameRepository.quote;
+  getQuote() async {
+    String quote = await _gameRepository.quote;
     List<String> list = quote.split(' ');
     setList(list);
+    changeLetterCount();
     getText();
     startOrFinishTheGame(startTheGame: true);
     isLoading(false);
+    _gameRepository.setStartTimerValue(true);
   }
 
   void getText() {
-    print(state.quote);
-    print(state.textPartIndex);
     String text = state.quote[state.textPartIndex];
-    print('texteeeee: $text');
     emit(state.copyWith(gameText: text));
     emit(state.copyWith(gameTextLength: text.length));
   }
 
   void addMistake() {
-    if (!state.enableCountingMistakes) {
-      return;
-    }
-
     int _currentNrOfMistakes = _gameRepository.mistakes + 1;
-    print('mistakes: $_currentNrOfMistakes');
     _gameRepository.setMistakes(nrOfMistakes: _currentNrOfMistakes);
-    enableCountingMistakes(false);
   }
 
-  void addLetter() {
-    int _currentNrOfLetters = _gameRepository.lettersCount + 1;
-    //print('lettersCount: $_currentNrOfLetters');
-    _gameRepository.setLettersCount(nrOfLetters: _currentNrOfLetters);
-  }
+  void changeLetterCount() {
+    int _nrOfLetters = 0;
 
-  void enableCountingMistakes(bool b) {
-    emit(state.copyWith(enableCountingMistakes: b));
+    state.quote.forEach((element) {
+      _nrOfLetters += element.length;
+    });
+    print(_nrOfLetters);
+
+    _gameRepository.setTextLength(nrOfLetters: _nrOfLetters);
   }
 
   void setIndex(int i) {
@@ -94,10 +88,6 @@ class GameCubit extends Cubit<GameState> {
     emit(state.copyWith(gameFinished: b));
   }
 
-  void enableChangingWord(bool b) {
-    emit(state.copyWith(enableCahngingWord: b));
-  }
-
   double accuracy() {
     return _gameRepository.accuracy;
   }
@@ -109,6 +99,10 @@ class GameCubit extends Cubit<GameState> {
   int mistakes() {
     return _gameRepository.lastSavedMistakes;
   }
+
+  void isDarkMode({required bool isDarkMode}) {
+    emit(state.copyWith(isDarkMode: isDarkMode));
+  }
 }
 
 @freezed
@@ -117,14 +111,13 @@ class GameState with _$GameState {
     required bool playGame,
     required String gameText,
     required int currentIndex,
-    required bool enableCountingMistakes,
     required int textPartIndex,
     required TextSpan textSpan,
     required bool gameFinished,
     required List<String> quote,
-    required bool enableCahngingWord,
     required int gameTextLength,
     required bool isLoading,
+    required bool isDarkMode,
   }) = _GameState;
 
   const GameState._();
@@ -133,13 +126,12 @@ class GameState with _$GameState {
         playGame: false,
         gameText: '',
         currentIndex: 0,
-        enableCountingMistakes: false,
         textPartIndex: 0,
         textSpan: TextSpan(),
         gameFinished: false,
         quote: [],
-        enableCahngingWord: true,
         gameTextLength: 0,
         isLoading: true,
+        isDarkMode: false,
       );
 }

@@ -47,8 +47,20 @@ const kTextStyleWhite = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
+const kTextStyleDark = TextStyle(
+  color: Colors.black,
+  fontSize: 45.0,
+  fontWeight: FontWeight.bold,
+);
+
 var kTextStyleOldPartWhite = TextStyle(
   color: Colors.white.withOpacity(0.6),
+  fontSize: 22.0,
+  fontWeight: FontWeight.bold,
+);
+
+var kTextStyleOldPartDark = TextStyle(
+  color: Colors.black54.withOpacity(0.6),
   fontSize: 22.0,
   fontWeight: FontWeight.bold,
 );
@@ -65,8 +77,20 @@ const kTextStyleCongrats = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
+const kTextStyleCongratsDark = TextStyle(
+  color: Colors.black54,
+  fontSize: 32.0,
+  fontWeight: FontWeight.bold,
+);
+
 const kTextStyleStats = TextStyle(
   color: Colors.white,
+  fontSize: 25.0,
+  fontWeight: FontWeight.bold,
+);
+
+const kTextStyleStatsDark = TextStyle(
+  color: Colors.black54,
   fontSize: 25.0,
   fontWeight: FontWeight.bold,
 );

@@ -20,11 +20,15 @@ class _GameFormState extends State<GameForm> {
   final GameCubit _cubit = GameCubit(getIt.get());
   late final TextEditingController _controller;
   late List<TextSpan> _textSpans;
+  late List<TextSpan> _textSpans2;
+  late List<TextSpan> _textSpans3;
 
   @override
   void initState() {
     _controller = MyTextController(cubit: _cubit);
     _textSpans = [];
+    _textSpans2 = [];
+    _textSpans3 = [];
     _cubit.getQuote();
     super.initState();
   }
@@ -78,16 +82,37 @@ class _GameFormState extends State<GameForm> {
                         StreamBuilder<ThemeSettings>(
                             stream: context.read<AppBloc>().outTheme,
                             builder: (context, snapshot) {
+                              _cubit.isDarkMode(
+                                  isDarkMode: snapshot.data!.themeBrightness ==
+                                      Brightness.dark);
                               return TextField(
                                 onChanged: (text) async {
-                                  _cubit.enableCountingMistakes(true);
-                                  _cubit.enableChangingWord(true);
-                                  _cubit.addLetter();
+                                  // check for mistakes
+                                  int lastLetter = text.length - 1;
+                                  if (text[lastLetter] !=
+                                      state.gameText[lastLetter]) {
+                                    _cubit.addMistake();
+                                  }
+
+                                  _cubit.setIndex(text.length);
+
+                                  // end of the word
                                   if (text.length == state.gameText.length) {
                                     await Future.delayed(
                                         Duration(milliseconds: 100));
-                                    _textSpans.add(_cubit.getOldTextPart);
+
+                                    // add to right column
+                                    if (_textSpans2.length > 10) {
+                                      _textSpans3.add(_cubit.getOldTextPart);
+                                    } else if (_textSpans.length > 10) {
+                                      _textSpans2.add(_cubit.getOldTextPart);
+                                    } else {
+                                      _textSpans.add(_cubit.getOldTextPart);
+                                    }
+
+                                    // clear textField
                                     _controller.clear();
+                                    _cubit.setIndex(0);
 
                                     //finish the game
                                     if (_cubit.textPartsCount ==
@@ -97,6 +122,7 @@ class _GameFormState extends State<GameForm> {
                                       return;
                                     }
 
+                                    // move to another word
                                     _cubit.setTextPartIndex(
                                         state.textPartIndex + 1);
                                     _cubit.getText();
@@ -144,8 +170,21 @@ class _GameFormState extends State<GameForm> {
                       ],
                     ),
                   ),
-                  Column(
-                    children: getChildren(_textSpans),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        children: getChildren(_textSpans),
+                      ),
+                      SizedBox(width: 10),
+                      Column(
+                        children: getChildren(_textSpans2),
+                      ),
+                      SizedBox(width: 10),
+                      Column(
+                        children: getChildren(_textSpans3),
+                      ),
+                    ],
                   ),
                 ],
               );
@@ -181,13 +220,6 @@ class MyTextController extends TextEditingController {
     List<InlineSpan> children = [];
     List<InlineSpan> oldPart = [];
     String gameText = cubit.state.gameText;
-    int gameTextLength = cubit.state.gameTextLength;
-
-    if (text.length == gameTextLength && cubit.state.playGame) {
-      print('neeext');
-      cubit.setTextPartIndex(cubit.state.textPartIndex + 1);
-      cubit.enableChangingWord(false);
-    }
 
     for (int i = 0; i < text.length; i++) {
       if (text[i] != gameText[i]) {
@@ -199,16 +231,18 @@ class MyTextController extends TextEditingController {
           style: kTextStyleOldPartRed,
           text: gameText[i],
         ));
-        cubit.addMistake();
+        //cubit.addMistake();
       }
 
       if (text[i] == gameText[i]) {
         children.add(TextSpan(
-          style: kTextStyleWhite,
+          style: cubit.state.isDarkMode ? kTextStyleWhite : kTextStyleDark,
           text: gameText[i],
         ));
         oldPart.add(TextSpan(
-          style: kTextStyleOldPartWhite,
+          style: cubit.state.isDarkMode
+              ? kTextStyleOldPartWhite
+              : kTextStyleOldPartDark,
           text: gameText[i],
         ));
       }

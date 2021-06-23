@@ -47,8 +47,9 @@ class _NavBarContainerState extends State<NavBarContainer> {
       child: BlocBuilder<NavBarCubit, NavBarState>(
         bloc: _cubit,
         builder: (context, state) {
-          if (state.navItem == NavItem.game && state.playGame) {
+          if (state.startTimer) {
             _stopWatchTimer.onExecute.add(StopWatchExecute.start);
+            _cubit.stopTimer();
           }
 
           if (state.navItem != NavItem.game && state.saveStats == true) {

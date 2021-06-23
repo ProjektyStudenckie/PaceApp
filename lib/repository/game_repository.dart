@@ -8,11 +8,8 @@ import 'package:pace_app/repository/stats_repository.dart';
 
 @lazySingleton
 class GameRepository {
-  // Future<String> get quote async =>
-  //     (await QuotesRepository.fetchRandomQuote()).content;
-
-  String get quote => QuotesRepository
-      .backupQuotes[Random().nextInt(QuotesRepository.backupQuotes.length)];
+  Future<String> get quote async =>
+      (await QuotesRepository.fetchRandomQuote()).content;
 
   StreamValue<bool> _playGame = StreamValue();
   Stream<bool> get playGameValue => _playGame.getStreamValue;
@@ -20,6 +17,14 @@ class GameRepository {
   void setPlayGameValue(bool b) {
     _playGame.setCallback(_callback);
     _playGame.setValue(b);
+  }
+
+  StreamValue<bool> _startTimer = StreamValue();
+  Stream<bool> get startTimerValue => _startTimer.getStreamValue;
+
+  void setStartTimerValue(bool b) {
+    _startTimer.setCallback(_callback);
+    _startTimer.setValue(b);
   }
 
   StreamValue<bool> _stopGame = StreamValue();
@@ -46,10 +51,10 @@ class GameRepository {
     _mistakes = nrOfMistakes;
   }
 
-  int _lettersCount = 0;
-  int get lettersCount => _lettersCount;
-  void setLettersCount({required int nrOfLetters}) {
-    _lettersCount = nrOfLetters;
+  int _textLength = 0;
+  int get textLength => _textLength;
+  void setTextLength({required int nrOfLetters}) {
+    _textLength = nrOfLetters;
   }
 
   void _callback() {
@@ -57,18 +62,20 @@ class GameRepository {
   }
 
   void saveDataInFirebase() {
-    getIt
-        .get<StatsRepository>()
-        .addNewStat(time, lettersCount - mistakes, mistakes, _lettersCount);
     wpm = getIt
         .get<StatsRepository>()
-        .calculateNetWPM(lettersCount - mistakes, mistakes, time);
+        .calculateNetWPM(_textLength, mistakes, time);
     lastSavedMistakes = mistakes;
-    accuracy = getIt
+    accuracy =
+        getIt.get<StatsRepository>().calculateAccuracy(_textLength, mistakes);
+
+    print('wpm: $wpm');
+
+    getIt
         .get<StatsRepository>()
-        .calculateAccuracy(lettersCount - mistakes, mistakes);
+        .addNewStat(textLength: _textLength, mistakes: _mistakes, time: time);
 
     setMistakes(nrOfMistakes: 0);
-    setLettersCount(nrOfLetters: 0);
+    setTextLength(nrOfLetters: 0);
   }
 }

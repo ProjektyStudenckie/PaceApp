@@ -21,13 +21,15 @@ class _$NavBarStateTearOff {
       required bool saveStats,
       required int time,
       required bool stopGame,
-      required bool playGame}) {
+      required bool playGame,
+      required bool startTimer}) {
     return _NavbarState(
       navItem: navItem,
       saveStats: saveStats,
       time: time,
       stopGame: stopGame,
       playGame: playGame,
+      startTimer: startTimer,
     );
   }
 }
@@ -42,6 +44,7 @@ mixin _$NavBarState {
   int get time => throw _privateConstructorUsedError;
   bool get stopGame => throw _privateConstructorUsedError;
   bool get playGame => throw _privateConstructorUsedError;
+  bool get startTimer => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $NavBarStateCopyWith<NavBarState> get copyWith =>
@@ -58,7 +61,8 @@ abstract class $NavBarStateCopyWith<$Res> {
       bool saveStats,
       int time,
       bool stopGame,
-      bool playGame});
+      bool playGame,
+      bool startTimer});
 }
 
 /// @nodoc
@@ -76,6 +80,7 @@ class _$NavBarStateCopyWithImpl<$Res> implements $NavBarStateCopyWith<$Res> {
     Object? time = freezed,
     Object? stopGame = freezed,
     Object? playGame = freezed,
+    Object? startTimer = freezed,
   }) {
     return _then(_value.copyWith(
       navItem: navItem == freezed
@@ -98,6 +103,10 @@ class _$NavBarStateCopyWithImpl<$Res> implements $NavBarStateCopyWith<$Res> {
           ? _value.playGame
           : playGame // ignore: cast_nullable_to_non_nullable
               as bool,
+      startTimer: startTimer == freezed
+          ? _value.startTimer
+          : startTimer // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -114,7 +123,8 @@ abstract class _$NavbarStateCopyWith<$Res>
       bool saveStats,
       int time,
       bool stopGame,
-      bool playGame});
+      bool playGame,
+      bool startTimer});
 }
 
 /// @nodoc
@@ -134,6 +144,7 @@ class __$NavbarStateCopyWithImpl<$Res> extends _$NavBarStateCopyWithImpl<$Res>
     Object? time = freezed,
     Object? stopGame = freezed,
     Object? playGame = freezed,
+    Object? startTimer = freezed,
   }) {
     return _then(_NavbarState(
       navItem: navItem == freezed
@@ -156,6 +167,10 @@ class __$NavbarStateCopyWithImpl<$Res> extends _$NavBarStateCopyWithImpl<$Res>
           ? _value.playGame
           : playGame // ignore: cast_nullable_to_non_nullable
               as bool,
+      startTimer: startTimer == freezed
+          ? _value.startTimer
+          : startTimer // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -168,7 +183,8 @@ class _$_NavbarState extends _NavbarState {
       required this.saveStats,
       required this.time,
       required this.stopGame,
-      required this.playGame})
+      required this.playGame,
+      required this.startTimer})
       : super._();
 
   @override
@@ -181,10 +197,12 @@ class _$_NavbarState extends _NavbarState {
   final bool stopGame;
   @override
   final bool playGame;
+  @override
+  final bool startTimer;
 
   @override
   String toString() {
-    return 'NavBarState(navItem: $navItem, saveStats: $saveStats, time: $time, stopGame: $stopGame, playGame: $playGame)';
+    return 'NavBarState(navItem: $navItem, saveStats: $saveStats, time: $time, stopGame: $stopGame, playGame: $playGame, startTimer: $startTimer)';
   }
 
   @override
@@ -204,7 +222,10 @@ class _$_NavbarState extends _NavbarState {
                     .equals(other.stopGame, stopGame)) &&
             (identical(other.playGame, playGame) ||
                 const DeepCollectionEquality()
-                    .equals(other.playGame, playGame)));
+                    .equals(other.playGame, playGame)) &&
+            (identical(other.startTimer, startTimer) ||
+                const DeepCollectionEquality()
+                    .equals(other.startTimer, startTimer)));
   }
 
   @override
@@ -214,7 +235,8 @@ class _$_NavbarState extends _NavbarState {
       const DeepCollectionEquality().hash(saveStats) ^
       const DeepCollectionEquality().hash(time) ^
       const DeepCollectionEquality().hash(stopGame) ^
-      const DeepCollectionEquality().hash(playGame);
+      const DeepCollectionEquality().hash(playGame) ^
+      const DeepCollectionEquality().hash(startTimer);
 
   @JsonKey(ignore: true)
   @override
@@ -228,7 +250,8 @@ abstract class _NavbarState extends NavBarState {
       required bool saveStats,
       required int time,
       required bool stopGame,
-      required bool playGame}) = _$_NavbarState;
+      required bool playGame,
+      required bool startTimer}) = _$_NavbarState;
   const _NavbarState._() : super._();
 
   @override
@@ -241,6 +264,8 @@ abstract class _NavbarState extends NavBarState {
   bool get stopGame => throw _privateConstructorUsedError;
   @override
   bool get playGame => throw _privateConstructorUsedError;
+  @override
+  bool get startTimer => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$NavbarStateCopyWith<_NavbarState> get copyWith =>

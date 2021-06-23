@@ -10,6 +10,7 @@ class NavBarCubit extends Cubit<NavBarState> {
   final GameRepository _gameRepository;
   late StreamSubscription _playGameChange;
   late StreamSubscription _stopGameChange;
+  late StreamSubscription _startTimerChange;
 
   NavBarCubit(this._gameRepository) : super(NavBarState.init());
 
@@ -21,11 +22,24 @@ class NavBarCubit extends Cubit<NavBarState> {
     _gameRepository.stopGameValue.listen((data) {
       stopTheGame(data);
     });
+    _gameRepository.startTimerValue.listen((data) {
+      startTimer(data);
+    });
+  }
+
+  void startTimer(bool start) {
+    if (start) {
+      emit(state.copyWith(startTimer: true));
+    }
+  }
+
+  void stopTimer() {
+    emit(state.copyWith(startTimer: false));
+    _gameRepository.setStartTimerValue(false);
   }
 
   void stopTheGame(bool stopGame) {
     if (stopGame) {
-      print('stop');
       emit(state.copyWith(stopGame: true));
     }
 
@@ -86,6 +100,7 @@ class NavBarState with _$NavBarState {
     required int time,
     required bool stopGame,
     required bool playGame,
+    required bool startTimer,
   }) = _NavbarState;
 
   const NavBarState._();
@@ -96,6 +111,7 @@ class NavBarState with _$NavBarState {
         time: 0,
         stopGame: false,
         playGame: true,
+        startTimer: false,
       );
 }
 

@@ -13,12 +13,12 @@ class StatsRepository {
   String get currentUser =>
       getIt.get<AuthenticationRepository>().currentUser.id;
 
-  void addNewStat(int time, int correctLetters, int mistakes, int textLength) {
-    if (time == 0 || correctLetters == 0 || textLength == 0) return;
+  void addNewStat(
+      {required int time, required int mistakes, required int textLength}) {
+    if (time == 0 || textLength == 0) return;
 
     usersReference.add({
       'time': time,
-      'correctsLetters': correctLetters,
       'mistakes': mistakes,
       'textLength': textLength,
       'owner': currentUser,
