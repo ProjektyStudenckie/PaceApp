@@ -9,14 +9,14 @@ part 'game_cubit.freezed.dart';
 
 class GameCubit extends Cubit<GameState> {
   final GameRepository _gameRepository;
-  late final AsyncMemoizer _asyncMemoizer;
+  //late final AsyncMemoizer _asyncMemoizer;
   GameCubit(this._gameRepository) : super(GameState.init());
 
   void startOrFinishTheGame({required bool startTheGame}) {
     emit(state.copyWith(playGame: startTheGame));
   }
 
-  Future<String> get getQuote async => await _gameRepository.quote;
+  String get getQuote => _gameRepository.quote();
 
   void setList(List<String> list) {
     List<String> quoteFragments = [];
@@ -71,10 +71,10 @@ class GameCubit extends Cubit<GameState> {
 
   TextSpan get getOldTextPart => state.textSpan;
 
-  // int textPartsCount() {
-  //   print('text PArts count: ${state.quote.length}');
-  //   return state.quote.length;
-  // }
+  int textPartsCount() {
+    print('text PArts count: ${state.quote.length}');
+    return state.quote.length;
+  }
 
   void stopTheGame() {
     _gameRepository.setStopGameValue(true);
