@@ -6,16 +6,10 @@ import 'package:pace_app/repository/stats_repository.dart';
 
 @lazySingleton
 class GameRepository {
-  late String _quote;
-  // List<String> _textParts = [
-  //   'lorem',
-  //   'ipsum',
-  //   'dolor',
-  // ];
-  // String gameText(int index) => _textParts[index];
-  // int get textPartsCount => _textParts.length;
-  Future<String> get quote async =>
-      (await QuotesRepository.fetchRandomQuote()).content;
+  // Future<String> get quote async =>
+  //     (await QuotesRepository.fetchRandomQuote()).content;
+
+  String get quote => QuotesRepository.backupQuotes.first;
 
   StreamValue<bool> _playGame = StreamValue();
   Stream<bool> get playGameValue => _playGame.getStreamValue;

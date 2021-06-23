@@ -16,7 +16,7 @@ class GameCubit extends Cubit<GameState> {
     emit(state.copyWith(playGame: startTheGame));
   }
 
-  Future<String> get getQuote async => await _gameRepository.quote;
+  //Future<String> get getQuote async => await _gameRepository.quote;
 
   void setList(List<String> list) {
     List<String> quoteFragments = [];
@@ -25,6 +25,19 @@ class GameCubit extends Cubit<GameState> {
           .add(list[i].toLowerCase().replaceAll(',', '').replaceAll('.', ''));
     }
     emit(state.copyWith(quote: quoteFragments));
+  }
+
+  void isLoading(bool b) {
+    emit(state.copyWith(isLoading: b));
+  }
+
+  getQuote() {
+    String quote = _gameRepository.quote;
+    List<String> list = quote.split(' ');
+    setList(list);
+    getText();
+    startOrFinishTheGame(startTheGame: true);
+    isLoading(false);
   }
 
   void getText() {
@@ -71,10 +84,7 @@ class GameCubit extends Cubit<GameState> {
 
   TextSpan get getOldTextPart => state.textSpan;
 
-  // int textPartsCount() {
-  //   print('text PArts count: ${state.quote.length}');
-  //   return state.quote.length;
-  // }
+  int get textPartsCount => state.quote.length;
 
   void stopTheGame() {
     _gameRepository.setStopGameValue(true);
@@ -114,6 +124,7 @@ class GameState with _$GameState {
     required List<String> quote,
     required bool enableCahngingWord,
     required int gameTextLength,
+    required bool isLoading,
   }) = _GameState;
 
   const GameState._();
@@ -129,5 +140,6 @@ class GameState with _$GameState {
         quote: [],
         enableCahngingWord: true,
         gameTextLength: 0,
+        isLoading: true,
       );
 }

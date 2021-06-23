@@ -20,24 +20,12 @@ class _GameFormState extends State<GameForm> {
   final GameCubit _cubit = GameCubit(getIt.get());
   late final TextEditingController _controller;
   late List<TextSpan> _textSpans;
-  late AsyncMemoizer _asyncMemoizer;
-
-  getQuote() async {
-    return this._asyncMemoizer.runOnce(() async {
-      String quote = await _cubit.getQuote;
-      List<String> list = quote.split(' ');
-      _cubit.setList(list);
-      _cubit.getText();
-      _cubit.startOrFinishTheGame(startTheGame: true);
-      return 'DATA';
-    });
-  }
 
   @override
   void initState() {
     _controller = MyTextController(cubit: _cubit);
     _textSpans = [];
-    _asyncMemoizer = AsyncMemoizer();
+    _cubit.getQuote();
     super.initState();
   }
 
@@ -79,108 +67,101 @@ class _GameFormState extends State<GameForm> {
               );
             }
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                FutureBuilder(
-                  future: getQuote(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Expanded(
-                        child: Stack(
-                          children: [
-                            StreamBuilder<ThemeSettings>(
-                                stream: context.read<AppBloc>().outTheme,
-                                builder: (context, snapshot) {
-                                  return TextField(
-                                    onChanged: (text) async {
-                                      //_cubit.enableCountingMistakes(true);
-                                      _cubit.enableChangingWord(true);
-                                      _cubit.addLetter();
-                                      if (text.length ==
-                                          state.gameText.length) {
-                                        // await Future.delayed(
-                                        //     Duration(milliseconds: 100));
-                                        //_textSpans.add(_cubit.getOldTextPart);
-                                        _controller.clear();
+            if (!state.isLoading) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Stack(
+                      children: [
+                        StreamBuilder<ThemeSettings>(
+                            stream: context.read<AppBloc>().outTheme,
+                            builder: (context, snapshot) {
+                              return TextField(
+                                onChanged: (text) async {
+                                  _cubit.enableCountingMistakes(true);
+                                  _cubit.enableChangingWord(true);
+                                  _cubit.addLetter();
+                                  if (text.length == state.gameText.length) {
+                                    await Future.delayed(
+                                        Duration(milliseconds: 100));
+                                    _textSpans.add(_cubit.getOldTextPart);
+                                    _controller.clear();
 
-                                        // finish the game
-                                        // if (_cubit.textPartsCount ==
-                                        //     state.textPartIndex + 1) {
-                                        //   _cubit.stopTheGame();
-                                        //   _cubit.finishGame(true);
-                                        //   return;
-                                        // }
+                                    //finish the game
+                                    if (_cubit.textPartsCount ==
+                                        state.textPartIndex + 1) {
+                                      _cubit.stopTheGame();
+                                      _cubit.finishGame(true);
+                                      return;
+                                    }
 
-                                        _cubit.setTextPartIndex(
-                                            state.textPartIndex + 1);
-                                        _cubit.getText();
-                                      }
-                                    },
-                                    textInputAction: TextInputAction.done,
-                                    maxLines: 99,
-                                    style: TextStyle(fontSize: 45.0),
-                                    controller: _controller,
-                                    cursorColor:
-                                        snapshot.data?.indicatorColor ??
-                                            Colors.yellow,
-                                    autofocus: true,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                    ),
-                                  );
-                                }),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 13.0),
-                              child: RichText(
-                                text: TextSpan(
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: state.gameText
-                                          .substring(0, state.currentIndex),
-                                      style: TextStyle(
-                                        color: Colors.grey.withOpacity(0.0),
-                                        fontSize: 45.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: state.gameText
-                                          .substring(state.currentIndex),
-                                      style: TextStyle(
-                                        color: Colors.grey.withOpacity(0.7),
-                                        fontSize: 45.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
+                                    _cubit.setTextPartIndex(
+                                        state.textPartIndex + 1);
+                                    _cubit.getText();
+                                  }
+                                },
+                                textInputAction: TextInputAction.done,
+                                maxLines: 99,
+                                style: TextStyle(fontSize: 45.0),
+                                controller: _controller,
+                                cursorColor: snapshot.data?.indicatorColor ??
+                                    Colors.yellow,
+                                autofocus: true,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
                                 ),
-                              ),
+                              );
+                            }),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 13.0),
+                          child: RichText(
+                            text: TextSpan(
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: state.gameText
+                                      .substring(0, state.currentIndex),
+                                  style: TextStyle(
+                                    color: Colors.grey.withOpacity(0.0),
+                                    fontSize: 45.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: state.gameText
+                                      .substring(state.currentIndex),
+                                  style: TextStyle(
+                                    color: Colors.grey.withOpacity(0.7),
+                                    fontSize: 45.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      );
-                    }
-
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          CircularProgressIndicator(),
-                          Text(
-                            'Loading content...',
-                            style: TextStyle(fontSize: 22.0),
                           ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-                Column(
-                  children: getChildren(_textSpans),
-                ),
-              ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Column(
+                    children: getChildren(_textSpans),
+                  ),
+                ],
+              );
+            }
+
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  Text(
+                    'Loading content...',
+                    style: TextStyle(fontSize: 22.0),
+                  ),
+                ],
+              ),
             );
           }),
     );
@@ -200,11 +181,8 @@ class MyTextController extends TextEditingController {
     List<InlineSpan> oldPart = [];
     String gameText = cubit.state.gameText;
     int gameTextLength = cubit.state.gameTextLength;
-    cubit.setIndex(text.length);
 
-    if (text.length == gameTextLength &&
-        cubit.state.playGame &&
-        cubit.state.enableCahngingWord) {
+    if (text.length == gameTextLength && cubit.state.playGame) {
       print('neeext');
       cubit.setTextPartIndex(cubit.state.textPartIndex + 1);
       cubit.enableChangingWord(false);
