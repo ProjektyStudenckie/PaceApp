@@ -1,25 +1,39 @@
+import 'package:async/async.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pace_app/repository/game_repository.dart';
+import 'package:pace_app/repository/quotes_repository.dart';
 
 part 'game_cubit.freezed.dart';
 
 class GameCubit extends Cubit<GameState> {
   final GameRepository _gameRepository;
+  late final AsyncMemoizer _asyncMemoizer;
   GameCubit(this._gameRepository) : super(GameState.init());
-
-  void setup() {
-    getText();
-  }
 
   void startOrFinishTheGame({required bool startTheGame}) {
     emit(state.copyWith(playGame: startTheGame));
   }
 
+  Future<String> get getQuote async => await _gameRepository.quote;
+
+  void setList(List<String> list) {
+    List<String> quoteFragments = [];
+    for (int i = 0; i < list.length; i++) {
+      quoteFragments
+          .add(list[i].toLowerCase().replaceAll(',', '').replaceAll('.', ''));
+    }
+    emit(state.copyWith(quote: quoteFragments));
+  }
+
   void getText() {
-    String text = _gameRepository.gameText(state.textPartIndex);
+    print(state.quote);
+    print(state.textPartIndex);
+    String text = state.quote[state.textPartIndex];
+    print('texteeeee: $text');
     emit(state.copyWith(gameText: text));
+    emit(state.copyWith(gameTextLength: text.length));
   }
 
   void addMistake() {
@@ -57,7 +71,10 @@ class GameCubit extends Cubit<GameState> {
 
   TextSpan get getOldTextPart => state.textSpan;
 
-  int get textPartsCount => _gameRepository.textPartsCount;
+  // int textPartsCount() {
+  //   print('text PArts count: ${state.quote.length}');
+  //   return state.quote.length;
+  // }
 
   void stopTheGame() {
     _gameRepository.setStopGameValue(true);
@@ -65,6 +82,10 @@ class GameCubit extends Cubit<GameState> {
 
   void finishGame(bool b) {
     emit(state.copyWith(gameFinished: b));
+  }
+
+  void enableChangingWord(bool b) {
+    emit(state.copyWith(enableCahngingWord: b));
   }
 
   double accuracy() {
@@ -90,6 +111,9 @@ class GameState with _$GameState {
     required int textPartIndex,
     required TextSpan textSpan,
     required bool gameFinished,
+    required List<String> quote,
+    required bool enableCahngingWord,
+    required int gameTextLength,
   }) = _GameState;
 
   const GameState._();
@@ -102,5 +126,8 @@ class GameState with _$GameState {
         textPartIndex: 0,
         textSpan: TextSpan(),
         gameFinished: false,
+        quote: [],
+        enableCahngingWord: true,
+        gameTextLength: 0,
       );
 }

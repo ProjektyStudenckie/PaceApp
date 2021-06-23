@@ -1,17 +1,21 @@
 import 'package:injectable/injectable.dart';
 import 'package:pace_app/extensions/stream_value.dart';
 import 'package:pace_app/injection/injection.dart';
+import 'package:pace_app/repository/quotes_repository.dart';
 import 'package:pace_app/repository/stats_repository.dart';
 
 @lazySingleton
 class GameRepository {
-  List<String> _textParts = [
-    'lorem',
-    'ipsum',
-    'dolor',
-  ];
-  String gameText(int index) => _textParts[index];
-  int get textPartsCount => _textParts.length;
+  late String _quote;
+  // List<String> _textParts = [
+  //   'lorem',
+  //   'ipsum',
+  //   'dolor',
+  // ];
+  // String gameText(int index) => _textParts[index];
+  // int get textPartsCount => _textParts.length;
+  Future<String> get quote async =>
+      (await QuotesRepository.fetchRandomQuote()).content;
 
   StreamValue<bool> _playGame = StreamValue();
   Stream<bool> get playGameValue => _playGame.getStreamValue;
