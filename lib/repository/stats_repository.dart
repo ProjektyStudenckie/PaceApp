@@ -94,8 +94,16 @@ class StatsRepository {
     return sum / accuracyList.length;
   }
 
-  double calculateNetWPM(int textLength, int mistakes, int seconds) {
+  double calculateGrossWPM(int textLength, int mistakes, int seconds) {
     final grossWPM = (textLength / 5.0) / (seconds / 60.0);
+
+    if (grossWPM < 0) return 0;
+
+    return grossWPM.roundToDouble();
+  }
+
+  double calculateNetWPM(int textLength, int mistakes, int seconds) {
+    final grossWPM = calculateGrossWPM(textLength, mistakes, seconds);
     final netWPM = grossWPM - (mistakes / (seconds / 60));
 
     if (netWPM < 0) return 0;
@@ -125,9 +133,10 @@ class StatsRepository {
           final time = int.parse(doc["time"].toString());
 
           final wpm = calculateNetWPM(textLength, mistakes, time);
+          final grossWpm = calculateGrossWPM(textLength, mistakes, time);
           final accuracy = calculateAccuracyPercent(textLength, mistakes);
 
-          userStats.add(Stats(wpm: wpm, accuracy: accuracy));
+          userStats.add(Stats(wpm: wpm, grossWpm: grossWpm, accuracy: accuracy));
         } catch (e) {
           print(e);
         }

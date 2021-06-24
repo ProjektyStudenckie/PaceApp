@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pace_app/components/accuracy_change_chart.dart';
 import 'package:pace_app/components/gradient_container.dart';
-import 'package:pace_app/components/wpm_change_chart.dart';
+import 'package:pace_app/components/wpm_chart/wpm_change_chart.dart';
 import 'package:pace_app/constants.dart';
 import 'package:pace_app/injection/injection.dart';
 import 'package:pace_app/pages/stats/cubit/stats_cubit.dart';
@@ -17,12 +17,12 @@ class StatsPage extends StatelessWidget {
       child: BlocBuilder<StatsCubit, StatsState>(
         builder: (context, state) {
           return Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
               child: Column(
                 children: [
-                  SizedBox(height: 12),
+                  SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -88,7 +88,8 @@ class StatsPage extends StatelessWidget {
                     height: 36,
                     thickness: 2,
                   ),
-                  AccuracyChangeChart(state.allStats)
+                  AccuracyChangeChart(state.allStats),
+                  SizedBox(height: 20,)
                 ],
               ),
             ),
@@ -106,9 +107,6 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Title: $title");
-    print("title: ${title.isEmpty}");
-
     return GradientContainer(
         child: Row(
       children: [

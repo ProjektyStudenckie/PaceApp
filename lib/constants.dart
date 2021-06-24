@@ -94,3 +94,18 @@ const kTextStyleStatsDark = TextStyle(
   fontSize: 25.0,
   fontWeight: FontWeight.bold,
 );
+
+const List<Color> gradientColorsRed = [
+  const Color(0xffa35646),
+  const Color(0xffe2938a),
+];
+
+const List<Color> gradientColorsPurple = [
+  const Color(0xffd863ff),
+  const Color(0xffc163ff),
+];
+
+const List<Color> gradientColorsGreen = [
+  const Color(0xff23b6e6),
+  const Color(0xff02d39a),
+];

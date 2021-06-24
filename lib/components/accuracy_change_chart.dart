@@ -15,10 +15,6 @@ class AccuracyChangeChart extends StatefulWidget {
 }
 
 class _AccuracyChangeChartState extends State<AccuracyChangeChart> {
-  List<Color> gradientColors = [
-    const Color(0xff23b6e6),
-    const Color(0xff02d39a),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -107,20 +103,20 @@ class _AccuracyChangeChartState extends State<AccuracyChangeChart> {
       lineBarsData: [
         LineChartBarData(
           spots: [
-            for (int i = widget.allStats.length-1; i >= 0; i--)
-              FlSpot(-i.toDouble() + widget.allStats.length-1, widget.allStats[i].accuracy.toDouble())
+            for (int i = 0; i < widget.allStats.length; i++)
+              FlSpot(i.toDouble(), widget.allStats[i].accuracy.toDouble())
           ],
-          isCurved: true,
-          colors: gradientColors,
+          isCurved: false,
+          colors: gradientColorsGreen,
           barWidth: 3,
           isStrokeCapRound: true,
           dotData: FlDotData(
-            show: false,
+            show: true,
           ),
           belowBarData: BarAreaData(
             show: true,
             colors:
-                gradientColors.map((color) => color.withOpacity(0.3)).toList(),
+                gradientColorsGreen.map((color) => color.withOpacity(0.3)).toList(),
           ),
         ),
       ],
