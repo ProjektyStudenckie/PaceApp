@@ -20,14 +20,24 @@ class _$GameStateTearOff {
       {required bool playGame,
       required String gameText,
       required int currentIndex,
-      required bool enableCountingMistakes,
-      required int textPartIndex}) {
+      required int textPartIndex,
+      required TextSpan textSpan,
+      required bool gameFinished,
+      required List<String> quote,
+      required int gameTextLength,
+      required bool isLoading,
+      required bool isDarkMode}) {
     return _GameState(
       playGame: playGame,
       gameText: gameText,
       currentIndex: currentIndex,
-      enableCountingMistakes: enableCountingMistakes,
       textPartIndex: textPartIndex,
+      textSpan: textSpan,
+      gameFinished: gameFinished,
+      quote: quote,
+      gameTextLength: gameTextLength,
+      isLoading: isLoading,
+      isDarkMode: isDarkMode,
     );
   }
 }
@@ -40,8 +50,13 @@ mixin _$GameState {
   bool get playGame => throw _privateConstructorUsedError;
   String get gameText => throw _privateConstructorUsedError;
   int get currentIndex => throw _privateConstructorUsedError;
-  bool get enableCountingMistakes => throw _privateConstructorUsedError;
   int get textPartIndex => throw _privateConstructorUsedError;
+  TextSpan get textSpan => throw _privateConstructorUsedError;
+  bool get gameFinished => throw _privateConstructorUsedError;
+  List<String> get quote => throw _privateConstructorUsedError;
+  int get gameTextLength => throw _privateConstructorUsedError;
+  bool get isLoading => throw _privateConstructorUsedError;
+  bool get isDarkMode => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $GameStateCopyWith<GameState> get copyWith =>
@@ -56,8 +71,13 @@ abstract class $GameStateCopyWith<$Res> {
       {bool playGame,
       String gameText,
       int currentIndex,
-      bool enableCountingMistakes,
-      int textPartIndex});
+      int textPartIndex,
+      TextSpan textSpan,
+      bool gameFinished,
+      List<String> quote,
+      int gameTextLength,
+      bool isLoading,
+      bool isDarkMode});
 }
 
 /// @nodoc
@@ -73,8 +93,13 @@ class _$GameStateCopyWithImpl<$Res> implements $GameStateCopyWith<$Res> {
     Object? playGame = freezed,
     Object? gameText = freezed,
     Object? currentIndex = freezed,
-    Object? enableCountingMistakes = freezed,
     Object? textPartIndex = freezed,
+    Object? textSpan = freezed,
+    Object? gameFinished = freezed,
+    Object? quote = freezed,
+    Object? gameTextLength = freezed,
+    Object? isLoading = freezed,
+    Object? isDarkMode = freezed,
   }) {
     return _then(_value.copyWith(
       playGame: playGame == freezed
@@ -89,14 +114,34 @@ class _$GameStateCopyWithImpl<$Res> implements $GameStateCopyWith<$Res> {
           ? _value.currentIndex
           : currentIndex // ignore: cast_nullable_to_non_nullable
               as int,
-      enableCountingMistakes: enableCountingMistakes == freezed
-          ? _value.enableCountingMistakes
-          : enableCountingMistakes // ignore: cast_nullable_to_non_nullable
-              as bool,
       textPartIndex: textPartIndex == freezed
           ? _value.textPartIndex
           : textPartIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      textSpan: textSpan == freezed
+          ? _value.textSpan
+          : textSpan // ignore: cast_nullable_to_non_nullable
+              as TextSpan,
+      gameFinished: gameFinished == freezed
+          ? _value.gameFinished
+          : gameFinished // ignore: cast_nullable_to_non_nullable
+              as bool,
+      quote: quote == freezed
+          ? _value.quote
+          : quote // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      gameTextLength: gameTextLength == freezed
+          ? _value.gameTextLength
+          : gameTextLength // ignore: cast_nullable_to_non_nullable
+              as int,
+      isLoading: isLoading == freezed
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isDarkMode: isDarkMode == freezed
+          ? _value.isDarkMode
+          : isDarkMode // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -111,8 +156,13 @@ abstract class _$GameStateCopyWith<$Res> implements $GameStateCopyWith<$Res> {
       {bool playGame,
       String gameText,
       int currentIndex,
-      bool enableCountingMistakes,
-      int textPartIndex});
+      int textPartIndex,
+      TextSpan textSpan,
+      bool gameFinished,
+      List<String> quote,
+      int gameTextLength,
+      bool isLoading,
+      bool isDarkMode});
 }
 
 /// @nodoc
@@ -129,8 +179,13 @@ class __$GameStateCopyWithImpl<$Res> extends _$GameStateCopyWithImpl<$Res>
     Object? playGame = freezed,
     Object? gameText = freezed,
     Object? currentIndex = freezed,
-    Object? enableCountingMistakes = freezed,
     Object? textPartIndex = freezed,
+    Object? textSpan = freezed,
+    Object? gameFinished = freezed,
+    Object? quote = freezed,
+    Object? gameTextLength = freezed,
+    Object? isLoading = freezed,
+    Object? isDarkMode = freezed,
   }) {
     return _then(_GameState(
       playGame: playGame == freezed
@@ -145,14 +200,34 @@ class __$GameStateCopyWithImpl<$Res> extends _$GameStateCopyWithImpl<$Res>
           ? _value.currentIndex
           : currentIndex // ignore: cast_nullable_to_non_nullable
               as int,
-      enableCountingMistakes: enableCountingMistakes == freezed
-          ? _value.enableCountingMistakes
-          : enableCountingMistakes // ignore: cast_nullable_to_non_nullable
-              as bool,
       textPartIndex: textPartIndex == freezed
           ? _value.textPartIndex
           : textPartIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      textSpan: textSpan == freezed
+          ? _value.textSpan
+          : textSpan // ignore: cast_nullable_to_non_nullable
+              as TextSpan,
+      gameFinished: gameFinished == freezed
+          ? _value.gameFinished
+          : gameFinished // ignore: cast_nullable_to_non_nullable
+              as bool,
+      quote: quote == freezed
+          ? _value.quote
+          : quote // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      gameTextLength: gameTextLength == freezed
+          ? _value.gameTextLength
+          : gameTextLength // ignore: cast_nullable_to_non_nullable
+              as int,
+      isLoading: isLoading == freezed
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isDarkMode: isDarkMode == freezed
+          ? _value.isDarkMode
+          : isDarkMode // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -164,8 +239,13 @@ class _$_GameState extends _GameState {
       {required this.playGame,
       required this.gameText,
       required this.currentIndex,
-      required this.enableCountingMistakes,
-      required this.textPartIndex})
+      required this.textPartIndex,
+      required this.textSpan,
+      required this.gameFinished,
+      required this.quote,
+      required this.gameTextLength,
+      required this.isLoading,
+      required this.isDarkMode})
       : super._();
 
   @override
@@ -175,13 +255,23 @@ class _$_GameState extends _GameState {
   @override
   final int currentIndex;
   @override
-  final bool enableCountingMistakes;
-  @override
   final int textPartIndex;
+  @override
+  final TextSpan textSpan;
+  @override
+  final bool gameFinished;
+  @override
+  final List<String> quote;
+  @override
+  final int gameTextLength;
+  @override
+  final bool isLoading;
+  @override
+  final bool isDarkMode;
 
   @override
   String toString() {
-    return 'GameState(playGame: $playGame, gameText: $gameText, currentIndex: $currentIndex, enableCountingMistakes: $enableCountingMistakes, textPartIndex: $textPartIndex)';
+    return 'GameState(playGame: $playGame, gameText: $gameText, currentIndex: $currentIndex, textPartIndex: $textPartIndex, textSpan: $textSpan, gameFinished: $gameFinished, quote: $quote, gameTextLength: $gameTextLength, isLoading: $isLoading, isDarkMode: $isDarkMode)';
   }
 
   @override
@@ -197,12 +287,26 @@ class _$_GameState extends _GameState {
             (identical(other.currentIndex, currentIndex) ||
                 const DeepCollectionEquality()
                     .equals(other.currentIndex, currentIndex)) &&
-            (identical(other.enableCountingMistakes, enableCountingMistakes) ||
-                const DeepCollectionEquality().equals(
-                    other.enableCountingMistakes, enableCountingMistakes)) &&
             (identical(other.textPartIndex, textPartIndex) ||
                 const DeepCollectionEquality()
-                    .equals(other.textPartIndex, textPartIndex)));
+                    .equals(other.textPartIndex, textPartIndex)) &&
+            (identical(other.textSpan, textSpan) ||
+                const DeepCollectionEquality()
+                    .equals(other.textSpan, textSpan)) &&
+            (identical(other.gameFinished, gameFinished) ||
+                const DeepCollectionEquality()
+                    .equals(other.gameFinished, gameFinished)) &&
+            (identical(other.quote, quote) ||
+                const DeepCollectionEquality().equals(other.quote, quote)) &&
+            (identical(other.gameTextLength, gameTextLength) ||
+                const DeepCollectionEquality()
+                    .equals(other.gameTextLength, gameTextLength)) &&
+            (identical(other.isLoading, isLoading) ||
+                const DeepCollectionEquality()
+                    .equals(other.isLoading, isLoading)) &&
+            (identical(other.isDarkMode, isDarkMode) ||
+                const DeepCollectionEquality()
+                    .equals(other.isDarkMode, isDarkMode)));
   }
 
   @override
@@ -211,8 +315,13 @@ class _$_GameState extends _GameState {
       const DeepCollectionEquality().hash(playGame) ^
       const DeepCollectionEquality().hash(gameText) ^
       const DeepCollectionEquality().hash(currentIndex) ^
-      const DeepCollectionEquality().hash(enableCountingMistakes) ^
-      const DeepCollectionEquality().hash(textPartIndex);
+      const DeepCollectionEquality().hash(textPartIndex) ^
+      const DeepCollectionEquality().hash(textSpan) ^
+      const DeepCollectionEquality().hash(gameFinished) ^
+      const DeepCollectionEquality().hash(quote) ^
+      const DeepCollectionEquality().hash(gameTextLength) ^
+      const DeepCollectionEquality().hash(isLoading) ^
+      const DeepCollectionEquality().hash(isDarkMode);
 
   @JsonKey(ignore: true)
   @override
@@ -225,8 +334,13 @@ abstract class _GameState extends GameState {
       {required bool playGame,
       required String gameText,
       required int currentIndex,
-      required bool enableCountingMistakes,
-      required int textPartIndex}) = _$_GameState;
+      required int textPartIndex,
+      required TextSpan textSpan,
+      required bool gameFinished,
+      required List<String> quote,
+      required int gameTextLength,
+      required bool isLoading,
+      required bool isDarkMode}) = _$_GameState;
   const _GameState._() : super._();
 
   @override
@@ -236,9 +350,19 @@ abstract class _GameState extends GameState {
   @override
   int get currentIndex => throw _privateConstructorUsedError;
   @override
-  bool get enableCountingMistakes => throw _privateConstructorUsedError;
-  @override
   int get textPartIndex => throw _privateConstructorUsedError;
+  @override
+  TextSpan get textSpan => throw _privateConstructorUsedError;
+  @override
+  bool get gameFinished => throw _privateConstructorUsedError;
+  @override
+  List<String> get quote => throw _privateConstructorUsedError;
+  @override
+  int get gameTextLength => throw _privateConstructorUsedError;
+  @override
+  bool get isLoading => throw _privateConstructorUsedError;
+  @override
+  bool get isDarkMode => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$GameStateCopyWith<_GameState> get copyWith =>

@@ -13,10 +13,12 @@ class StatsRepository {
   String get currentUser =>
       getIt.get<AuthenticationRepository>().currentUser.id;
 
-  void addNewStat(int time, int correctLetters, int mistakes, int textLength) {
+  void addNewStat(
+      {required int time, required int mistakes, required int textLength}) {
+    if (time == 0 || textLength == 0) return;
+
     usersReference.add({
       'time': time,
-      'correctsLetters': correctLetters,
       'mistakes': mistakes,
       'textLength': textLength,
       'owner': currentUser,
@@ -94,8 +96,11 @@ class StatsRepository {
 
   double calculateNetWPM(int textLength, int mistakes, int seconds) {
     final grossWPM = (textLength / 5.0) / (seconds / 60.0);
+    final netWPM = grossWPM - (mistakes / (seconds / 60));
 
-    return grossWPM - (mistakes / (seconds / 60));
+    if (netWPM < 0) return 0;
+
+    return netWPM.roundToDouble();
   }
 
   double calculateAccuracy(int textLength, int mistakes) {
@@ -246,5 +251,20 @@ class StatsRepository {
       return 0;
 
     return sum / wpms.length;
+  }
+
+  Future<void> removeUserStats() async {
+    await usersReference
+        .where("owner", isEqualTo: currentUser)
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        try {
+          doc.reference.delete();
+        } catch (e) {
+          print(e);
+        }
+      });
+    });
   }
 }

@@ -1,45 +1,67 @@
+import 'package:async/async.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pace_app/repository/game_repository.dart';
+import 'package:pace_app/repository/quotes_repository.dart';
 
 part 'game_cubit.freezed.dart';
 
 class GameCubit extends Cubit<GameState> {
   final GameRepository _gameRepository;
+  late final AsyncMemoizer _asyncMemoizer;
   GameCubit(this._gameRepository) : super(GameState.init());
-
-  void setup() {
-    getText();
-  }
 
   void startOrFinishTheGame({required bool startTheGame}) {
     emit(state.copyWith(playGame: startTheGame));
   }
 
+  //Future<String> get getQuote async => await _gameRepository.quote;
+
+  void setList(List<String> list) {
+    List<String> quoteFragments = [];
+    for (int i = 0; i < list.length; i++) {
+      quoteFragments
+          .add(list[i].toLowerCase().replaceAll(',', '').replaceAll('.', ''));
+    }
+    emit(state.copyWith(quote: quoteFragments));
+  }
+
+  void isLoading(bool b) {
+    emit(state.copyWith(isLoading: b));
+  }
+
+  getQuote() async {
+    String quote = await _gameRepository.quote;
+    List<String> list = quote.split(' ');
+    setList(list);
+    changeLetterCount();
+    getText();
+    startOrFinishTheGame(startTheGame: true);
+    isLoading(false);
+    _gameRepository.setStartTimerValue(true);
+  }
+
   void getText() {
-    String text = _gameRepository.gameText(state.textPartIndex);
+    String text = state.quote[state.textPartIndex];
     emit(state.copyWith(gameText: text));
+    emit(state.copyWith(gameTextLength: text.length));
   }
 
   void addMistake() {
-    if (!state.enableCountingMistakes) {
-      return;
-    }
-
     int _currentNrOfMistakes = _gameRepository.mistakes + 1;
-    print('mistakes: $_currentNrOfMistakes');
     _gameRepository.setMistakes(nrOfMistakes: _currentNrOfMistakes);
-    enableCountingMistakes(false);
   }
 
-  void addLetter() {
-    int _currentNrOfLetters = _gameRepository.lettersCount + 1;
-    print('lettersCount: $_currentNrOfLetters');
-    _gameRepository.setLettersCount(nrOfLetters: _currentNrOfLetters);
-  }
+  void changeLetterCount() {
+    int _nrOfLetters = 0;
 
-  void enableCountingMistakes(bool b) {
-    emit(state.copyWith(enableCountingMistakes: b));
+    state.quote.forEach((element) {
+      _nrOfLetters += element.length;
+    });
+    print(_nrOfLetters);
+
+    _gameRepository.setTextLength(nrOfLetters: _nrOfLetters);
   }
 
   void setIndex(int i) {
@@ -49,6 +71,38 @@ class GameCubit extends Cubit<GameState> {
   void setTextPartIndex(int i) {
     emit(state.copyWith(textPartIndex: i));
   }
+
+  void setOldTextPart(TextSpan textSpan) {
+    emit(state.copyWith(textSpan: textSpan));
+  }
+
+  TextSpan get getOldTextPart => state.textSpan;
+
+  int get textPartsCount => state.quote.length;
+
+  void stopTheGame() {
+    _gameRepository.setStopGameValue(true);
+  }
+
+  void finishGame(bool b) {
+    emit(state.copyWith(gameFinished: b));
+  }
+
+  double accuracy() {
+    return _gameRepository.accuracy;
+  }
+
+  double wpm() {
+    return _gameRepository.wpm;
+  }
+
+  int mistakes() {
+    return _gameRepository.lastSavedMistakes;
+  }
+
+  void isDarkMode({required bool isDarkMode}) {
+    emit(state.copyWith(isDarkMode: isDarkMode));
+  }
 }
 
 @freezed
@@ -57,8 +111,13 @@ class GameState with _$GameState {
     required bool playGame,
     required String gameText,
     required int currentIndex,
-    required bool enableCountingMistakes,
     required int textPartIndex,
+    required TextSpan textSpan,
+    required bool gameFinished,
+    required List<String> quote,
+    required int gameTextLength,
+    required bool isLoading,
+    required bool isDarkMode,
   }) = _GameState;
 
   const GameState._();
@@ -67,7 +126,12 @@ class GameState with _$GameState {
         playGame: false,
         gameText: '',
         currentIndex: 0,
-        enableCountingMistakes: false,
         textPartIndex: 0,
+        textSpan: TextSpan(),
+        gameFinished: false,
+        quote: [],
+        gameTextLength: 0,
+        isLoading: true,
+        isDarkMode: false,
       );
 }

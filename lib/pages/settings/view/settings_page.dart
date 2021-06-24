@@ -4,6 +4,7 @@ import 'package:pace_app/app/app.dart';
 import 'package:pace_app/app/models/theme_settings.dart';
 import 'package:pace_app/components/color_picker.dart';
 import 'package:pace_app/components/default_text_form_field.dart';
+import 'package:pace_app/injection/injection.dart';
 import 'package:pace_app/pages/settings/cubit/settings_cubit.dart';
 import 'package:pace_app/repository/authentication_repository.dart';
 import 'package:pace_app/utils/toast_utils.dart';
@@ -15,9 +16,8 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<ThemeSettings>(
-        initialData: ThemeSettings(
-          themeBrightness: Theme.of(context).brightness
-        ),
+        initialData:
+            ThemeSettings(themeBrightness: Theme.of(context).brightness),
         stream: context.read<AppBloc>().outTheme,
         builder: (context, snapshot) {
           return BlocProvider<SettingsCubit>(create: (context) {
@@ -27,7 +27,10 @@ class SettingsPage extends StatelessWidget {
               themeSettings = snapshot.data!;
             }
 
-            return SettingsCubit(nickname: "", themeSettings: themeSettings);
+            return SettingsCubit(
+                statsRepository: getIt(),
+                nickname: "",
+                themeSettings: themeSettings);
           }, child: BlocBuilder<SettingsCubit, SettingsState>(
             builder: (context, state) {
               return Center(
@@ -101,24 +104,6 @@ class SettingsPage extends StatelessWidget {
                   SettingsSection(
                     title: "User",
                     tiles: [
-                      // SettingsTile(
-                      //   title: "Nickname",
-                      //   subtitle: "John_Doe",
-                      //   leading: Icon(Icons.color_lens),
-                      //   onPressed: (context1) {
-                      //     displayTextInputDialog(
-                      //         context: context1,
-                      //         title: "Enter new nickname",
-                      //         onChanged: (newValue) {
-                      //           context
-                      //               .read<SettingsCubit>()
-                      //               .changeNickname(newValue);
-                      //         },
-                      //         onConfirmed: () {
-                      //           
-                      //         });
-                      //   },
-                      // ),
                       getSettingsTileButton(
                           title: "Reset password",
                           leadingIconData: Icons.password,
@@ -127,13 +112,14 @@ class SettingsPage extends StatelessWidget {
                                     context)
                                 .sendPasswordResetEmail();
 
-                            showSuccessToast(context, "Email with reset link has been sent");
+                            showSuccessToast(
+                                context, "Email with reset link has been sent");
                           }),
                       getSettingsTileButton(
                           title: "Reset data",
                           leadingIconData: Icons.delete,
                           onPressed: (context) {
-                            // TODO: Reset user data
+                            context.read<SettingsCubit>().removeUserStats();
                           },
                           color: Colors.redAccent),
                     ],
