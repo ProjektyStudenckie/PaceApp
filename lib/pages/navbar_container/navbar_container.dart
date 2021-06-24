@@ -77,8 +77,10 @@ class _NavBarContainerState extends State<NavBarContainer> {
                           Icons.close,
                           color: Colors.redAccent,
                         ),
-                        onTap: () => _cubit.selectNewNavBarItem(NavItem.home),
-                      )
+                        onTap: () {
+                          _cubit.stopTheGame(true);
+                          _cubit.selectNewNavBarItem(NavItem.home);
+                        })
                     : Text(''),
               ],
             ),

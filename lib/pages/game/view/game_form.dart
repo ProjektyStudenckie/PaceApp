@@ -174,21 +174,21 @@ class _GameFormState extends State<GameForm> {
                       ],
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Column(
-                        children: getChildren(_textSpans),
-                      ),
-                      SizedBox(width: 10),
-                      Column(
-                        children: getChildren(_textSpans2),
-                      ),
-                      SizedBox(width: 10),
-                      Column(
-                        children: getChildren(_textSpans3),
-                      ),
-                    ],
+                  SingleChildScrollView(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          children: getChildren(_textSpans),
+                        ),
+                        Column(
+                          children: getChildren(_textSpans2),
+                        ),
+                        Column(
+                          children: getChildren(_textSpans3),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               );
