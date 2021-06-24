@@ -139,7 +139,7 @@ class _AccuracyChangeChartState extends State<AccuracyChangeChart> {
     double maxAccuracy = 0;
 
     for (int i = 0; i < widget.allStats.length; i++) {
-      if (widget.allStats[i].accuracy > maxAccuracy) {
+      if (widget.allStats[i].accuracy > maxAccuracy.toInt()) {
         maxAccuracy = widget.allStats[i].accuracy.toDouble();
       }
     }
